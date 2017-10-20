@@ -34,7 +34,7 @@ public class MainMusicPlayer extends AppCompatActivity {
                 lyricPhrase = lyricPhrase.substring(i+1,lyricPhrase.length()); //delete word from phrase
             }
         }
-        url = "https://www.lyrics.com/lyrics/i"; //grr
+        url = "https://www.lyrics.com/lyrics/i";
         int j = 0;
         while(j < lyrics.size()-1){
             url= url + "%20" + lyrics.get(j);
