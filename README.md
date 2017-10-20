@@ -1,6 +1,6 @@
 # MusicLyricsPlayer
 
-####BASIC OUTLINE
+###BASIC OUTLINE
 - Audio file --> written text/words
 - Parsed sentences/phrases --> separate words
 - Tagged words --> categories for identifying keywords and filler words
@@ -9,7 +9,7 @@
 - Song + artist --> access song/video
 - Show video/play song
 
-####DETAILED
+###DETAILED
 1. Audio → Lyrics
 - STRETCH: Parsed sentences/phrases → categorised words (yay…)
 - If too many filler words, redirect
