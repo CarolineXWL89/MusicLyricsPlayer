@@ -40,6 +40,11 @@ public class MainMusicPlayer extends AppCompatActivity {
             url= url + "%20" + lyrics.get(j);
             j++;
         }
+        Log.d("URL", "letsGO: "+url);
+        URLtoSongObj bridge = new URLtoSongObj(url);
+        SongObject song = bridge.toObject();
+
+
 
     }
 
