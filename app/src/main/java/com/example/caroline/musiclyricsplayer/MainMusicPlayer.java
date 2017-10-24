@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.nicol.spotifyplayer.R;
+
 import java.lang.reflect.Array;
 import java.net.URL;
 import java.util.ArrayList;
@@ -43,6 +45,9 @@ public class MainMusicPlayer extends AppCompatActivity {
         Log.d("URL", "letsGO: "+url);
         URLtoSongObj bridge = new URLtoSongObj(url);
         SongObject song = bridge.toObject();
+        Intent i = new Intent(this, MainLyricsActivity.class);
+        i.putExtra("URI", song.getUri());
+        startActivity(i);
 
 
 

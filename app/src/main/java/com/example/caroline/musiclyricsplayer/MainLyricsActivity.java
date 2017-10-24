@@ -35,6 +35,7 @@ public class MainLyricsActivity extends Activity implements SpotifyPlayer.Notifi
 
 
         private Player mPlayer;
+        private String uri;
 
         @Override
         protected void onCreate(Bundle savedInstanceState) {
@@ -45,8 +46,9 @@ public class MainLyricsActivity extends Activity implements SpotifyPlayer.Notifi
                     REDIRECT_URI);
             builder.setScopes(new String[]{"user-read-private", "streaming"});
             AuthenticationRequest request = builder.build();
-
             AuthenticationClient.openLoginActivity(this, REQUEST_CODE, request);
+            Intent i = getIntent();
+            uri = i.getStringExtra("URI");
 
         }
 
@@ -99,7 +101,7 @@ public class MainLyricsActivity extends Activity implements SpotifyPlayer.Notifi
     @Override
     public void onLoggedIn() {
         Log.d("MainLyricsActivity", "User logged in");
-        mPlayer.playUri(null, "spotify:track:2TpxZ7JUBn3uw46aR7qd6V", 0, 0);
+        mPlayer.playUri(null, "spotify:track:"+uri, 0, 0);
     }
 
     @Override
