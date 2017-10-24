@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">MusicLyricsPlayer</string>
+    <string name="title_activity_main_lyrics">MainLyricsActivity</string>
 </resources>
