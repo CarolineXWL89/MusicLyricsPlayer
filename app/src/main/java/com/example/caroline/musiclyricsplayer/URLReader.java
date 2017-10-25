@@ -14,7 +14,7 @@ import java.io.*;
 public class URLReader {
     private String HTMLCode = "";
 
-    public URLReader(String URL){}
+    public URLReader(){}
 
     /**
      * Takes the URL input and returns an HTML code.

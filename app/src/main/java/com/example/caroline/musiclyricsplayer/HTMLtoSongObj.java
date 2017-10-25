@@ -8,15 +8,14 @@ import java.net.URL;
 
 //link is to lyrics url is to search result --> URL is from lyrics.com
 
-public class URLtoSongObj {
+public class HTMLtoSongObj {
     private String url, title, artist;
-    private URL link;
 
-    public URLtoSongObj(String url) {
+    public HTMLtoSongObj(String url) {
         this.url = url;
     }
 
     public SongObject toObject(){
-        return new SongObject(title, artist, link);
+        return new SongObject(title, artist, url);
     }
 }

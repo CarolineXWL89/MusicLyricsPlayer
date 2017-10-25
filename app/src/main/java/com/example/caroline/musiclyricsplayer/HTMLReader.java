@@ -16,14 +16,13 @@ public class HTMLReader {
         this.HTMLCode = HTMLCode;
     }
 
-    public ArrayList<Integer> findFirstOccurances(){
+    public void findFirstOccurances(){
         int firstSearchedBeforeTitle = HTMLCode.indexOf("<a href=\"/lyric");
         positions.add(firstSearchedBeforeTitle);
         int firstBeforeArtist = HTMLCode.indexOf("artists\"><a href=\"artist/");
         positions.add(firstBeforeArtist);
         int firstBeforeLyricLink = HTMLCode.indexOf("lyric-body\" onclick=\"location.href='https://www.lyrics.com/");
         positions.add(firstBeforeLyricLink);
-        return positions;
     }
 
 
@@ -32,7 +31,7 @@ public class HTMLReader {
         String shortenedSearch = HTMLCode.substring(firstTitle);
         int sideCarrotTitleStart = shortenedSearch.indexOf(">");
         int sideCarrotTitleEnd = shortenedSearch.indexOf("<");
-        title = shortenedSearch.substring(sideCarrotTitleStart + 1, sideCarrotTitleStart);
+        title = shortenedSearch.substring(sideCarrotTitleStart + 1, sideCarrotTitleEnd);
         return title;
     }
 
@@ -41,7 +40,7 @@ public class HTMLReader {
         String shortenedSearch = HTMLCode.substring(firstComposer);
         int sideCarrotTitleStart = shortenedSearch.indexOf(">");
         int sideCarrotTitleEnd = shortenedSearch.indexOf("<");
-        artist = shortenedSearch.substring(sideCarrotTitleStart + 1, sideCarrotTitleStart);
+        artist = shortenedSearch.substring(sideCarrotTitleStart + 1, sideCarrotTitleEnd);
         return artist;
     }
 
@@ -50,7 +49,7 @@ public class HTMLReader {
         String shortenedSearch = HTMLCode.substring(firstLyricLink);
         int sideCarrotTitleStart = shortenedSearch.indexOf(">");
         int sideCarrotTitleEnd = shortenedSearch.indexOf("<");
-        lyricsURL = shortenedSearch.substring(sideCarrotTitleStart + 1, sideCarrotTitleStart);
+        lyricsURL = shortenedSearch.substring(sideCarrotTitleStart + 1, sideCarrotTitleEnd);
         return lyricsURL;
     }
 }

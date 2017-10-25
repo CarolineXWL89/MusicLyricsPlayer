@@ -43,13 +43,21 @@ public class MainMusicPlayer extends AppCompatActivity {
             j++;
         }
         Log.d("URL", "letsGO: "+url);
-        URLtoSongObj bridge = new URLtoSongObj(url);
-        SongObject song = bridge.toObject();
+        URLReader HTMLCodeobj = new URLReader();
+        String htmlCode = HTMLCodeobj.readerReturn(url);
+        HTMLReader htmlReader = new HTMLReader(htmlCode);
+        htmlReader.findFirstOccurances();
+        String artist = htmlReader.findComposer();
+        String title = htmlReader.findTitle();
+        String url = htmlReader.findLyricsURL();
+        SongObject song = new SongObject(title, artist, url);
+        //TODO use SongObject song to get uri
+        String uri = "4TTV7EcfroSLWzXRY6gLv6"; //something you get
+        SongObject2 song2 = new SongObject2(url,uri);
         Intent i = new Intent(this, MainLyricsActivity.class);
-        i.putExtra("URI", song.getUri());
+        i.putExtra("URI", song2.getUri());
+        i.putExtra("URL", song2.getUrl());
         startActivity(i);
-
-
 
     }
 

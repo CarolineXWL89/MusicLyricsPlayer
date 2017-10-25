@@ -35,7 +35,7 @@ public class MainLyricsActivity extends Activity implements SpotifyPlayer.Notifi
 
 
         private Player mPlayer;
-        private String uri;
+        private String uri, url;
 
         @Override
         protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +49,7 @@ public class MainLyricsActivity extends Activity implements SpotifyPlayer.Notifi
             AuthenticationClient.openLoginActivity(this, REQUEST_CODE, request);
             Intent i = getIntent();
             uri = i.getStringExtra("URI");
+            url = i.getStringExtra("URL");
 
         }
 
