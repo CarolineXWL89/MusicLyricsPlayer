@@ -9,8 +9,6 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.nicol.spotifyplayer.R;
-
 import java.lang.reflect.Array;
 import java.net.URL;
 import java.util.ArrayList;
