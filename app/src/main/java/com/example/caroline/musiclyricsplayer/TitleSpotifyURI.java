@@ -1,11 +1,13 @@
 package com.example.caroline.musiclyricsplayer;
 
+import java.util.ArrayList;
+
 /**
  * Created by princ on 24/10/2017.
  */
 
 public class TitleSpotifyURI {
-    private String title,URI;
+    private String title,URI, searchURL;
     private int start;
 
     /*
@@ -15,6 +17,38 @@ public class TitleSpotifyURI {
     https://www.google.com/search?safe=strict&source=hp&q=think+of+me+spotify --> directly into the URL bar;
     ^^top two are obtained when gotten from search bar directly
      */
+    public TitleSpotifyURI(String title){
+        this.title = title;
+    }
+
+    public String constructSearchURL() {
+        //only works if there aren't any funny symbols --> all alphanumeric
+        ArrayList<String> words = new ArrayList<>();
+        int numWords = 0;
+        int startWord = 0;
+        int endWord;
+        int length = title.length();
+        for(int i = 0; i < length; i++){
+            String x = title.substring(i, i + 1);
+            if(x.equals(" ")){
+                numWords++;
+                endWord = i;
+                words.add(title.substring(startWord, endWord));
+                startWord = endWord + 1;
+            }
+            
+        }
+        searchURL = "https://www.google.com/search?safe=strict&source=hp&q=";
+        int l = words.size();
+        for(int i = 0; i < l; i++){
+            String word = words.get(0);
+            searchURL = searchURL + "+" + word;
+        }
+        searchURL = searchURL + "+spotify";
+        return searchURL;
+    }
+
+    //getters and setters
     public String getTitle() {
         return title;
     }
