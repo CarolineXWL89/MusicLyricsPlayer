@@ -13,8 +13,11 @@ import java.io.*;
 
 public class URLReader {
     private String HTMLCode = "";
+    private String url = "";
 
-    public URLReader(){}
+    public URLReader(String url){
+        this.url = url;
+    }
 
     /**
      * Takes the URL input and returns an HTML code.

@@ -34,14 +34,14 @@ public class MainMusicPlayer extends AppCompatActivity {
                 lyricPhrase = lyricPhrase.substring(i+1,lyricPhrase.length()); //delete word from phrase
             }
         }
-        url = "https://www.lyrics.com/lyrics/i";
+        url = "https://www.lyrics.com/lyrics/";
         int j = 0;
         while(j < lyrics.size()-1){
             url= url + "%20" + lyrics.get(j);
             j++;
         }
         Log.d("URL", "letsGO: "+url);
-        URLReader HTMLCodeobj = new URLReader();
+        URLReader HTMLCodeobj = new URLReader("http://www.themusicallyrics.com/h/351-hamilton-the-musical.html");
         String htmlCode = HTMLCodeobj.readerReturn(url);
         HTMLReader htmlReader = new HTMLReader(htmlCode);
         htmlReader.findFirstOccurances();
