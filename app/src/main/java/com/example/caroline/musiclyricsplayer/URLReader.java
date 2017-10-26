@@ -36,11 +36,13 @@ public class URLReader {
             e.printStackTrace();
         }
         finally {
-            try {
-                in.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+           if(in != null) {
+               try {
+                   in.close();
+               } catch (IOException e) {
+                   e.printStackTrace();
+               }
+           }
         }
         return HTMLCode;
     }
