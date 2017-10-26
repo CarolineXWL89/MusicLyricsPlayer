@@ -26,7 +26,7 @@ public class MainMusicPlayer extends AppCompatActivity {
     }
 
     private void letsGO() {
-        ArrayList<String> lyrics = new ArrayList<>();
+        /*ArrayList<String> lyrics = new ArrayList<>();
         lyricPhrase = (String) text.getText();
         for(int i =0; i < lyricPhrase.length(); i++){
             if(lyricPhrase.substring(i, i+1).equals(" ")){ //if a space
@@ -48,9 +48,10 @@ public class MainMusicPlayer extends AppCompatActivity {
         String artist = htmlReader.findComposer();
         String title = htmlReader.findTitle();
         String url = htmlReader.findLyricsURL();
-        SongObject song = new SongObject(title, artist, url);
+        SongObject song = new SongObject(title, artist, url);*/
         //TODO use SongObject song to get uri
         String uri = "4TTV7EcfroSLWzXRY6gLv6"; //something you get
+        url = "https://www.lyrics.com/lyric/32212242/Lin-Manuel+Miranda/Alexander+Hamilton";
         SongObject2 song2 = new SongObject2(url,uri);
         Intent i = new Intent(this, MainLyricsActivity.class);
         i.putExtra("URI", song2.getUri());
