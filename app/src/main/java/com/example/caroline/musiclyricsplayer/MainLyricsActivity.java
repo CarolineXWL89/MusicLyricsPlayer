@@ -9,6 +9,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.spotify.sdk.android.authentication.AuthenticationClient;
 import com.spotify.sdk.android.authentication.AuthenticationRequest;
@@ -24,6 +27,8 @@ import com.spotify.sdk.android.player.SpotifyPlayer;
 public class MainLyricsActivity extends Activity implements SpotifyPlayer.NotificationCallback, ConnectionStateCallback
 
     {
+        private ImageButton pauseButton;
+        private TextView songNameView;
 
 
         // TODO: Replace with your client ID
@@ -34,6 +39,7 @@ public class MainLyricsActivity extends Activity implements SpotifyPlayer.Notifi
 
 
         private Player mPlayer;
+        private boolean paused = false;
         private String uri, url;
 
         @Override
@@ -49,10 +55,17 @@ public class MainLyricsActivity extends Activity implements SpotifyPlayer.Notifi
             Intent i = getIntent();
             uri = i.getStringExtra("URI");
             url = i.getStringExtra("URL");
+            wireWidgets();
 
         }
 
-    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        private void wireWidgets() {
+            pauseButton = (ImageButton) findViewById(R.id.button_pause);
+            pauseButton.setBackgroundResource(R.drawable.green_button);
+            songNameView = (TextView) findViewById(R.id.song_name_view);
+        }
+
+        protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
 
         // Check if result comes from the correct activity
@@ -102,6 +115,20 @@ public class MainLyricsActivity extends Activity implements SpotifyPlayer.Notifi
     public void onLoggedIn() {
         Log.d("MainLyricsActivity", "User logged in");
         mPlayer.playUri(null, "spotify:track:"+uri, 0, 0);
+    }
+
+    public void pause(View view){
+        if(!paused){
+            mPlayer.pause(null);
+            paused = true;
+            pauseButton.setImageResource(R.drawable.ic_play_arrow_black_24dp);
+        }
+        else{
+            mPlayer.resume(null);
+            paused = false;
+            pauseButton.setImageResource(R.drawable.ic_pause_black_24dp);
+
+        }
     }
 
     @Override
