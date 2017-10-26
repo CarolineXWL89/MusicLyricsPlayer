@@ -61,6 +61,7 @@ public class MainLyricsActivity extends Activity implements SpotifyPlayer.Notifi
 
         private void wireWidgets() {
             pauseButton = (ImageButton) findViewById(R.id.button_pause);
+            pauseButton.setBackgroundResource(R.drawable.green_button);
             songNameView = (TextView) findViewById(R.id.song_name_view);
         }
 
