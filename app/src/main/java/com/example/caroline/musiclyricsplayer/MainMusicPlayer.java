@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,6 +18,7 @@ import java.util.Locale;
 public class MainMusicPlayer extends AppCompatActivity {
     private String lyricPhrase, url;
     private TextView text;
+    private Button goodLyrics;
     public static final String TAG = "main";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,19 +31,27 @@ public class MainMusicPlayer extends AppCompatActivity {
 
     private void letsGO() {
         ArrayList<String> lyrics = new ArrayList<>();
-        Log.d(TAG, "letsGO: "+ lyricPhrase);
-            Log.d(TAG, "letsGO: going in loop");
-            for(int i =0; i < lyricPhrase.length(); i++){
-                if(lyricPhrase.substring(i, i+1).equals(" ")){ //if a space
-                    lyrics.add(lyricPhrase.substring(0, i)); //add word to array list
-                    lyricPhrase = lyricPhrase.substring(i+1,lyricPhrase.length()); //delete word from phrase
+        Log.d(TAG, "letsGO: "+lyricPhrase.length());
+        int len = lyricPhrase.length();
+        int last = 0;
+            for(int i =0; i < len ; i++){
+                if(i != len-1) {
+                    if (lyricPhrase.substring(i, i + 1).equals(" ")) { //if a space
+                        Log.d(TAG, "letsGO: " + lyricPhrase.substring(last, i)); //goes from beginng to end
+                        lyrics.add(lyricPhrase.substring(last, i)); //add word to array list
+                        last = i+1;
+                    } else if(lyricPhrase.substring(i, i + 1).equals("'")){
+                        lyricPhrase = lyricPhrase.substring(0, i) + "\'"+ lyricPhrase.substring(i+1, len);
+                    }
+                    //TODO check links with ' cause in logcat they show up weird...
+                } else {
+                    lyrics.add(lyricPhrase.substring(last, i+1));
                 }
-                Log.d(TAG, "letsGO: in loop");
             }
             Log.d(TAG, "letsGO: out of loop");
             url = "https://www.lyrics.com/lyrics/";
             int j = 0;
-            while(j < lyrics.size()-1){
+            while(j < lyrics.size()){
                 url= url + "%20" + lyrics.get(j);
                 j++;
                 Log.d(TAG, "letsGO: creating url");
@@ -57,7 +67,7 @@ public class MainMusicPlayer extends AppCompatActivity {
             SongObject song = new SongObject(title, artist, url); */
             //TODO use SongObject song to get uri
             Log.d(TAG, "letsGO: starting intent");
-            String uri = "6dr7ekfhlbquvsVY8D7gyk"; //something you get
+            String uri = "71X7bPDljJHrmEGYCe7kQ8"; //something you get
             url = "https://www.lyrics.com/lyric/32212242/Lin-Manuel+Miranda/Alexander+Hamilton";
             SongObject2 song2 = new SongObject2(url,uri);
             Intent i = new Intent(this, MainLyricsActivity.class);
@@ -70,6 +80,8 @@ public class MainMusicPlayer extends AppCompatActivity {
 
     private void wireWidgets() {
        text  = (TextView)findViewById(R.id.show_text);
+       goodLyrics = (Button) findViewById(R.id.lyrics_good);
+       goodLyrics.setText("Go");
     }
 
     public void onClick(View v)
@@ -99,9 +111,12 @@ public class MainMusicPlayer extends AppCompatActivity {
                     text.setText(result.get(0));
                     lyricPhrase = (String) text.getText();
                     Log.d(TAG, "onActivityResult: "+lyricPhrase);
-                    letsGO();
                 }
                 break;
         }
+    }
+
+    public void letsGO(View view) {
+        letsGO();
     }
 }
