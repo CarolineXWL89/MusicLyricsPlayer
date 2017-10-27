@@ -17,46 +17,54 @@ import java.util.Locale;
 public class MainMusicPlayer extends AppCompatActivity {
     private String lyricPhrase, url;
     private TextView text;
+    public static final String TAG = "main";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        lyricPhrase = "";
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_music_player);
         wireWidgets();
-        letsGO();
+
     }
 
     private void letsGO() {
         ArrayList<String> lyrics = new ArrayList<>();
-        lyricPhrase = (String) text.getText();
-        for(int i =0; i < lyricPhrase.length(); i++){
-            if(lyricPhrase.substring(i, i+1).equals(" ")){ //if a space
-                lyrics.add(lyricPhrase.substring(0, i)); //add word to array list
-                lyricPhrase = lyricPhrase.substring(i+1,lyricPhrase.length()); //delete word from phrase
+        Log.d(TAG, "letsGO: "+ lyricPhrase);
+            Log.d(TAG, "letsGO: going in loop");
+            for(int i =0; i < lyricPhrase.length(); i++){
+                if(lyricPhrase.substring(i, i+1).equals(" ")){ //if a space
+                    lyrics.add(lyricPhrase.substring(0, i)); //add word to array list
+                    lyricPhrase = lyricPhrase.substring(i+1,lyricPhrase.length()); //delete word from phrase
+                }
+                Log.d(TAG, "letsGO: in loop");
             }
-        }
-        url = "https://www.lyrics.com/lyrics/";
-        int j = 0;
-        while(j < lyrics.size()-1){
-            url= url + "%20" + lyrics.get(j);
-            j++;
-        }
-        Log.d("URL", "letsGO: "+url);
-        URLReader HTMLCodeobj = new URLReader("http://www.themusicallyrics.com/h/351-hamilton-the-musical.html");
-        String htmlCode = HTMLCodeobj.readerReturn(url);
-        HTMLReader htmlReader = new HTMLReader(htmlCode);
-        htmlReader.findFirstOccurances();
-        String artist = htmlReader.findComposer();
-        String title = htmlReader.findTitle();
-        String url = htmlReader.findLyricsURL();
-        SongObject song = new SongObject(title, artist, url);
-        //TODO use SongObject song to get uri
-        String uri = "4TTV7EcfroSLWzXRY6gLv6"; //something you get
-        url = "https://www.lyrics.com/lyric/32212242/Lin-Manuel+Miranda/Alexander+Hamilton";
-        SongObject2 song2 = new SongObject2(url,uri);
-        Intent i = new Intent(this, MainLyricsActivity.class);
-        i.putExtra("URI", song2.getUri());
-        i.putExtra("URL", song2.getUrl());
-        startActivity(i);
+            Log.d(TAG, "letsGO: out of loop");
+            url = "https://www.lyrics.com/lyrics/";
+            int j = 0;
+            while(j < lyrics.size()-1){
+                url= url + "%20" + lyrics.get(j);
+                j++;
+                Log.d(TAG, "letsGO: creating url");
+            }
+            Log.d("main class", "letsGO: " + url);
+            /*URLReader HTMLCodeobj = new URLReader("http://www.themusicallyrics.com/h/351-hamilton-the-musical.html");
+            String htmlCode = HTMLCodeobj.readerReturn(url);
+            HTMLReader htmlReader = new HTMLReader(htmlCode);
+            htmlReader.findFirstOccurances();
+            String artist = htmlReader.findComposer();
+            String title = htmlReader.findTitle();
+            String url = htmlReader.findLyricsURL();
+            SongObject song = new SongObject(title, artist, url); */
+            //TODO use SongObject song to get uri
+            Log.d(TAG, "letsGO: starting intent");
+            String uri = "6dr7ekfhlbquvsVY8D7gyk"; //something you get
+            url = "https://www.lyrics.com/lyric/32212242/Lin-Manuel+Miranda/Alexander+Hamilton";
+            SongObject2 song2 = new SongObject2(url,uri);
+            Intent i = new Intent(this, MainLyricsActivity.class);
+            i.putExtra("URI", song2.getUri());
+            i.putExtra("URL", song2.getUrl());
+            startActivity(i);
+
 
     }
 
@@ -89,6 +97,9 @@ public class MainMusicPlayer extends AppCompatActivity {
                 if (resultCode==RESULT_OK&& data!=null) {
                     ArrayList<String> result =data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
                     text.setText(result.get(0));
+                    lyricPhrase = (String) text.getText();
+                    Log.d(TAG, "onActivityResult: "+lyricPhrase);
+                    letsGO();
                 }
                 break;
         }
