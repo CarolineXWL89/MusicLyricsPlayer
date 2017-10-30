@@ -40,7 +40,7 @@ public class MainLyricsActivity extends Activity implements SpotifyPlayer.Notifi
 
         private Player mPlayer;
         private boolean paused = false;
-        private String uri, url;
+        private String uri, url, title, artist, songDisplay;
         public static final String TAG = "lyrics";
 
         @Override
@@ -55,8 +55,11 @@ public class MainLyricsActivity extends Activity implements SpotifyPlayer.Notifi
             AuthenticationClient.openLoginActivity(this, REQUEST_CODE, request);
             Log.d(TAG, "onCreate: intent worked");
             Intent i = getIntent();
+            title = i.getStringExtra("Title");
+            artist = i.getStringExtra("Artist");
             uri = i.getStringExtra("URI");
             url = i.getStringExtra("URL");
+            songDisplay = title + "\n" + "by " + artist;
             wireWidgets();
 
         }
@@ -65,6 +68,7 @@ public class MainLyricsActivity extends Activity implements SpotifyPlayer.Notifi
             pauseButton = (ImageButton) findViewById(R.id.button_pause);
             pauseButton.setBackgroundResource(R.drawable.grey_button);
             songNameView = (TextView) findViewById(R.id.song_name_view);
+            songNameView.setText(songDisplay);
         }
 
         protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
