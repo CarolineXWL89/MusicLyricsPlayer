@@ -40,7 +40,7 @@ public class MainLyricsActivity extends Activity implements SpotifyPlayer.Notifi
 
         private Player mPlayer;
         private boolean paused = false;
-        private String uri, url;
+        private String uri, url, title, lyrics;
         public static final String TAG = "lyrics";
 
         @Override
@@ -57,6 +57,8 @@ public class MainLyricsActivity extends Activity implements SpotifyPlayer.Notifi
             Intent i = getIntent();
             uri = i.getStringExtra("URI");
             url = i.getStringExtra("URL");
+            title = i.getStringExtra("Title");
+            artist = i.getStringExtra("Artist"); //TODO use picasso image library for images
             wireWidgets();
 
         }
