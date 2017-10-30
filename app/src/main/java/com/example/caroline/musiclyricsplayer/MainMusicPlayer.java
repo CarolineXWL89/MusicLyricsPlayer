@@ -67,10 +67,11 @@ public class MainMusicPlayer extends AppCompatActivity {
             //TODO use SongObject song to get uri from google
             String uri = "71X7bPDljJHrmEGYCe7kQ8"; //something you get
             url = "https://www.lyrics.com/lyric/32212242/Lin-Manuel+Miranda/Alexander+Hamilton";
-            SongObject2 song2 = new SongObject2(url,uri);
             Intent i = new Intent(this, MainLyricsActivity.class);
-            i.putExtra("URI", song2.getUri());
-            i.putExtra("URL", song2.getUrl());
+            i.putExtra("Title",song.getTitle());
+            i.putExtra("Artist",song.getArtist());
+            i.putExtra("URI", uri);
+            i.putExtra("URL", url); //TODO use picasso image library
             startActivity(i);
 
 
