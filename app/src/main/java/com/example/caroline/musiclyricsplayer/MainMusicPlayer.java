@@ -26,7 +26,7 @@ public class MainMusicPlayer extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_music_player);
         wireWidgets();
-
+        goodLyrics.setVisibility(View.GONE);
     }
 
     private void letsGO() {
@@ -95,7 +95,7 @@ public class MainMusicPlayer extends AppCompatActivity {
 
     public void onClick(View v)
     {
-        switch (v.getId()){
+        switch (v.getId()){///////////////////////////-
             case R.id.speech_img:
                 Intent i=new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
                 getIntent().putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
@@ -120,6 +120,7 @@ public class MainMusicPlayer extends AppCompatActivity {
                     text.setText(result.get(0));
                     lyricPhrase = (String) text.getText();
                     Log.d(TAG, "onActivityResult: "+lyricPhrase);
+                    goodLyrics.setVisibility(View.VISIBLE);
                 }
                 break;
         }
