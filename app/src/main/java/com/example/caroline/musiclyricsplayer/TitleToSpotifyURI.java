@@ -4,9 +4,10 @@ import java.util.ArrayList;
 
 /**
  * Created by princ on 24/10/2017.
+ * Designed to access any song's URI given the title (and possibly artist).
  */
 
-public class TitleSpotifyURI {
+public class TitleToSpotifyURI {
     private String title,URI, searchURL;
     private int start;
 
@@ -17,7 +18,7 @@ public class TitleSpotifyURI {
     https://www.google.com/search?safe=strict&source=hp&q=think+of+me+spotify --> directly into the URL bar;
     ^^top two are obtained when gotten from search bar directly
      */
-    public TitleSpotifyURI(String title){
+    public TitleToSpotifyURI(String title){
         this.title = title;
     }
 

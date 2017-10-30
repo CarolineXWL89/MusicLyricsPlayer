@@ -57,16 +57,26 @@ public class MainMusicPlayer extends AppCompatActivity {
                 Log.d(TAG, "letsGO: creating url");
             }
             Log.d("main class", "letsGO: " + url);
-            URLReader HTMLCodeobj = new URLReader(url);
-            String htmlCode = HTMLCodeobj.readerReturn(url); //TODO fix me so i can return html code
-            HTMLReader htmlReader = new HTMLReader(htmlCode);
+            URLReader lyricsComHTMLCodeObj = new URLReader(url);
+            String lyricsComHTMLCode = lyricsComHTMLCodeObj.readerReturn(); //TODO fix me so it can return html code
+            HTMLReader htmlReader = new HTMLReader(lyricsComHTMLCode);
             String artist = htmlReader.findComposer();
             String title = htmlReader.findTitle();
             String url = htmlReader.findLyricsURL();
             SongObject song = new SongObject(title, artist, url);
             //TODO use SongObject song to get uri from google
+            TitleToSpotifyURI titleToSpotifyURI = new TitleToSpotifyURI(title);
+            String googleSearchURL = titleToSpotifyURI.constructSearchURL();
+
+            URLReader googleSearchHTMLCodeObj = new URLReader(googleSearchURL);
+            String googleSearchHTMLCode = googleSearchHTMLCodeObj.readerReturn();
+
+
             String uri = "71X7bPDljJHrmEGYCe7kQ8"; //something you get
             url = "https://www.lyrics.com/lyric/32212242/Lin-Manuel+Miranda/Alexander+Hamilton";
+
+
+
             Intent i = new Intent(this, MainLyricsActivity.class);
             i.putExtra("Title",song.getTitle());
             i.putExtra("Artist",song.getArtist());
