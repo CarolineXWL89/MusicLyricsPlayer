@@ -41,7 +41,7 @@ public class MainMusicPlayer extends AppCompatActivity {
                         lyrics.add(lyricPhrase.substring(last, i)); //add word to array list
                         last = i+1;
                     } else if(lyricPhrase.substring(i, i + 1).equals("'")){
-                        lyricPhrase = lyricPhrase.substring(0, i) + "\'"+ lyricPhrase.substring(i+1, len);
+                        lyricPhrase = lyricPhrase.substring(0, i) + lyricPhrase.substring(i+1, len);
                     }
                     //TODO check links with ' cause in logcat they show up weird...
                 } else {
@@ -57,16 +57,14 @@ public class MainMusicPlayer extends AppCompatActivity {
                 Log.d(TAG, "letsGO: creating url");
             }
             Log.d("main class", "letsGO: " + url);
-            /*URLReader HTMLCodeobj = new URLReader("http://www.themusicallyrics.com/h/351-hamilton-the-musical.html");
-            String htmlCode = HTMLCodeobj.readerReturn(url);
+            URLReader HTMLCodeobj = new URLReader(url);
+            String htmlCode = HTMLCodeobj.readerReturn(url); //TODO fix me so i can return html code
             HTMLReader htmlReader = new HTMLReader(htmlCode);
-            htmlReader.findFirstOccurances();
             String artist = htmlReader.findComposer();
             String title = htmlReader.findTitle();
             String url = htmlReader.findLyricsURL();
-            SongObject song = new SongObject(title, artist, url); */
-            //TODO use SongObject song to get uri
-            Log.d(TAG, "letsGO: starting intent");
+            SongObject song = new SongObject(title, artist, url);
+            //TODO use SongObject song to get uri from google
             String uri = "71X7bPDljJHrmEGYCe7kQ8"; //something you get
             url = "https://www.lyrics.com/lyric/32212242/Lin-Manuel+Miranda/Alexander+Hamilton";
             SongObject2 song2 = new SongObject2(url,uri);
