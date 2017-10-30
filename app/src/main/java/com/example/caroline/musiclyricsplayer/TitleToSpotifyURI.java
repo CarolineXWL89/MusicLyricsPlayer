@@ -10,6 +10,7 @@ import java.util.ArrayList;
 public class TitleToSpotifyURI {
     private String title,URI, searchURL;
     private int start;
+    //private int spotifyURIFirstInstance;
 
     /*
     Example Google search links to compare
@@ -47,6 +48,15 @@ public class TitleToSpotifyURI {
         }
         searchURL = searchURL + "+spotify";
         return searchURL;
+    }
+
+    public String getURIFromHTML(String HTMLCode){
+        int searchStringLength = "open.spotify.com/album/".length();
+        int spotifyURIFirstInstance = HTMLCode.indexOf("open.spotify.com/album/");
+        String reducedSearch = HTMLCode.substring(searchStringLength + spotifyURIFirstInstance);
+
+
+        return "";
     }
 
     //getters and setters
