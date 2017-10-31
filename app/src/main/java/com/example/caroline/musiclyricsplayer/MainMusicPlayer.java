@@ -40,9 +40,9 @@ public class MainMusicPlayer extends AppCompatActivity {
                         Log.d(TAG, "letsGO: " + lyricPhrase.substring(last, i)); //goes from beginng to end
                         lyrics.add(lyricPhrase.substring(last, i)); //add word to array list
                         last = i+1;
-                    } else if(lyricPhrase.substring(i, i + 1).equals("'")){
+                    }/* else if(lyricPhrase.substring(i, i + 1).equals("\'")){
                         lyricPhrase = lyricPhrase.substring(0, i) + lyricPhrase.substring(i+1, len);
-                    }
+                    }*/
                 } else {
                     lyrics.add(lyricPhrase.substring(last, len));
                 }
@@ -69,7 +69,7 @@ public class MainMusicPlayer extends AppCompatActivity {
             title = htmlReader.findTitle();
             lyricsUrl = htmlReader.findLyricsURL();
         } else {
-            artist = "Hamiltion";
+            artist = "Hamilton";
             title = "The Schuyler Sisters";
             lyricsUrl = "https://www.lyrics.com/lyric/32212242/Lin-Manuel+Miranda/Alexander+Hamilton";
         }
@@ -81,9 +81,9 @@ public class MainMusicPlayer extends AppCompatActivity {
         googleSearchURL = titleToSpotifyURI.constructSearchURL();
         URLReader googleSearchHTMLCodeObj = new URLReader(googleSearchURL);
         String googleSearchHTMLCode = googleSearchHTMLCodeObj.readerReturn();
-        String uri = titleToSpotifyURI.getURIFromHTML(googleSearchHTMLCode);
 
-        //String uri = "71X7bPDljJHrmEGYCe7kQ8";
+        //String uri = titleToSpotifyURI.getURIFromHTML(googleSearchHTMLCode);
+        String uri = "71X7bPDljJHrmEGYCe7kQ8";
 
         //sends data over to spotify activity
         Intent i = new Intent(this, MainLyricsActivity.class);
