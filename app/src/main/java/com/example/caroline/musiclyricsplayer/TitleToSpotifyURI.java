@@ -67,12 +67,13 @@ public class TitleToSpotifyURI {
     }
 
     public String getURIFromHTML(String HTMLCode){
-        int searchStringLength = "open.spotify.com/album/".length();
-        int spotifyURIFirstInstance = HTMLCode.indexOf("open.spotify.com/album/");
-        String reducedSearch = HTMLCode.substring(searchStringLength + spotifyURIFirstInstance);
-
-
-        return "";
+        int searchStringLength = "open.spotify.com/track/".length();
+        int spotifyURIFirstInstance = HTMLCode.indexOf("open.spotify.com/track/");
+        String reducedSearch = HTMLCode.substring(searchStringLength + spotifyURIFirstInstance - 1);
+        int startSearch = reducedSearch.indexOf("/");
+        int endSearch = reducedSearch.indexOf("onmousedown") - 2;
+        URI = reducedSearch.substring(startSearch + 1, endSearch);
+        return URI;
     }
 
     //getters and setters
