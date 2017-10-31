@@ -10,7 +10,6 @@ import java.util.ArrayList;
 public class TitleToSpotifyURI {
     private String title,URI, searchURL;
     private int start;
-    //private int spotifyURIFirstInstance;
 
     /*
     Example Google search links to compare
@@ -20,31 +19,48 @@ public class TitleToSpotifyURI {
     ^^top two are obtained when gotten from search bar directly
      */
     public TitleToSpotifyURI(String title){
+
         this.title = title;
     }
 
     public String constructSearchURL() {
         //only works if there aren't any funny symbols --> all alphanumeric
         ArrayList<String> words = new ArrayList<>();
-        int numWords = 0;
-        int startWord = 0;
-        int endWord;
         int length = title.length();
-        for(int i = 0; i < length; i++){
-            String x = title.substring(i, i + 1);
-            if(x.equals(" ")){
-                numWords++;
-                endWord = i;
-                words.add(title.substring(startWord, endWord));
-                startWord = endWord + 1;
+        String word = "";
+        int position = 0;
+        while (length > 0){
+            String letter = title.substring(position, position + 1);
+            if(!letter.equals(" ")){
+                word += letter;
             }
-            
+            else{
+                words.add(word);
+                word = "";
+            }
+            length--;
+            position++;
         }
+        String backwardWord = "";
+        String backwardTitle = "";
+        for(int i = length - 1; i >= 0; i--){
+            String letter = title.substring(i, i + 1);
+            backwardTitle += letter;
+        }
+        int x = backwardTitle.indexOf(" ");
+        for(int i = length - 1; i >= length - x; i--) {
+            String letter = title.substring(i, i + 1);
+            word += letter;
+        }
+
+        words.add(word);
+
         searchURL = "https://www.google.com/search?safe=strict&source=hp&q=";
         int l = words.size();
+        System.out.println(l);
         for(int i = 0; i < l; i++){
-            String word = words.get(0);
-            searchURL = searchURL + "+" + word;
+            String gottenWord = words.get(i);
+            searchURL = searchURL + "+" + gottenWord;
         }
         searchURL = searchURL + "+spotify";
         return searchURL;
