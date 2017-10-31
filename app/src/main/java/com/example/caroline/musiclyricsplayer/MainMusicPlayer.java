@@ -10,13 +10,11 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.lang.reflect.Array;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Locale;
 
 public class MainMusicPlayer extends AppCompatActivity {
-    private String lyricPhrase, url;
+    private String lyricPhrase, lyricsComURL, googleSearchURL;
     private TextView text;
     private Button goodLyrics;
     public static final String TAG = "main";
@@ -49,28 +47,37 @@ public class MainMusicPlayer extends AppCompatActivity {
                 }
             }
             Log.d(TAG, "letsGO: out of loop");
-            url = "https://www.lyrics.com/lyrics/";
+            lyricsComURL = "https://www.lyrics.com/lyrics/";
             int j = 0;
             while(j < lyrics.size()){
-                url= url + "%20" + lyrics.get(j);
+                lyricsComURL = lyricsComURL + "%20" + lyrics.get(j);
                 j++;
-                Log.d(TAG, "letsGO: creating url");
+                Log.d(TAG, "letsGO: creating lyricsComURL");
             }
-            Log.d("main class", "letsGO: " + url);
-            URLReader HTMLCodeobj = new URLReader(url);
-            String htmlCode = HTMLCodeobj.readerReturn();
-            HTMLReader htmlReader = new HTMLReader(htmlCode);
-            String artist = "Hamiltion"; //htmlReader.findComposer();
-            String title = "The Schuyler Sisters"; //htmlReader.findTitle();
-            String url = "https://www.lyrics.com/lyric/32212242/Lin-Manuel+Miranda/Alexander+Hamilton"; //htmlReader.findLyricsURL();
+            Log.d("main class", "letsGO: " + lyricsComURL);
+            URLReader lyricsComHTMLCodeObj = new URLReader(lyricsComURL);
+            String lyricsComHTMLBasic = lyricsComHTMLCodeObj.readerReturn();
+            HTMLReader htmlReader = new HTMLReader(lyricsComHTMLBasic);
+            String artist = htmlReader.findComposer();
+            //String artist = "Hamiltion"; //htmlReader.findComposer();
+            String title = htmlReader.findTitle();
+            //String title = "The Schuyler Sisters"; //htmlReader.findTitle();
+            String url = htmlReader.findLyricsURL();
+            //String lyricsComURL = "https://www.lyrics.com/lyric/32212242/Lin-Manuel+Miranda/Alexander+Hamilton"; //htmlReader.findLyricsURL();
             SongObject song = new SongObject(title, artist, url);
             //TODO use SongObject song to get uri from google
-            String uri = "71X7bPDljJHrmEGYCe7kQ8"; //something you get --> TODO finish method of getting URI
+            TitleToSpotifyURI titleToSpotifyURI = new TitleToSpotifyURI(title);
+            googleSearchURL = titleToSpotifyURI.constructSearchURL();
+            URLReader googleSearchHTMLCodeObj = new URLReader(googleSearchURL);
+            String googleSearchHTMLCode = googleSearchHTMLCodeObj.readerReturn();
+            String uri = titleToSpotifyURI.getURIFromHTML(googleSearchHTMLCode);
+
+            //String uri = "71X7bPDljJHrmEGYCe7kQ8"; //TODO finish method of getting URI
             Intent i = new Intent(this, MainLyricsActivity.class);
             i.putExtra("Title",song.getTitle());
             i.putExtra("Artist",song.getArtist());
             i.putExtra("URI", uri);
-            i.putExtra("URL", url); //TODO use picasso image library
+            i.putExtra("URL", url); //was this the original lyrics.com URL? TODO use picasso image library
             startActivity(i);
 
 

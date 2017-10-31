@@ -16,6 +16,7 @@ public class URLReader {
     private String url = "";
 
     public URLReader(String url){
+
         this.url = url;
     }
 
