@@ -26,7 +26,7 @@ public class MainMusicPlayer extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_music_player);
         wireWidgets();
-        goodLyrics.setVisibility(View.GONE);
+
     }
 
     private void letsGO() {
@@ -57,26 +57,15 @@ public class MainMusicPlayer extends AppCompatActivity {
                 Log.d(TAG, "letsGO: creating url");
             }
             Log.d("main class", "letsGO: " + url);
-            URLReader lyricsComHTMLCodeObj = new URLReader(url);
-            String lyricsComHTMLCode = lyricsComHTMLCodeObj.readerReturn(); //TODO fix me so it can return html code
-            HTMLReader htmlReader = new HTMLReader(lyricsComHTMLCode);
-            String artist = htmlReader.findComposer();
-            String title = htmlReader.findTitle();
-            String url = htmlReader.findLyricsURL();
+            URLReader HTMLCodeobj = new URLReader(url);
+            String htmlCode = HTMLCodeobj.readerReturn(); //TODO fix me so i can return html code
+            HTMLReader htmlReader = new HTMLReader(htmlCode);
+            String artist = "Hamiltion"; //htmlReader.findComposer();
+            String title = "The Schuyler Sisters"; //htmlReader.findTitle();
+            String url = "https://www.lyrics.com/lyric/32212242/Lin-Manuel+Miranda/Alexander+Hamilton"; //htmlReader.findLyricsURL();
             SongObject song = new SongObject(title, artist, url);
             //TODO use SongObject song to get uri from google
-            TitleToSpotifyURI titleToSpotifyURI = new TitleToSpotifyURI(title);
-            String googleSearchURL = titleToSpotifyURI.constructSearchURL();
-
-            URLReader googleSearchHTMLCodeObj = new URLReader(googleSearchURL);
-            String googleSearchHTMLCode = googleSearchHTMLCodeObj.readerReturn();
-
-
             String uri = "71X7bPDljJHrmEGYCe7kQ8"; //something you get
-            url = "https://www.lyrics.com/lyric/32212242/Lin-Manuel+Miranda/Alexander+Hamilton";
-
-
-
             Intent i = new Intent(this, MainLyricsActivity.class);
             i.putExtra("Title",song.getTitle());
             i.putExtra("Artist",song.getArtist());
@@ -95,7 +84,7 @@ public class MainMusicPlayer extends AppCompatActivity {
 
     public void onClick(View v)
     {
-        switch (v.getId()){///////////////////////////-
+        switch (v.getId()){
             case R.id.speech_img:
                 Intent i=new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
                 getIntent().putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
@@ -120,7 +109,6 @@ public class MainMusicPlayer extends AppCompatActivity {
                     text.setText(result.get(0));
                     lyricPhrase = (String) text.getText();
                     Log.d(TAG, "onActivityResult: "+lyricPhrase);
-                    goodLyrics.setVisibility(View.VISIBLE);
                 }
                 break;
         }
