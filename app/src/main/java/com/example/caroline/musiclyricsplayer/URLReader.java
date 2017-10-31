@@ -21,15 +21,15 @@ public class URLReader {
 
     /**
      * Takes the URL input and returns an HTML code.
-     * @param URL
+     * //@param URL
      * @return HTML code for webpage
      */
-    public String readerReturn(String URL){
+    public String readerReturn(){
         URL oracle = null;
         BufferedReader in = null;
         String inputLine;
         try {
-            oracle = new URL(URL);
+            oracle = new URL(url);
             in = new BufferedReader(
                     new InputStreamReader(oracle.openStream()));
             while ((inputLine = in.readLine()) != null)
