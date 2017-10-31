@@ -45,14 +45,9 @@ public class HTMLReader {
 
     public String findComposer(){
         int firstComposer = positions.get(1);
-        System.out.println(firstComposer);
         String shortenedSearch = HTMLCode.substring(firstComposer + aRefL);
-        //Log.d(MY_TAG, shortenedSearch);
-        //System.out.println(shortenedSearch);
         int sideCarrotTitleStart = shortenedSearch.indexOf(">");
-        System.out.println(sideCarrotTitleStart);
         int sideCarrotTitleEnd = shortenedSearch.indexOf("<");
-        System.out.println(sideCarrotTitleEnd);
         artist = shortenedSearch.substring(sideCarrotTitleStart + 1, sideCarrotTitleEnd);
         return artist;
     }
@@ -60,9 +55,9 @@ public class HTMLReader {
     public String findLyricsURL(){
         int firstLyricLink = positions.get(2);
         String shortenedSearch = HTMLCode.substring(firstLyricLink + lRefL);
-        int sideCarrotTitleStart = shortenedSearch.indexOf(">");
-        int sideCarrotTitleEnd = shortenedSearch.indexOf("<");
-        lyricsURL = shortenedSearch.substring(sideCarrotTitleStart + 1, sideCarrotTitleEnd);
+        int sideCarrotTitleStart = shortenedSearch.indexOf("/");
+        int sideCarrotTitleEnd = shortenedSearch.indexOf("'");
+        lyricsURL = "https://www.lyrics.com/" + shortenedSearch.substring(sideCarrotTitleStart + 1, sideCarrotTitleEnd);
         return lyricsURL;
     }
 }
