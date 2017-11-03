@@ -18,6 +18,7 @@ public class HTMLReader {
     private static final String TITLE_REF = "<a href=\"/lyric";
     private static final String ARTIST_REF = "artists\"><a href=\"artist/";
     private static final String LYRIC_LINK_REF = "lyric-body\" onclick=\"location.href='https://www.lyrics.com/";
+
     //private static final String MY_TAG = "testActivity";
     //private int firstSearched;
 
