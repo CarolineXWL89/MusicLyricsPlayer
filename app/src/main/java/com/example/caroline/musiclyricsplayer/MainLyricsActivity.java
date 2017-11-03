@@ -29,6 +29,7 @@ public class MainLyricsActivity extends Activity implements SpotifyPlayer.Notifi
     {
         private ImageButton pauseButton;
         private TextView songNameView, songLyrics, songArtist;
+        private Toolbar toolbar;
 
 
         // TODO: Replace with your client ID
@@ -160,22 +161,24 @@ public class MainLyricsActivity extends Activity implements SpotifyPlayer.Notifi
                     "\n" +
                     "In the greatest, in the greatest city in the world  \n" +
                     "\n" +
-                    "In the greatest city in the world";
+                    "In the greatest city in the world" + "\n";
         }
 
         private void setUpWidgets() {
-            songNameView.setText(title);
+//            songNameView.setText(title);
             songLyrics.setText(lyrics);
-            songArtist.setText(artist);
+//            songArtist.setText(artist);
+            toolbar.setTitle(title);
 
         }
 
         private void wireWidgets() {
             pauseButton = (ImageButton) findViewById(R.id.button_pause);
             pauseButton.setBackgroundResource(R.drawable.grey_button);
-            songNameView = (TextView) findViewById(R.id.song_title);
+//            songNameView = (TextView) findViewById(R.id.song_title);
             songLyrics = (TextView) findViewById(R.id.lyrics);
-            songArtist = (TextView) findViewById(R.id.artist);
+//            songArtist = (TextView) findViewById(R.id.artist);
+            toolbar = (Toolbar) findViewById(R.id.toolbar);
         }
 
         protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
