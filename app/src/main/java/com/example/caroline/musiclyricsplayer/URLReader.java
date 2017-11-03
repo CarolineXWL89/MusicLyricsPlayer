@@ -46,18 +46,16 @@ public class URLReader {
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
 
             String line;
-            Log.d("urlredaer", "readerReturn: "+ bufferedReader.readLine());
 
             // read from the urlconnection via the bufferedreader
             while ((line = bufferedReader.readLine()) != null)
             {
                 content.append(line + "\n");
-                Log.d("urlreader", "readerReturn: "+line);
             }
             bufferedReader.close();
         }
-        catch(Exception e)
-        {
+        catch(Exception e){
+
             Log.d("urlreader", "readerReturn: "+ e);
             e.printStackTrace();
         }

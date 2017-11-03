@@ -91,7 +91,7 @@ public class MainMusicPlayer extends AppCompatActivity {
 
         String uri = titleToSpotifyURI.getURIFromHTML(googleSearchHTMLCode);
 
-        String lyricsText = new URLPinger().execute(lyricsUrl).get();
+        String lyricsText = "NEED to write a html reader method to get lyrics"; //new URLPinger().execute(lyricsUrl).get();
 
 
         //sends data over to spotify activity
