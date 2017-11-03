@@ -61,7 +61,8 @@ public class MainLyricsActivity extends Activity implements SpotifyPlayer.Notifi
             title = i.getStringExtra("Title");
             artist = i.getStringExtra("Artist"); //TODO use picasso image library for images
             wireWidgets();
-            getLyrics();
+            //getLyrics();
+            lyrics = i.getStringExtra("Lyrics");
             setUpWidgets();
         }
 
@@ -230,7 +231,7 @@ public class MainLyricsActivity extends Activity implements SpotifyPlayer.Notifi
     @Override
     public void onLoggedIn() {
         Log.d("MainLyricsActivity", "User logged in");
-        mPlayer.playUri(null, "spotify:track:"+uri, 0, 0);
+        mPlayer.playUri(null, "spotify:track:" + uri, 0, 0);
     }
 
     public void pause(View view){

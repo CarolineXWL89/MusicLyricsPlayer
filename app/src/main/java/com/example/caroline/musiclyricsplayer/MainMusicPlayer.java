@@ -1,6 +1,7 @@
 package com.example.caroline.musiclyricsplayer;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.speech.RecognizerIntent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.concurrent.ExecutionException;
 
 public class MainMusicPlayer extends AppCompatActivity {
     private String lyricPhrase, googleSearchURL, title, artist;
@@ -30,9 +32,9 @@ public class MainMusicPlayer extends AppCompatActivity {
 
     }
 
-    private void letsGO() throws IOException {
+    private void letsGO() throws IOException, ExecutionException, InterruptedException {
         ArrayList<String> lyrics = new ArrayList<>();
-        lyricPhrase = "ive got the eye of the tiger";
+        lyricPhrase = "i got the eye of the tiger";
         Log.d(TAG, "letsGO: "+lyricPhrase.length());
         int len = lyricPhrase.length();
         int last = 0;
@@ -61,8 +63,10 @@ public class MainMusicPlayer extends AppCompatActivity {
         }
         Log.d("main class", "letsGO: " + lyricsComURL);
 
-        URLReader lyricsComHTMLCodeObj = new URLReader(lyricsComURL);
-        String lyricsComHTMLBasic = lyricsComHTMLCodeObj.readerReturn();
+
+
+        String lyricsComHTMLBasic = new URLPinger().execute(lyricsComURL).get();
+
         Log.d(TAG, "letsGO: "+ lyricsComHTMLBasic);
         HTMLReader htmlReader = new HTMLReader(lyricsComHTMLBasic);
 
@@ -83,11 +87,12 @@ public class MainMusicPlayer extends AppCompatActivity {
         //Gets URI from google
         TitleToSpotifyURI titleToSpotifyURI = new TitleToSpotifyURI(title);
         googleSearchURL = titleToSpotifyURI.constructSearchURL();
-        URLReader googleSearchHTMLCodeObj = new URLReader(googleSearchURL);
-        String googleSearchHTMLCode = googleSearchHTMLCodeObj.readerReturn();
+        String googleSearchHTMLCode = new URLPinger().execute(googleSearchURL).get();
 
-        //String uri = titleToSpotifyURI.getURIFromHTML(googleSearchHTMLCode);
-        String uri = "71X7bPDljJHrmEGYCe7kQ8";
+        String uri = titleToSpotifyURI.getURIFromHTML(googleSearchHTMLCode);
+
+        String lyricsText = new URLPinger().execute(lyricsUrl).get();
+
 
         //sends data over to spotify activity
         Intent i = new Intent(this, MainLyricsActivity.class);
@@ -95,6 +100,7 @@ public class MainMusicPlayer extends AppCompatActivity {
         i.putExtra("Artist",song.getArtist());
         i.putExtra("URI", uri);
         i.putExtra("URL", lyricsUrl); // TODO use picasso image library
+        i.putExtra("Lyrics", lyricsText);
         startActivity(i);
     }
 
@@ -136,7 +142,27 @@ public class MainMusicPlayer extends AppCompatActivity {
         }
     }
 
-    public void letsGO(View view) throws IOException {
+    public void letsGO(View view) throws IOException, ExecutionException, InterruptedException {
         letsGO();
+    }
+
+    private class URLPinger extends AsyncTask<String,Void, String> {
+
+        @Override
+        protected String doInBackground(String... strings) {
+            URLReader urlReader = new URLReader(strings[0]);
+            try {
+                return urlReader.readerReturn();
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            }
+
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+        }
     }
 }

@@ -1,6 +1,8 @@
 package com.example.caroline.musiclyricsplayer;
 
 
+import android.util.Log;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -29,29 +31,6 @@ public class URLReader {
      * @return HTML code for webpage
      */
     public String readerReturn() throws IOException {
-        /*URL oracle = null;
-        BufferedReader in = null;
-        String inputLine;
-        try {
-            oracle = new URL(url);
-            in = new BufferedReader(
-                    new InputStreamReader(oracle.openStream()));
-            while ((inputLine = in.readLine()) != null)
-                //System.out.println(inputLine);
-                HTMLCode += inputLine;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        finally {
-           if(in != null) {
-               try {
-                   in.close();
-               } catch (IOException e) {
-                   e.printStackTrace();
-               }
-           }
-        }
-        return HTMLCode;*/
 
         StringBuilder content = new StringBuilder();
 
@@ -67,16 +46,19 @@ public class URLReader {
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
 
             String line;
+            Log.d("urlredaer", "readerReturn: "+ bufferedReader.readLine());
 
             // read from the urlconnection via the bufferedreader
             while ((line = bufferedReader.readLine()) != null)
             {
                 content.append(line + "\n");
+                Log.d("urlreader", "readerReturn: "+line);
             }
             bufferedReader.close();
         }
         catch(Exception e)
         {
+            Log.d("urlreader", "readerReturn: "+ e);
             e.printStackTrace();
         }
         return content.toString();
