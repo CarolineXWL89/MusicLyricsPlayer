@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -29,8 +30,9 @@ public class MainMusicPlayer extends AppCompatActivity {
 
     }
 
-    private void letsGO() {
+    private void letsGO() throws IOException {
         ArrayList<String> lyrics = new ArrayList<>();
+        lyricPhrase = "ive got the eye of the tiger";
         Log.d(TAG, "letsGO: "+lyricPhrase.length());
         int len = lyricPhrase.length();
         int last = 0;
@@ -40,7 +42,8 @@ public class MainMusicPlayer extends AppCompatActivity {
                         Log.d(TAG, "letsGO: " + lyricPhrase.substring(last, i)); //goes from beginng to end
                         lyrics.add(lyricPhrase.substring(last, i)); //add word to array list
                         last = i+1;
-                    }/* else if(lyricPhrase.substring(i, i + 1).equals("\'")){
+                    }
+                    /* else if(lyricPhrase.substring(i, i + 1).equals("\'")){
                         lyricPhrase = lyricPhrase.substring(0, i) + lyricPhrase.substring(i+1, len);
                     }*/
                 } else {
@@ -60,9 +63,10 @@ public class MainMusicPlayer extends AppCompatActivity {
 
         URLReader lyricsComHTMLCodeObj = new URLReader(lyricsComURL);
         String lyricsComHTMLBasic = lyricsComHTMLCodeObj.readerReturn();
+        Log.d(TAG, "letsGO: "+ lyricsComHTMLBasic);
         HTMLReader htmlReader = new HTMLReader(lyricsComHTMLBasic);
 
-        boolean working = false;
+        boolean working = true;
 
         if (working) {
             artist = htmlReader.findComposer();
@@ -132,7 +136,7 @@ public class MainMusicPlayer extends AppCompatActivity {
         }
     }
 
-    public void letsGO(View view) {
+    public void letsGO(View view) throws IOException {
         letsGO();
     }
 }

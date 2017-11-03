@@ -37,8 +37,4 @@ dependencies {
 
     compile 'com.spotify.sdk:spotify-player-24-noconnect-2.20b@aar'
     compile 'com.android.support:appcompat-v7:26.1.'
-    compile 'com.squareup.picasso:picasso:2.5.2'
-    
-
-
 }

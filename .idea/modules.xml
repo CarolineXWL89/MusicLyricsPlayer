@@ -3,8 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/MusicLyricsPlayer.iml" filepath="$PROJECT_DIR$/MusicLyricsPlayer.iml" />
-      <module fileurl="file://$PROJECT_DIR$/MusicLyricsPlayer2.iml" filepath="$PROJECT_DIR$/MusicLyricsPlayer2.iml" />
       <module fileurl="file://C:\Users\princ\Desktop\AndroidProjects\MusicLyricsPlayer\MusicLyricsPlayer2.iml" filepath="C:\Users\princ\Desktop\AndroidProjects\MusicLyricsPlayer\MusicLyricsPlayer2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/MusicLyricsPlayer2.iml" filepath="$PROJECT_DIR$/MusicLyricsPlayer2.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
