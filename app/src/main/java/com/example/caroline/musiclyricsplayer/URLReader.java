@@ -1,11 +1,14 @@
 package com.example.caroline.musiclyricsplayer;
 
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
 import java.net.*;
+import java.net.URL;
 import java.io.*;
+import javax.net.ssl.HttpsURLConnection;
 
 /**
  * Created by princ on 19/10/2017.
@@ -13,11 +16,11 @@ import java.io.*;
 
 public class URLReader {
     private String HTMLCode = "";
-    private String url = "";
+    private String urlString = "";
 
     public URLReader(String url){
 
-        this.url = url;
+        this.urlString = url;
     }
 
     /**
@@ -25,8 +28,8 @@ public class URLReader {
      * //@param URL
      * @return HTML code for webpage
      */
-    public String readerReturn(){
-        URL oracle = null;
+    public String readerReturn() throws IOException {
+        /*URL oracle = null;
         BufferedReader in = null;
         String inputLine;
         try {
@@ -48,6 +51,35 @@ public class URLReader {
                }
            }
         }
-        return HTMLCode;
+        return HTMLCode;*/
+
+        StringBuilder content = new StringBuilder();
+
+        try
+        {
+            // create a url object
+            URL url = new URL(urlString);
+
+            // create a urlconnection object
+            URLConnection urlConnection = url.openConnection();
+
+            // wrap the urlconnection in a bufferedreader
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+
+            String line;
+
+            // read from the urlconnection via the bufferedreader
+            while ((line = bufferedReader.readLine()) != null)
+            {
+                content.append(line + "\n");
+            }
+            bufferedReader.close();
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        return content.toString();
     }
+
 }
