@@ -15,9 +15,11 @@ public class HTMLReader {
     private int tRefL;
     private int aRefL;
     private int lRefL;
+    private int iRefL;
     private static final String TITLE_REF = "<a href=\"/lyric";
     private static final String ARTIST_REF = "artists\"><a href=\"artist/";
     private static final String LYRIC_LINK_REF = "lyric-body\" onclick=\"location.href='https://www.lyrics.com/";
+    private static final String IMAGE_LINK_REF="<a href=\"/album";
 
     //private static final String MY_TAG = "testActivity";
     //private int firstSearched;
@@ -33,6 +35,9 @@ public class HTMLReader {
         int firstBeforeLyricLink = HTMLCode.indexOf(LYRIC_LINK_REF);
         positions.add(firstBeforeLyricLink);
         lRefL = LYRIC_LINK_REF.length();
+        int firstBeforeAlbumArtLink = HTMLCode.indexOf(IMAGE_LINK_REF);
+        positions.add(firstBeforeAlbumArtLink);
+        iRefL = IMAGE_LINK_REF.length();
     }
 
     public String findTitle(){
@@ -60,5 +65,15 @@ public class HTMLReader {
         int sideCarrotTitleEnd = shortenedSearch.indexOf("'");
         lyricsURL = "https://www.lyrics.com/" + shortenedSearch.substring(sideCarrotTitleStart + 1, sideCarrotTitleEnd);
         return lyricsURL;
+    }
+
+    public String findAlbumArt(){
+        int firstImgLink = positions.get(3);
+        String shortenedSearch = HTMLCode.substring(firstImgLink + iRefL);
+        int sideCarrotTitleStart = shortenedSearch.indexOf(">");
+        int sideCarrotTitleEnd = shortenedSearch.indexOf("<");
+        artist = shortenedSearch.substring(sideCarrotTitleStart + 1, sideCarrotTitleEnd);
+        return artist;
+
     }
 }
