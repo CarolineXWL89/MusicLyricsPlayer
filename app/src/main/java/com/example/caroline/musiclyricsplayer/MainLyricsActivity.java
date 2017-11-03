@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.spotify.sdk.android.authentication.AuthenticationClient;
@@ -23,6 +24,7 @@ import com.spotify.sdk.android.player.Player;
 import com.spotify.sdk.android.player.PlayerEvent;
 import com.spotify.sdk.android.player.Spotify;
 import com.spotify.sdk.android.player.SpotifyPlayer;
+import com.squareup.picasso.Picasso;
 
 public class MainLyricsActivity extends Activity implements SpotifyPlayer.NotificationCallback, ConnectionStateCallback
 
@@ -30,6 +32,7 @@ public class MainLyricsActivity extends Activity implements SpotifyPlayer.Notifi
         private ImageButton pauseButton;
         private TextView songNameView, songLyrics, songArtist;
         private Toolbar toolbar;
+        private ImageView img;
 
 
         // TODO: Replace with your client ID
@@ -170,6 +173,7 @@ public class MainLyricsActivity extends Activity implements SpotifyPlayer.Notifi
             songLyrics.setText(lyrics);
 //            songArtist.setText(artist);
             toolbar.setTitle(title);
+            Picasso.with(this).load("https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcQHdQKQFIRYXVrQVeYtuTt8wdP-itRNd1exapn6T7DUHePSQn_wH-JetA").into(img);
 
         }
 
@@ -180,6 +184,7 @@ public class MainLyricsActivity extends Activity implements SpotifyPlayer.Notifi
             songLyrics = (TextView) findViewById(R.id.lyrics);
 //            songArtist = (TextView) findViewById(R.id.artist);
             toolbar = (Toolbar) findViewById(R.id.toolbar);
+            img=findViewById(R.id.album_art);
         }
 
         protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
