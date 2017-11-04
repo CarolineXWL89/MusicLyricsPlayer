@@ -55,7 +55,6 @@ public class MainLyricsActivity extends Activity implements SpotifyPlayer.Notifi
             builder.setScopes(new String[]{"user-read-private", "streaming"});
             AuthenticationRequest request = builder.build();
             AuthenticationClient.openLoginActivity(this, REQUEST_CODE, request);
-            Log.d(TAG, "onCreate: intent worked");
             Intent i = getIntent();
             uri = i.getStringExtra("URI");
             url = i.getStringExtra("URL");

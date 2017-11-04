@@ -40,7 +40,7 @@ public class MainMusicPlayer extends AppCompatActivity {
         String lyricsComHTMLBasic = new URLPinger().execute(lyricsComURL).get(); //gets the html from search results
         HTMLReader htmlReader = new HTMLReader(lyricsComHTMLBasic); //creates html parser
 
-        //if nothing rickrolls them
+        //if nothing, rickrolls them
         if (lyricsComHTMLBasic == null) {
             artist = htmlReader.findComposer();
             title = htmlReader.findTitle();
@@ -167,6 +167,7 @@ public class MainMusicPlayer extends AppCompatActivity {
                 return urlReader.readerReturn();
             } catch (IOException e) {
                 e.printStackTrace();
+                Log.d(TAG, "doInBackground: "+e);
                 return null;
             }
 
