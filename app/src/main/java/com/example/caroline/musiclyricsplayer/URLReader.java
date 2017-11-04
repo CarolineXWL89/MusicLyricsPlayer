@@ -1,6 +1,8 @@
 package com.example.caroline.musiclyricsplayer;
 
 
+import android.util.Log;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -17,9 +19,10 @@ import javax.net.ssl.HttpsURLConnection;
 public class URLReader {
     private String HTMLCode = "";
     private String urlString = "";
+    private static final String TAG = "urlreader";
 
     public URLReader(String url){
-
+        Log.d("", "URLReader: created ");
         this.urlString = url;
     }
 
@@ -29,29 +32,6 @@ public class URLReader {
      * @return HTML code for webpage
      */
     public String readerReturn() throws IOException {
-        /*URL oracle = null;
-        BufferedReader in = null;
-        String inputLine;
-        try {
-            oracle = new URL(url);
-            in = new BufferedReader(
-                    new InputStreamReader(oracle.openStream()));
-            while ((inputLine = in.readLine()) != null)
-                //System.out.println(inputLine);
-                HTMLCode += inputLine;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        finally {
-           if(in != null) {
-               try {
-                   in.close();
-               } catch (IOException e) {
-                   e.printStackTrace();
-               }
-           }
-        }
-        return HTMLCode;*/
 
         StringBuilder content = new StringBuilder();
 
@@ -65,7 +45,7 @@ public class URLReader {
 
             // wrap the urlconnection in a bufferedreader
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
-
+            
             String line;
 
             // read from the urlconnection via the bufferedreader
@@ -77,8 +57,10 @@ public class URLReader {
         }
         catch(Exception e)
         {
+            Log.d("urlreader", "readerReturn: "+ e);
             e.printStackTrace();
         }
+        Log.d(TAG, "readerReturn: "+content.toString());
         return content.toString();
     }
 

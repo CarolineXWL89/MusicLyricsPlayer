@@ -1,6 +1,7 @@
 package com.example.caroline.musiclyricsplayer;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.speech.RecognizerIntent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.concurrent.ExecutionException;
 
 public class MainMusicPlayer extends AppCompatActivity {
     private String lyricPhrase, googleSearchURL, title, artist;
@@ -20,82 +22,98 @@ public class MainMusicPlayer extends AppCompatActivity {
     private String lyricsUrl; //lyricsUrl is the url we will need to parse for the actual lyrics to the song
     private TextView text;
     private Button goodLyrics;
+    private ArrayList<String> lyrics;
     public static final String TAG = "main";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         lyricPhrase = "";
+        lyrics = new ArrayList<>();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_music_player);
         wireWidgets();
-
     }
 
-    private void letsGO() throws IOException {
-        ArrayList<String> lyrics = new ArrayList<>();
-        lyricPhrase = "ive got the eye of the tiger";
-        Log.d(TAG, "letsGO: "+lyricPhrase.length());
-        int len = lyricPhrase.length();
-        int last = 0;
-            for(int i =0; i < len ; i++){
-                if(i != len-1) {
-                    if (lyricPhrase.substring(i, i + 1).equals(" ")) { //if a space
-                        Log.d(TAG, "letsGO: " + lyricPhrase.substring(last, i)); //goes from beginng to end
-                        lyrics.add(lyricPhrase.substring(last, i)); //add word to array list
-                        last = i+1;
-                    }
-                    /* else if(lyricPhrase.substring(i, i + 1).equals("\'")){
-                        lyricPhrase = lyricPhrase.substring(0, i) + lyricPhrase.substring(i+1, len);
-                    }*/
-                } else {
-                    lyrics.add(lyricPhrase.substring(last, len));
-                }
-            }
-        Log.d(TAG, "letsGO: out of loop");
-        Log.d(TAG, "letsGO: lyric phrase "+lyricPhrase);
+    private void letsGO() throws IOException, ExecutionException, InterruptedException {
+        lyricPhrase = "i got the eye of the tiger"; //normal set by speaking
+        tokenize(); //takes phrase set by speaking and returns arraylist of the words
+        create1stURL(); //creates the lyrics.com searching url
+        String lyricsComHTMLBasic = new URLPinger().execute(lyricsComURL).get(); //gets the html from search results
+        HTMLReader htmlReader = new HTMLReader(lyricsComHTMLBasic); //creates html parser
+
+        //if nothing, rickrolls them
+        if (lyricsComHTMLBasic == null) {
+            artist = htmlReader.findComposer();
+            title = htmlReader.findTitle();
+            lyricsUrl = htmlReader.findLyricsURL();
+        } else {
+            artist = "Rick Astley";
+            title = "Never Gonna Give You Up";
+            lyricsUrl = "https://www.lyrics.com/lyric/1906428/Rick+Astley/Never+Gonna+Give+You+Up";
+        }
+
+        //Gets URI from google, gets lyrics and album art from second website
+        String uri = getURI();
+        String lyricsText = getSongLyrics();
+        String imageURL = getImageURL();
+
+        //sends data over to spotify activity
+        Intent i = new Intent(this, MainLyricsActivity.class);
+        i.putExtra("Title",title);
+        i.putExtra("Artist", artist);
+        i.putExtra("URI", uri);
+        i.putExtra("URL", lyricsUrl);
+        i.putExtra("Lyrics", lyricsText);
+        i.putExtra("Image", imageURL);
+        startActivity(i);
+    }
+
+    private String getImageURL() throws ExecutionException, InterruptedException {
+        String htmlForLyrics = new URLPinger().execute(lyricsUrl).get(); //gets the html from search results
+        HTMLReader htmlReader = new HTMLReader(htmlForLyrics); //creates html parser
+        return htmlReader.findAlbumArt();
+    }
+
+    private String getSongLyrics() throws ExecutionException, InterruptedException {
+        String htmlForLyrics = new URLPinger().execute(lyricsUrl).get(); //gets the html from search results
+        HTMLReader htmlReader = new HTMLReader(htmlForLyrics); //creates html parser
+        return htmlReader.getLyrics();
+    }
+
+    private String getURI() throws ExecutionException, InterruptedException {
+        TitleToSpotifyURI titleToSpotifyURI = new TitleToSpotifyURI(title, artist); //creates an object to get the uri
+        googleSearchURL = titleToSpotifyURI.constructSearchURL(); //gets the google search url
+        Log.d(TAG, "getURI: "+ googleSearchURL);
+        String googleSearchHTMLCode = new URLPinger().execute(googleSearchURL).get(); //gets the results
+        return titleToSpotifyURI.getURIFromHTML(googleSearchHTMLCode); //returns the uri
+    }
+
+    private void create1stURL() {
         lyricsComURL = "https://www.lyrics.com/lyrics/";
         int j = 0;
         while(j < lyrics.size()){
             lyricsComURL = lyricsComURL + "%20" + lyrics.get(j);
             j++;
-            Log.d(TAG, "letsGO: creating lyricsComURL");
         }
         Log.d("main class", "letsGO: " + lyricsComURL);
+    }
 
-        URLReader lyricsComHTMLCodeObj = new URLReader(lyricsComURL);
-        String lyricsComHTMLBasic = lyricsComHTMLCodeObj.readerReturn();
-        Log.d(TAG, "letsGO: "+ lyricsComHTMLBasic);
-        HTMLReader htmlReader = new HTMLReader(lyricsComHTMLBasic);
-
-        boolean working = true;
-
-        if (working) {
-            artist = htmlReader.findComposer();
-            title = htmlReader.findTitle();
-            lyricsUrl = htmlReader.findLyricsURL();
-        } else {
-            artist = "Hamilton";
-            title = "The Schuyler Sisters";
-            lyricsUrl = "https://www.lyrics.com/lyric/32212242/Lin-Manuel+Miranda/Alexander+Hamilton";
+    private void tokenize() {
+        int len = lyricPhrase.length();
+        int last = 0;
+        for(int i =0; i < len ; i++){
+            if(i != len-1) {
+                if (lyricPhrase.substring(i, i + 1).equals(" ")) { //if a space
+                    Log.d(TAG, "letsGO: " + lyricPhrase.substring(last, i)); //goes from beginng to end
+                    lyrics.add(lyricPhrase.substring(last, i)); //add word to array list
+                    last = i+1;
+                } //TODO work with '
+                    /* else if(lyricPhrase.substring(i, i + 1).equals("\'")){
+                        lyricPhrase = lyricPhrase.substring(0, i) + lyricPhrase.substring(i+1, len);
+                    }*/
+            } else {
+                lyrics.add(lyricPhrase.substring(last, len));
+            }
         }
-        SongObject song = new SongObject(title, artist, lyricsUrl);
-
-        //TODO use SongObject song to get uri from google
-        //Gets URI from google
-        TitleToSpotifyURI titleToSpotifyURI = new TitleToSpotifyURI(title);
-        googleSearchURL = titleToSpotifyURI.constructSearchURL();
-        URLReader googleSearchHTMLCodeObj = new URLReader(googleSearchURL);
-        String googleSearchHTMLCode = googleSearchHTMLCodeObj.readerReturn();
-
-        //String uri = titleToSpotifyURI.getURIFromHTML(googleSearchHTMLCode);
-        String uri = "71X7bPDljJHrmEGYCe7kQ8";
-
-        //sends data over to spotify activity
-        Intent i = new Intent(this, MainLyricsActivity.class);
-        i.putExtra("Title",song.getTitle());
-        i.putExtra("Artist",song.getArtist());
-        i.putExtra("URI", uri);
-        i.putExtra("URL", lyricsUrl); // TODO use picasso image library
-        startActivity(i);
     }
 
     private void wireWidgets() {
@@ -136,7 +154,28 @@ public class MainMusicPlayer extends AppCompatActivity {
         }
     }
 
-    public void letsGO(View view) throws IOException {
+    public void letsGO(View view) throws IOException, ExecutionException, InterruptedException {
         letsGO();
+    }
+
+    private class URLPinger extends AsyncTask<String,Void, String> {
+
+        @Override
+        protected String doInBackground(String... strings) {
+            URLReader urlReader = new URLReader(strings[0]);
+            try {
+                return urlReader.readerReturn();
+            } catch (IOException e) {
+                e.printStackTrace();
+                Log.d(TAG, "doInBackground: "+e);
+                return null;
+            }
+
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+        }
     }
 }

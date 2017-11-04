@@ -34,10 +34,8 @@ public class MainLyricsActivity extends Activity implements SpotifyPlayer.Notifi
         private Toolbar toolbar;
         private ImageView img;
 
-
-        // TODO: Replace with your client ID
+        //sets up spotify account
         private static final String CLIENT_ID = "af779a6467964225b9b369ec9bc7f330";
-        // TODO: Replace with your redirect URI
         private static final String REDIRECT_URI = "http://spotifyplayer1.com/callback";
         private static final int REQUEST_CODE = 497;
 
@@ -57,131 +55,31 @@ public class MainLyricsActivity extends Activity implements SpotifyPlayer.Notifi
             builder.setScopes(new String[]{"user-read-private", "streaming"});
             AuthenticationRequest request = builder.build();
             AuthenticationClient.openLoginActivity(this, REQUEST_CODE, request);
-            Log.d(TAG, "onCreate: intent worked");
             Intent i = getIntent();
             uri = i.getStringExtra("URI");
             url = i.getStringExtra("URL");
             title = i.getStringExtra("Title");
-            artist = i.getStringExtra("Artist"); //TODO use picasso image library for images
+            artist = i.getStringExtra("Artist");
             wireWidgets();
-            getLyrics();
+            lyrics = i.getStringExtra("Lyrics");
             setUpWidgets();
         }
 
-        private void getLyrics() {
-            //needs to use the url that was passed to get the lyrics off the webpage and store them in the lyrics variable which can tehen be used to display them
-            lyrics = "There’s nothing rich folks love more\n" +
-                    "Than going downtown and slummin’ it with the poor\n" +
-                    "They pull up in their carriages and gawk at the students in the common \n" +
-                    "Just to watch them talk take Philip Schuyler the man is loaded \n" +
-                    "Uh oh, but little does he know that His daughters, Peggy, Angelica, Eliza  Sneak into the city just to watch all the guys at work, work\n" +
-                    "\n" +
-                    " Angelica \n" +
-                    "\n" +
-                    "Work, work\n" +
-                    "\n" +
-                    " Eliza and Peggy (work, work) the Schuyler sisters\n" +
-                    "\n" +
-                    "Angelica, Peggy, Eliza (work)\n" +
-                    "\n" +
-                    " Daddy said to be home by sundown \n" +
-                    "\n" +
-                    " Daddy doesn’t need to know\n" +
-                    "\n" +
-                    " Daddy said not to go downtown \n" +
-                    "\n" +
-                    "Like I said, you’re free to go\n" +
-                    "But look around, look around, the revolution’s happening in New York New York\n" +
-                    "\n" +
-                    " Angelica work\n" +
-                    "\n" +
-                    "It’s bad enough daddy wants to go to war\n" +
-                    "\n" +
-                    " People shouting in the square \n" +
-                    "\n" +
-                    "It’s bad enough there’ll be violence on our shore \n" +
-                    "\n" +
-                    "New ideas in the air\n" +
-                    "\n" +
-                    "Look around, look around \n" +
-                    "\n" +
-                    "Angelica, remind me what we’re looking for\n" +
-                    "\n" +
-                    "She’s lookin' for me\n" +
-                    "\n" +
-                    "Eliza, I’m lookin’ for a mind at work, work, work\n" +
-                    "I’m lookin’ for a mind at work, work, work\n" +
-                    "I’m lookin’ for a mind at work, work, work\n" +
-                    "Whoa, whoa work\t\n" +
-                    "\n" +
-                    "Wooh there’s nothin’ like summer in the city\n" +
-                    " Someone in a rush next to someone lookin’ pretty  Excuse me, miss, I know it’s not funny \n" +
-                    "But your perfume smells like your daddy’s got money \n" +
-                    "Why you slummin’ in the city in your fancy heels\n" +
-                    "You searchin' for an urchin who can give you ideals?\n" +
-                    "\n" +
-                    "Burr, you disgust me\n" +
-                    "\n" +
-                    "Ah, so you’ve discussed me\n" +
-                    "I’m a trust fund, baby, you can trust me\n" +
-                    "\n" +
-                    "I’ve been reading common sense by Thomas Paine\n" +
-                    "So men say that I’m intense or I’m insane \n" +
-                    "You want a revolution? I want a revelation \n" +
-                    "So listen to my declaration \n" +
-                    "\n" +
-                    "We hold these truths to be self-evident\n" +
-                    "That all men are created equal\n" +
-                    "\n" +
-                    "And when I meet Thomas Jefferson (unh)\n" +
-                    "\n" +
-                    "I’m ‘a compel him to include women in the sequel (work)\n" +
-                    "\n" +
-                    "Look around, look around at how lucky we are to be alive right now\n" +
-                    "Look around, look around at how lucky we are to be alive right now\n" +
-                    "\n" +
-                    " History is happening in Manhattan and we just happen to be in the greatest city in the world \n" +
-                    "In the greatest city in the world \n" +
-                    "\n" +
-                    "'Cause I’ve been reading common sense by Thomas Paine\n" +
-                    "So men say that I’m intense or I’m insane \n" +
-                    "\n" +
-                    "You want a revolution I want a revelation \n" +
-                    "\n" +
-                    "So listen to my declaration \n" +
-                    "\n" +
-                    "We hold these truths to be self evident that all men are created equal\n" +
-                    "Look around, look around at how lucky we are to be alive right now\n" +
-                    " History is happening in Manhattan and we just happen to be in the greatest city in the world \n" +
-                    "In the greatest city in the world \n" +
-                    "\n" +
-                    "Work, work Angelica \n" +
-                    "\n" +
-                    "(Work, work) Eliza and Peggy (work, work) the Schuyler sisters\n" +
-                    "\n" +
-                    "(Work, work) we’re looking for a mind at work, work\n" +
-                    "Hey (work, work) hey (work, work) whoa (work, work)\n" +
-                    "\n" +
-                    "In the greatest, in the greatest city in the world  \n" +
-                    "\n" +
-                    "In the greatest city in the world" + "\n";
-        }
-
         private void setUpWidgets() {
-//            songNameView.setText(title);
+            //songNameView.setText(title);
             songLyrics.setText(lyrics);
-//            songArtist.setText(artist);
+            //songArtist.setText(artist);
             toolbar.setTitle(title);
-            Picasso.with(this).load("https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcQHdQKQFIRYXVrQVeYtuTt8wdP-itRNd1exapn6T7DUHePSQn_wH-JetA").into(img);
+            Picasso.with(this).load(lyrics).into(img);
 
         }
 
         private void wireWidgets() {
             pauseButton = (ImageButton) findViewById(R.id.button_pause);
             pauseButton.setBackgroundResource(R.drawable.grey_button);
-//            songNameView = (TextView) findViewById(R.id.song_title);
+            //songNameView = (TextView) findViewById(R.id.song_title);
             songLyrics = (TextView) findViewById(R.id.lyrics);
-//            songArtist = (TextView) findViewById(R.id.artist);
+            //songArtist = (TextView) findViewById(R.id.artist);
             toolbar = (Toolbar) findViewById(R.id.toolbar);
             img=findViewById(R.id.album_art);
         }
@@ -235,7 +133,7 @@ public class MainLyricsActivity extends Activity implements SpotifyPlayer.Notifi
     @Override
     public void onLoggedIn() {
         Log.d("MainLyricsActivity", "User logged in");
-        mPlayer.playUri(null, "spotify:track:"+uri, 0, 0);
+        mPlayer.playUri(null, "spotify:track:" + uri, 0, 0);
     }
 
     public void pause(View view){

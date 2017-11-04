@@ -8,7 +8,7 @@ import java.util.ArrayList;
  */
 
 public class TitleToSpotifyURI {
-    private String title,URI, searchURL;
+    private String title, artist, URI, searchURL;
     private int start;
 
     /*
@@ -18,9 +18,8 @@ public class TitleToSpotifyURI {
     https://www.google.com/search?safe=strict&source=hp&q=think+of+me+spotify --> directly into the URL bar;
     ^^top two are obtained when gotten from search bar directly
      */
-    public TitleToSpotifyURI(String title){
-
-        this.title = title;
+    public TitleToSpotifyURI(String title, String artist){
+        this.title = title + " by " + artist;
     }
 
     public String constructSearchURL() {
