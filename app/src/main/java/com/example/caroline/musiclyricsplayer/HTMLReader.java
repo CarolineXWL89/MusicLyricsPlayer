@@ -72,13 +72,14 @@ public class HTMLReader {
         String shortenedSearch = HTMLCode.substring(firstImgLink + iRefL);
         int sideCarrotTitleStart = shortenedSearch.indexOf(">");
         int sideCarrotTitleEnd = shortenedSearch.indexOf("<");
-        artist = shortenedSearch.substring(sideCarrotTitleStart + 1, sideCarrotTitleEnd);
-        return artist;
+        artist = shortenedSearch.substring(sideCarrotTitleStart + 1, sideCarrotTitleEnd); //WHY are we returning a string?
+        return artist; //NO??? TODO write a CORRECT method that returns albumArt --> how do you set?
 
     }
 
     public String getLyrics() {
         //TODO write this method properly
+
         return "NEED to write a html reader method to get lyrics";
     }
 }
