@@ -34,10 +34,8 @@ public class MainLyricsActivity extends Activity implements SpotifyPlayer.Notifi
         private Toolbar toolbar;
         private ImageView img;
 
-
-        // TODO: Replace with your client ID
+        //sets up spotify account
         private static final String CLIENT_ID = "af779a6467964225b9b369ec9bc7f330";
-        // TODO: Replace with your redirect URI
         private static final String REDIRECT_URI = "http://spotifyplayer1.com/callback";
         private static final int REQUEST_CODE = 497;
 
@@ -62,27 +60,27 @@ public class MainLyricsActivity extends Activity implements SpotifyPlayer.Notifi
             uri = i.getStringExtra("URI");
             url = i.getStringExtra("URL");
             title = i.getStringExtra("Title");
-            artist = i.getStringExtra("Artist"); //TODO use picasso image library for images
+            artist = i.getStringExtra("Artist");
             wireWidgets();
             lyrics = i.getStringExtra("Lyrics");
             setUpWidgets();
         }
 
         private void setUpWidgets() {
-//            songNameView.setText(title);
+            //songNameView.setText(title);
             songLyrics.setText(lyrics);
-//            songArtist.setText(artist);
+            //songArtist.setText(artist);
             toolbar.setTitle(title);
-            Picasso.with(this).load("https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcQHdQKQFIRYXVrQVeYtuTt8wdP-itRNd1exapn6T7DUHePSQn_wH-JetA").into(img);
+            Picasso.with(this).load(lyrics).into(img);
 
         }
 
         private void wireWidgets() {
             pauseButton = (ImageButton) findViewById(R.id.button_pause);
             pauseButton.setBackgroundResource(R.drawable.grey_button);
-//            songNameView = (TextView) findViewById(R.id.song_title);
+            //songNameView = (TextView) findViewById(R.id.song_title);
             songLyrics = (TextView) findViewById(R.id.lyrics);
-//            songArtist = (TextView) findViewById(R.id.artist);
+            //songArtist = (TextView) findViewById(R.id.artist);
             toolbar = (Toolbar) findViewById(R.id.toolbar);
             img=findViewById(R.id.album_art);
         }

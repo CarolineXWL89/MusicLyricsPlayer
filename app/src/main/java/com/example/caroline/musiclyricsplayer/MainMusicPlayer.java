@@ -27,6 +27,7 @@ public class MainMusicPlayer extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         lyricPhrase = "";
+        lyrics = new ArrayList<>();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_music_player);
         wireWidgets();
@@ -40,35 +41,47 @@ public class MainMusicPlayer extends AppCompatActivity {
         String lyricsComHTMLBasic = new URLPinger().execute(lyricsComURL).get(); //gets the html from search results
         HTMLReader htmlReader = new HTMLReader(lyricsComHTMLBasic); //creates html parser
 
-        //if nothing plays hamilton
+        //if nothing rickrolls them
         if (lyricsComHTMLBasic == null) {
             artist = htmlReader.findComposer();
             title = htmlReader.findTitle();
             lyricsUrl = htmlReader.findLyricsURL();
         } else {
-            artist = "Hamilton";
-            title = "The Schuyler Sisters";
-            lyricsUrl = "https://www.lyrics.com/lyric/32212242/Lin-Manuel+Miranda/Alexander+Hamilton";
+            artist = "Rick Astley";
+            title = "Never Gonna Give You Up";
+            lyricsUrl = "https://www.lyrics.com/lyric/1906428/Rick+Astley/Never+Gonna+Give+You+Up";
         }
 
-        //Gets URI from google
+        //Gets URI from google, gets lyrics and album art from second website
         String uri = getURI();
-
-        //TODO get lyrics from 2nd lyrics website
-        String lyricsText = "NEED to write a html reader method to get lyrics"; //new URLPinger().execute(lyricsUrl).get();
+        String lyricsText = getSongLyrics();
+        String imageURL = getImageURL();
 
         //sends data over to spotify activity
         Intent i = new Intent(this, MainLyricsActivity.class);
         i.putExtra("Title",title);
         i.putExtra("Artist", artist);
         i.putExtra("URI", uri);
-        i.putExtra("URL", lyricsUrl); // TODO use picasso image library
+        i.putExtra("URL", lyricsUrl);
         i.putExtra("Lyrics", lyricsText);
+        i.putExtra("Image", imageURL);
         startActivity(i);
     }
 
+    private String getImageURL() throws ExecutionException, InterruptedException {
+        String htmlForLyrics = new URLPinger().execute(lyricsUrl).get(); //gets the html from search results
+        HTMLReader htmlReader = new HTMLReader(htmlForLyrics); //creates html parser
+        return htmlReader.findAlbumArt();
+    }
+
+    private String getSongLyrics() throws ExecutionException, InterruptedException {
+        String htmlForLyrics = new URLPinger().execute(lyricsUrl).get(); //gets the html from search results
+        HTMLReader htmlReader = new HTMLReader(htmlForLyrics); //creates html parser
+        return htmlReader.getLyrics();
+    }
+
     private String getURI() throws ExecutionException, InterruptedException {
-        TitleToSpotifyURI titleToSpotifyURI = new TitleToSpotifyURI(title); //creates an object to get the uri
+        TitleToSpotifyURI titleToSpotifyURI = new TitleToSpotifyURI(title, artist); //creates an object to get the uri
         googleSearchURL = titleToSpotifyURI.constructSearchURL(); //gets the google search url
         Log.d(TAG, "getURI: "+ googleSearchURL);
         String googleSearchHTMLCode = new URLPinger().execute(googleSearchURL).get(); //gets the results
