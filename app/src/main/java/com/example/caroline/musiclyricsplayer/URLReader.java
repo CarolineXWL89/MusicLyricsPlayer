@@ -54,8 +54,8 @@ public class URLReader {
             }
             bufferedReader.close();
         }
-        catch(Exception e){
-
+        catch(Exception e)
+        {
             Log.d("urlreader", "readerReturn: "+ e);
             e.printStackTrace();
         }

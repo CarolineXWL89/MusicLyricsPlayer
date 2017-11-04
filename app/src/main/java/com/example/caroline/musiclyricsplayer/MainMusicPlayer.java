@@ -31,7 +31,6 @@ public class MainMusicPlayer extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_music_player);
         wireWidgets();
-
     }
 
     private void letsGO() throws IOException, ExecutionException, InterruptedException {
@@ -94,7 +93,6 @@ public class MainMusicPlayer extends AppCompatActivity {
         while(j < lyrics.size()){
             lyricsComURL = lyricsComURL + "%20" + lyrics.get(j);
             j++;
-            Log.d(TAG, "letsGO: creating lyricsComURL");
         }
         Log.d("main class", "letsGO: " + lyricsComURL);
     }
