@@ -16,10 +16,12 @@ public class HTMLReader {
     private int aRefL;
     private int lRefL;
     private int iRefL;
+    private int ibRefl;
     private static final String TITLE_REF = "<a href=\"/lyric";
     private static final String ARTIST_REF = "artists\"><a href=\"artist/";
     private static final String LYRIC_LINK_REF = "lyric-body\" onclick=\"location.href='https://www.lyrics.com/";
-    private static final String IMAGE_LINK_REF="<a href=\"/album";
+    private static final String IMAGE_LINK_REF="album-thumb\"><a href=\"/album";
+    private static final String IMAGE_LINK_REF_BACKUP="<div class=\"artist-thumb\"";
 
     //private static final String MY_TAG = "testActivity";
     //private int firstSearched;
@@ -38,6 +40,10 @@ public class HTMLReader {
         int firstBeforeAlbumArtLink = HTMLCode.indexOf(IMAGE_LINK_REF);
         positions.add(firstBeforeAlbumArtLink);
         iRefL = IMAGE_LINK_REF.length();
+        int firstBeforeAlbumArtLinkBackup=HTMLCode.indexOf(IMAGE_LINK_REF_BACKUP);
+        positions.add(firstBeforeAlbumArtLinkBackup);
+        ibRefl = IMAGE_LINK_REF_BACKUP.length();
+
     }
 
     public String findTitle(){
@@ -68,12 +74,28 @@ public class HTMLReader {
     }
 
     public String findAlbumArt(){
-        int firstImgLink = positions.get(3);
-        String shortenedSearch = HTMLCode.substring(firstImgLink + iRefL);
-        int sideCarrotTitleStart = shortenedSearch.indexOf(">");
-        int sideCarrotTitleEnd = shortenedSearch.indexOf("<");
-        artist = shortenedSearch.substring(sideCarrotTitleStart + 1, sideCarrotTitleEnd); //WHY are we returning a string?
-        return artist; //NO??? TODO write a CORRECT method that returns albumArt --> how do you set?
+        if(positions.get(3)>0) { //this section finds the album art if it exists
+            String albumArtLink = "";
+            int firstImgLink = positions.get(3);
+            String shortenedSearch = HTMLCode.substring(firstImgLink + iRefL);
+            int sideCarrotTitleStart = shortenedSearch.indexOf("src=");
+            int sideCarrotTitleEnd = shortenedSearch.indexOf("></a>");
+            albumArtLink = shortenedSearch.substring(sideCarrotTitleStart + 5, sideCarrotTitleEnd-1);
+            return albumArtLink;
+        }
+        else if(positions.get(4)>0)
+        { // this section finds the artist art if it exists
+            String artistArtLink="";
+            int firstImgLink= positions.get(4);
+           //Log.d("html Reader", "findAlbumArt: "+firstImgLink);
+            String shortenedSearch = HTMLCode.substring(firstImgLink + ibRefl);
+            int sideCarrotTitleStart = shortenedSearch.indexOf("<img src=");
+            int sideCarrotTitleEnd = shortenedSearch.indexOf(" style=");
+            artistArtLink = shortenedSearch.substring(sideCarrotTitleStart + 10, sideCarrotTitleEnd-1);
+            return artistArtLink;
+        }
+        else
+            return"https://www.raceentry.com/img/Race-Registration-Image-Not-Found.png";
 
     }
 
