@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.spotify.sdk.android.authentication.AuthenticationClient;
@@ -23,24 +24,25 @@ import com.spotify.sdk.android.player.Player;
 import com.spotify.sdk.android.player.PlayerEvent;
 import com.spotify.sdk.android.player.Spotify;
 import com.spotify.sdk.android.player.SpotifyPlayer;
+import com.squareup.picasso.Picasso;
 
 public class MainLyricsActivity extends Activity implements SpotifyPlayer.NotificationCallback, ConnectionStateCallback
 
     {
         private ImageButton pauseButton;
-        private TextView songNameView;
+        private TextView songNameView, songLyrics, songArtist;
+        private Toolbar toolbar;
+        private ImageView img;
 
-
-        // TODO: Replace with your client ID
+        //sets up spotify account
         private static final String CLIENT_ID = "af779a6467964225b9b369ec9bc7f330";
-        // TODO: Replace with your redirect URI
         private static final String REDIRECT_URI = "http://spotifyplayer1.com/callback";
         private static final int REQUEST_CODE = 497;
 
 
         private Player mPlayer;
         private boolean paused = false;
-        private String uri, url;
+        private String uri, url, title, artist, lyrics;
         public static final String TAG = "lyrics";
 
         @Override
@@ -53,18 +55,33 @@ public class MainLyricsActivity extends Activity implements SpotifyPlayer.Notifi
             builder.setScopes(new String[]{"user-read-private", "streaming"});
             AuthenticationRequest request = builder.build();
             AuthenticationClient.openLoginActivity(this, REQUEST_CODE, request);
-            Log.d(TAG, "onCreate: intent worked");
             Intent i = getIntent();
             uri = i.getStringExtra("URI");
             url = i.getStringExtra("URL");
+            title = i.getStringExtra("Title");
+            artist = i.getStringExtra("Artist");
             wireWidgets();
+            lyrics = i.getStringExtra("Lyrics");
+            setUpWidgets();
+        }
+
+        private void setUpWidgets() {
+            //songNameView.setText(title);
+            songLyrics.setText(lyrics);
+            //songArtist.setText(artist);
+            toolbar.setTitle(title);
+            Picasso.with(this).load(lyrics).into(img);
 
         }
 
         private void wireWidgets() {
             pauseButton = (ImageButton) findViewById(R.id.button_pause);
-            pauseButton.setBackgroundResource(R.drawable.ic_pause_black_24dp);
-            songNameView = (TextView) findViewById(R.id.song_name_view);
+            pauseButton.setBackgroundResource(R.drawable.grey_button);
+            //songNameView = (TextView) findViewById(R.id.song_title);
+            songLyrics = (TextView) findViewById(R.id.lyrics);
+            //songArtist = (TextView) findViewById(R.id.artist);
+            toolbar = (Toolbar) findViewById(R.id.toolbar);
+            img=findViewById(R.id.album_art);
         }
 
         protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
@@ -116,7 +133,7 @@ public class MainLyricsActivity extends Activity implements SpotifyPlayer.Notifi
     @Override
     public void onLoggedIn() {
         Log.d("MainLyricsActivity", "User logged in");
-        mPlayer.playUri(null, "spotify:track:"+uri, 0, 0);
+        mPlayer.playUri(null, "spotify:track:" + uri, 0, 0);
     }
 
     public void pause(View view){

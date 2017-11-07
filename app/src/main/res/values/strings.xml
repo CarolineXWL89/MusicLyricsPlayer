@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">MusicLyricsPlayer</string>
     <string name="title_activity_main_lyrics">MainLyricsActivity</string>
+    <string name="title_activity_options_stretch_menu">OptionsStretchMenu</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
 </resources>

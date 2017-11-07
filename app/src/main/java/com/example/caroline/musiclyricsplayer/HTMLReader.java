@@ -15,9 +15,12 @@ public class HTMLReader {
     private int tRefL;
     private int aRefL;
     private int lRefL;
+    private int iRefL;
     private static final String TITLE_REF = "<a href=\"/lyric";
     private static final String ARTIST_REF = "artists\"><a href=\"artist/";
     private static final String LYRIC_LINK_REF = "lyric-body\" onclick=\"location.href='https://www.lyrics.com/";
+    private static final String IMAGE_LINK_REF="<a href=\"/album";
+
     //private static final String MY_TAG = "testActivity";
     //private int firstSearched;
 
@@ -32,6 +35,9 @@ public class HTMLReader {
         int firstBeforeLyricLink = HTMLCode.indexOf(LYRIC_LINK_REF);
         positions.add(firstBeforeLyricLink);
         lRefL = LYRIC_LINK_REF.length();
+        int firstBeforeAlbumArtLink = HTMLCode.indexOf(IMAGE_LINK_REF);
+        positions.add(firstBeforeAlbumArtLink);
+        iRefL = IMAGE_LINK_REF.length();
     }
 
     public String findTitle(){
@@ -45,14 +51,9 @@ public class HTMLReader {
 
     public String findComposer(){
         int firstComposer = positions.get(1);
-        System.out.println(firstComposer);
         String shortenedSearch = HTMLCode.substring(firstComposer + aRefL);
-        //Log.d(MY_TAG, shortenedSearch);
-        //System.out.println(shortenedSearch);
         int sideCarrotTitleStart = shortenedSearch.indexOf(">");
-        System.out.println(sideCarrotTitleStart);
         int sideCarrotTitleEnd = shortenedSearch.indexOf("<");
-        System.out.println(sideCarrotTitleEnd);
         artist = shortenedSearch.substring(sideCarrotTitleStart + 1, sideCarrotTitleEnd);
         return artist;
     }
@@ -60,9 +61,25 @@ public class HTMLReader {
     public String findLyricsURL(){
         int firstLyricLink = positions.get(2);
         String shortenedSearch = HTMLCode.substring(firstLyricLink + lRefL);
+        int sideCarrotTitleStart = shortenedSearch.indexOf("/");
+        int sideCarrotTitleEnd = shortenedSearch.indexOf("'");
+        lyricsURL = "https://www.lyrics.com/" + shortenedSearch.substring(sideCarrotTitleStart + 1, sideCarrotTitleEnd);
+        return lyricsURL;
+    }
+
+    public String findAlbumArt(){
+        int firstImgLink = positions.get(3);
+        String shortenedSearch = HTMLCode.substring(firstImgLink + iRefL);
         int sideCarrotTitleStart = shortenedSearch.indexOf(">");
         int sideCarrotTitleEnd = shortenedSearch.indexOf("<");
-        lyricsURL = shortenedSearch.substring(sideCarrotTitleStart + 1, sideCarrotTitleEnd);
-        return lyricsURL;
+        artist = shortenedSearch.substring(sideCarrotTitleStart + 1, sideCarrotTitleEnd); //WHY are we returning a string?
+        return artist; //NO??? TODO write a CORRECT method that returns albumArt --> how do you set?
+
+    }
+
+    public String getLyrics() {
+        //TODO write this method properly
+
+        return "NEED to write a html reader method to get lyrics";
     }
 }

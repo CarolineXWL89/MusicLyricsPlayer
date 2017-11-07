@@ -1,11 +1,16 @@
 package com.example.caroline.musiclyricsplayer;
 
+
+import android.util.Log;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
 import java.net.*;
+import java.net.URL;
 import java.io.*;
+import javax.net.ssl.HttpsURLConnection;
 
 /**
  * Created by princ on 19/10/2017.
@@ -13,40 +18,48 @@ import java.io.*;
 
 public class URLReader {
     private String HTMLCode = "";
-    private String url = "";
+    private String urlString = "";
+    private static final String TAG = "urlreader";
 
     public URLReader(String url){
-        this.url = url;
+        this.urlString = url;
     }
 
     /**
      * Takes the URL input and returns an HTML code.
-     * @param URL
+     * //@param URL
      * @return HTML code for webpage
      */
-    public String readerReturn(String URL){
-        URL oracle = null;
-        BufferedReader in = null;
-        String inputLine;
-        try {
-            oracle = new URL(URL);
-            in = new BufferedReader(
-                    new InputStreamReader(oracle.openStream()));
-            while ((inputLine = in.readLine()) != null)
-                //System.out.println(inputLine);
-                HTMLCode += inputLine;
-        } catch (Exception e) {
+    public String readerReturn() throws IOException {
+
+        StringBuilder content = new StringBuilder();
+
+        try
+        {
+            // create a url object
+            URL url = new URL(urlString);
+
+            // create a urlconnection object
+            URLConnection urlConnection = url.openConnection();
+
+            // wrap the urlconnection in a bufferedreader
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+            
+            String line;
+
+            // read from the urlconnection via the bufferedreader
+            while ((line = bufferedReader.readLine()) != null)
+            {
+                content.append(line + "\n");
+            }
+            bufferedReader.close();
+        }
+        catch(Exception e)
+        {
+            Log.d("urlreader", "readerReturn: "+ e);
             e.printStackTrace();
         }
-        finally {
-           if(in != null) {
-               try {
-                   in.close();
-               } catch (IOException e) {
-                   e.printStackTrace();
-               }
-           }
-        }
-        return HTMLCode;
+        return content.toString();
     }
+
 }
