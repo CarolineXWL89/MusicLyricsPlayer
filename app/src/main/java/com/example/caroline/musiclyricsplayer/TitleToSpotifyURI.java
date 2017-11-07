@@ -61,7 +61,7 @@ public class TitleToSpotifyURI {
             String gottenWord = words.get(i);
             searchURL = searchURL + "+" + gottenWord;
         }
-        searchURL = searchURL + "+spotify";
+        searchURL = searchURL + "+spotify+track";
         return searchURL;
     }
 

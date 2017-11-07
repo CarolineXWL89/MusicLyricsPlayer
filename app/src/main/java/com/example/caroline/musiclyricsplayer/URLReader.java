@@ -22,7 +22,6 @@ public class URLReader {
     private static final String TAG = "urlreader";
 
     public URLReader(String url){
-        Log.d("", "URLReader: created ");
         this.urlString = url;
     }
 
@@ -60,7 +59,6 @@ public class URLReader {
             Log.d("urlreader", "readerReturn: "+ e);
             e.printStackTrace();
         }
-        Log.d(TAG, "readerReturn: "+content.toString());
         return content.toString();
     }
 

@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.speech.RecognizerIntent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.style.TtsSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -34,14 +35,14 @@ public class MainMusicPlayer extends AppCompatActivity {
     }
 
     private void letsGO() throws IOException, ExecutionException, InterruptedException {
-        lyricPhrase = "i got the eye of the tiger"; //normal set by speaking
+        lyricPhrase = "I see it all, I see it now"; //normal set by speaking
         tokenize(); //takes phrase set by speaking and returns arraylist of the words
         create1stURL(); //creates the lyrics.com searching url
         String lyricsComHTMLBasic = new URLPinger().execute(lyricsComURL).get(); //gets the html from search results
         HTMLReader htmlReader = new HTMLReader(lyricsComHTMLBasic); //creates html parser
 
         //if nothing, rickrolls them
-        if (lyricsComHTMLBasic == null) {
+        if (htmlReader != null) {
             artist = htmlReader.findComposer();
             title = htmlReader.findTitle();
             lyricsUrl = htmlReader.findLyricsURL();
@@ -55,6 +56,7 @@ public class MainMusicPlayer extends AppCompatActivity {
         String uri = getURI();
         String lyricsText = getSongLyrics();
         String imageURL = getImageURL();
+        Log.d(TAG, "letsGO: "+ uri);
 
         //sends data over to spotify activity
         Intent i = new Intent(this, MainLyricsActivity.class);
@@ -94,7 +96,6 @@ public class MainMusicPlayer extends AppCompatActivity {
             lyricsComURL = lyricsComURL + "%20" + lyrics.get(j);
             j++;
         }
-        Log.d("main class", "letsGO: " + lyricsComURL);
     }
 
     private void tokenize() {
