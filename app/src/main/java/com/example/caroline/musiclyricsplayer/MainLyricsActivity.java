@@ -42,7 +42,7 @@ public class MainLyricsActivity extends Activity implements SpotifyPlayer.Notifi
 
         private Player mPlayer;
         private boolean paused = false;
-        private String uri, url, title, artist, lyrics;
+        private String uri, url, title, artist, lyrics, albumArt;
         public static final String TAG = "lyrics";
 
         @Override
@@ -60,8 +60,10 @@ public class MainLyricsActivity extends Activity implements SpotifyPlayer.Notifi
             url = i.getStringExtra("URL");
             title = i.getStringExtra("Title");
             artist = i.getStringExtra("Artist");
+            albumArt=i.getStringExtra("Image");
             wireWidgets();
             lyrics = i.getStringExtra("Lyrics");
+
             setUpWidgets();
         }
 
@@ -70,7 +72,7 @@ public class MainLyricsActivity extends Activity implements SpotifyPlayer.Notifi
             songLyrics.setText(lyrics);
             //songArtist.setText(artist);
             toolbar.setTitle(title);
-            Picasso.with(this).load(lyrics).into(img);
+            Picasso.with(this).load(albumArt).into(img);
 
         }
 

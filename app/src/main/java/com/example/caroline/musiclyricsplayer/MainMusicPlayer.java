@@ -35,7 +35,7 @@ public class MainMusicPlayer extends AppCompatActivity {
     }
 
     private void letsGO() throws IOException, ExecutionException, InterruptedException {
-        lyricPhrase = "I see it all, I see it now"; //normal set by speaking
+        lyricPhrase = "Risin' up, back on the street "; //normal set by speaking
         tokenize(); //takes phrase set by speaking and returns arraylist of the words
         create1stURL(); //creates the lyrics.com searching url
         String lyricsComHTMLBasic = new URLPinger().execute(lyricsComURL).get(); //gets the html from search results
@@ -55,6 +55,7 @@ public class MainMusicPlayer extends AppCompatActivity {
         //Gets URI from google, gets lyrics and album art from second website
         String uri = getURI();
         String lyricsText = getSongLyrics();
+        Log.d(TAG, "letsGO: Image Url:"+getImageURL());
         String imageURL = getImageURL();
         Log.d(TAG, "letsGO: "+ uri);
 
@@ -90,12 +91,14 @@ public class MainMusicPlayer extends AppCompatActivity {
     }
 
     private void create1stURL() {
+
         lyricsComURL = "https://www.lyrics.com/lyrics/";
         int j = 0;
         while(j < lyrics.size()){
             lyricsComURL = lyricsComURL + "%20" + lyrics.get(j);
             j++;
         }
+        Log.d(TAG, "create1stURL: "+lyricsComURL);
     }
 
     private void tokenize() {
