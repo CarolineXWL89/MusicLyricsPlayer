@@ -124,6 +124,7 @@ public class MainMusicPlayer extends AppCompatActivity {
        text  = (TextView)findViewById(R.id.show_text);
        goodLyrics = (Button) findViewById(R.id.lyrics_good);
        goodLyrics.setText("Go");
+       goodLyrics.setVisibility(View.GONE);
     }
 
     public void onClick(View v)
@@ -153,6 +154,7 @@ public class MainMusicPlayer extends AppCompatActivity {
                     text.setText(result.get(0));
                     lyricPhrase = (String) text.getText();
                     Log.d(TAG, "onActivityResult: "+lyricPhrase);
+                    goodLyrics.setVisibility(View.VISIBLE);
                 }
                 break;
         }
