@@ -2,6 +2,7 @@ package com.example.caroline.musiclyricsplayer;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -44,6 +45,7 @@ public class MainLyricsActivity extends Activity implements SpotifyPlayer.Notifi
         private boolean paused = false;
         private String uri, url, title, artist, lyrics;
         public static final String TAG = "lyrics";
+        private int duration;
 
         @Override
         protected void onCreate(Bundle savedInstanceState) {
