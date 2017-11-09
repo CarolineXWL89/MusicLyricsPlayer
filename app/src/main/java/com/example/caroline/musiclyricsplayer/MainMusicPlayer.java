@@ -112,7 +112,7 @@ public class MainMusicPlayer extends AppCompatActivity {
 
     private void tokenize() {
         int len = lyricPhrase.length();
-        int last = 0;
+        int last = 0; //
         for(int i =0; i < len ; i++){
             if(i != len-1) {
                 if (lyricPhrase.substring(i, i + 1).equals(" ")) { //if a space
