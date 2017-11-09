@@ -1,10 +1,13 @@
 package com.example.caroline.musiclyricsplayer;
 
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.speech.RecognizerIntent;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -13,8 +16,10 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.style.TtsSpan;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,32 +29,35 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
-public class MainMusicPlayer extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+import static android.app.Activity.RESULT_OK;
+
+public class MainMusicPlayer extends Fragment
+        {
     private String lyricPhrase, googleSearchURL, title, artist;
     private String lyricsComURL; //lyricsComURL is for teh search results on lyrics.com
     private String lyricsUrl; //lyricsUrl is the url we will need to parse for the actual lyrics to the song
     private TextView text;
     private Button goodLyrics;
+    private View rootView;
     private ArrayList<String> lyrics;
     public static final String TAG = "main";
+
+    public MainMusicPlayer(){
+
+    }
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater,
+                             @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
         lyricPhrase = "";
         lyrics = new ArrayList<>();
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_music_player);
-        wireWidgets();
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
+        rootView = inflater.inflate(R.layout.activity_main_music_player, container, false);
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        wireWidgets();
+        return rootView;
     }
 
     private void letsGO() throws IOException, ExecutionException, InterruptedException {
@@ -78,7 +86,7 @@ public class MainMusicPlayer extends AppCompatActivity
         Log.d(TAG, "letsGO: "+ uri);
 
         //sends data over to spotify activity
-        Intent i = new Intent(this, MainLyricsActivity.class);
+        Intent i = new Intent(getContext(), MainLyricsActivity.class);
         i.putExtra("Title",title);
         i.putExtra("Artist", artist);
         i.putExtra("URI", uri);
@@ -139,8 +147,8 @@ public class MainMusicPlayer extends AppCompatActivity
     }
 
     private void wireWidgets() {
-       text  = (TextView)findViewById(R.id.show_text);
-       goodLyrics = (Button) findViewById(R.id.lyrics_good);
+       text  = (TextView)rootView.findViewById(R.id.show_text);
+       goodLyrics = (Button) rootView.findViewById(R.id.lyrics_good);
        goodLyrics.setText("Go");
        goodLyrics.setVisibility(View.GONE);
     }
@@ -156,7 +164,8 @@ public class MainMusicPlayer extends AppCompatActivity
                     startActivityForResult(i, 10);
                 }
                 else{
-                    Toast.makeText(this, "Your device doesn't speech input.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Your device doesn't speech input.", Toast.LENGTH_SHORT).show();
+
                 }
         }
 
@@ -182,15 +191,6 @@ public class MainMusicPlayer extends AppCompatActivity
         letsGO();
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        int id = item.getItemId();
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
 
     private class URLPinger extends AsyncTask<String,Void, String> {
 
