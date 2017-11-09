@@ -10,6 +10,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.style.TtsSpan;
 import android.util.Log;
 import android.view.MenuItem;
@@ -39,10 +40,12 @@ public class MainMusicPlayer extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_music_player);
         wireWidgets();
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -50,7 +53,7 @@ public class MainMusicPlayer extends AppCompatActivity
     }
 
     private void letsGO() throws IOException, ExecutionException, InterruptedException {
-        lyricPhrase = "Risin' up, back on the street "; //normal set by speaking
+        lyricPhrase = "Risin up back on the street "; //normal set by speaking
         tokenize(); //takes phrase set by speaking and returns arraylist of the words
         create1stURL(); //creates the lyrics.com searching url
         String lyricsComHTMLBasic = new URLPinger().execute(lyricsComURL).get(); //gets the html from search results
