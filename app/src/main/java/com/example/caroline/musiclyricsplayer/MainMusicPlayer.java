@@ -3,10 +3,16 @@ package com.example.caroline.musiclyricsplayer;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.speech.RecognizerIntent;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.style.TtsSpan;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -17,7 +23,8 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
-public class MainMusicPlayer extends AppCompatActivity {
+public class MainMusicPlayer extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener {
     private String lyricPhrase, googleSearchURL, title, artist;
     private String lyricsComURL; //lyricsComURL is for teh search results on lyrics.com
     private String lyricsUrl; //lyricsUrl is the url we will need to parse for the actual lyrics to the song
@@ -32,7 +39,7 @@ public class MainMusicPlayer extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_music_player);
         wireWidgets();
-        try {
+        /*try {
             letsGO();
         } catch (IOException e) {
             e.printStackTrace();
@@ -41,6 +48,14 @@ public class MainMusicPlayer extends AppCompatActivity {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);*/
     }
 
     private void letsGO() throws IOException, ExecutionException, InterruptedException {
@@ -173,6 +188,16 @@ public class MainMusicPlayer extends AppCompatActivity {
 
     public void letsGO(View view) throws IOException, ExecutionException, InterruptedException {
         letsGO();
+    }
+
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
     }
 
     private class URLPinger extends AsyncTask<String,Void, String> {
