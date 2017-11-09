@@ -32,10 +32,19 @@ public class MainMusicPlayer extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_music_player);
         wireWidgets();
+        try {
+            letsGO();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     private void letsGO() throws IOException, ExecutionException, InterruptedException {
-        lyricPhrase = "Risin' up, back on the street "; //normal set by speaking
+        lyricPhrase = "Risin' up back on the street "; //normal set by speaking
         tokenize(); //takes phrase set by speaking and returns arraylist of the words
         create1stURL(); //creates the lyrics.com searching url
         String lyricsComHTMLBasic = new URLPinger().execute(lyricsComURL).get(); //gets the html from search results
@@ -110,10 +119,12 @@ public class MainMusicPlayer extends AppCompatActivity {
                     Log.d(TAG, "letsGO: " + lyricPhrase.substring(last, i)); //goes from beginng to end
                     lyrics.add(lyricPhrase.substring(last, i)); //add word to array list
                     last = i+1;
-                } //TODO work with '
-                    /* else if(lyricPhrase.substring(i, i + 1).equals("\'")){
-                        lyricPhrase = lyricPhrase.substring(0, i) + lyricPhrase.substring(i+1, len);
-                    }*/
+                } else if(lyricPhrase.substring(i, i + 1).equals("'")){
+                    Log.d(TAG, "tokenize: "+lyricPhrase.substring(i, i + 1));
+                    lyricPhrase = lyricPhrase.substring(0, i) + lyricPhrase.substring(i+1, len);
+                    i--;
+                    len--;
+                }
             } else {
                 lyrics.add(lyricPhrase.substring(last, len));
             }
