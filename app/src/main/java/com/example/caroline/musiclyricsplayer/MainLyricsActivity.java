@@ -7,12 +7,16 @@ import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -30,7 +34,7 @@ import com.spotify.sdk.android.player.Spotify;
 import com.spotify.sdk.android.player.SpotifyPlayer;
 import com.squareup.picasso.Picasso;
 
-public class MainLyricsActivity extends Activity implements SpotifyPlayer.NotificationCallback, ConnectionStateCallback
+public class MainLyricsActivity extends Fragment implements SpotifyPlayer.NotificationCallback, ConnectionStateCallback
 
     {
         private ImageButton pauseButton;
@@ -42,7 +46,8 @@ public class MainLyricsActivity extends Activity implements SpotifyPlayer.Notifi
         private static final String CLIENT_ID = "af779a6467964225b9b369ec9bc7f330";
         private static final String REDIRECT_URI = "http://spotifyplayer1.com/callback";
         private static final int REQUEST_CODE = 497;
-
+        private final Context context = getActivity();
+        private View rootView;
 
         private Player mPlayer;
         private boolean paused = false;
@@ -50,18 +55,22 @@ public class MainLyricsActivity extends Activity implements SpotifyPlayer.Notifi
         public static final String TAG = "lyrics";
         private int duration;
 
+        @Nullable
         @Override
-        protected void onCreate(Bundle savedInstanceState) {
+        public View onCreateView(LayoutInflater inflater,
+                             @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+            super.onCreateView(inflater, container, savedInstanceState);
             super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_main_lyrics);
+            rootView = inflater.inflate(R.layout.activity_main_lyrics, container, false);
             AuthenticationRequest.Builder builder = new AuthenticationRequest.Builder(CLIENT_ID,
                     AuthenticationResponse.Type.TOKEN,
                     REDIRECT_URI);
             builder.setScopes(new String[]{"user-read-private", "streaming"});
             AuthenticationRequest request = builder.build();
-            AuthenticationClient.openLoginActivity(this, REQUEST_CODE, request);
+            AuthenticationClient.openLoginActivity((Activity) context, REQUEST_CODE, request);
             //gets info from shared prefrences
-            Context context = MainLyricsActivity.this;
+            Context context = getActivity();
             SharedPreferences sharedPref = context.getSharedPreferences(
                     getString(R.string.preference_file_key), Context.MODE_PRIVATE);
             //todo set default values to be rickrolling not ""
@@ -73,6 +82,7 @@ public class MainLyricsActivity extends Activity implements SpotifyPlayer.Notifi
             lyrics = sharedPref.getString("Lyrics","");
             wireWidgets();
             setUpWidgets();
+            return rootView;
         }
 
         private void setUpWidgets() {
@@ -80,28 +90,28 @@ public class MainLyricsActivity extends Activity implements SpotifyPlayer.Notifi
             songLyrics.setText(lyrics);
             //songArtist.setText(artist);
             toolbar.setTitle(title);
-            Picasso.with(this).load(albumArt).into(img);
+            Picasso.with(context).load(albumArt).into(img);
 
         }
 
         private void wireWidgets() {
-            pauseButton = (ImageButton) findViewById(R.id.button_pause);
+            pauseButton = (ImageButton) rootView.findViewById(R.id.button_pause);
             pauseButton.setBackgroundResource(R.drawable.grey_button);
             //songNameView = (TextView) findViewById(R.id.song_title);
-            songLyrics = (TextView) findViewById(R.id.lyrics);
+            songLyrics = (TextView) rootView.findViewById(R.id.lyrics);
             //songArtist = (TextView) findViewById(R.id.artist);
-            toolbar = (Toolbar) findViewById(R.id.toolbar);
-            img=findViewById(R.id.album_art);
+            toolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
+            img = rootView.findViewById(R.id.album_art);
         }
 
-        protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
 
         // Check if result comes from the correct activity
         if (requestCode == REQUEST_CODE) {
             AuthenticationResponse response = AuthenticationClient.getResponse(resultCode, intent);
             if (response.getType() == AuthenticationResponse.Type.TOKEN) {
-                Config playerConfig = new Config(this, response.getAccessToken(), CLIENT_ID);
+                Config playerConfig = new Config(context, response.getAccessToken(), CLIENT_ID);
                 Spotify.getPlayer(playerConfig, this, new SpotifyPlayer.InitializationObserver() {
                     @Override
                     public void onInitialized(SpotifyPlayer spotifyPlayer) {
@@ -120,7 +130,7 @@ public class MainLyricsActivity extends Activity implements SpotifyPlayer.Notifi
     }
 
     @Override
-    protected void onDestroy() {
+    public void onDestroy() {
         Spotify.destroyPlayer(this);
         super.onDestroy();
     }

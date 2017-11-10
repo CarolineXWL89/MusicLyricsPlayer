@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -97,6 +98,14 @@ public class OptionsStretchMenu extends AppCompatActivity
 //        } else if (id == R.id.nav_send) {
 //
 //        }
+
+        FragmentManager fm = getSupportFragmentManager();
+        if(currentFragment != null)
+        {
+            fm.beginTransaction()
+                    .replace(R.id.fragment_container, currentFragment)
+                    .commit();
+        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

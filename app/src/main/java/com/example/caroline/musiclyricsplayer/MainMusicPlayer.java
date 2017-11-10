@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -90,7 +91,7 @@ public class MainMusicPlayer extends Fragment
         //sends data over to spotify activity
         //writes to shared prefrences
 
-        Context context = MainMusicPlayer.this;
+        Context context = getContext();
         SharedPreferences sharedPref = context.getSharedPreferences(
                 getString(R.string.preference_file_key), Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
@@ -103,12 +104,19 @@ public class MainMusicPlayer extends Fragment
         editor.commit();
         //TODO load fragment instad of startign intent
 
-        Intent i = new Intent(this, MainLyricsActivity.class);
-        startActivity(i);
-        /*
+        /*Intent i = new Intent(this, MainLyricsActivity.class);
+        startActivity(i);*/
+
         Fragment fragment = null;
-        fragment = MainLyricsActivity();
-                */
+        fragment = new MainLyricsActivity();
+
+        FragmentManager fm = getSupportFragmentManager();
+        if(fragment != null)
+        {
+            fm.beginTransaction()
+                    .replace(R.id.fragment_container, fragment)
+                    .commit();
+        }
     }
 
     private String getImageURL() throws ExecutionException, InterruptedException {
@@ -172,6 +180,7 @@ public class MainMusicPlayer extends Fragment
     {
         switch (v.getId()){
             case R.id.speech_img:
+                //todo fix me
                 Intent i=new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
                 getIntent().putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
                 i.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
@@ -187,7 +196,7 @@ public class MainMusicPlayer extends Fragment
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch(requestCode){
             case 10:
