@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,7 +29,8 @@ public class MainMusicPlayer extends AppCompatActivity
     private String lyricPhrase, googleSearchURL, title, artist;
     private String lyricsComURL; //lyricsComURL is for teh search results on lyrics.com
     private String lyricsUrl; //lyricsUrl is the url we will need to parse for the actual lyrics to the song
-    private TextView text;
+    //private TextView text;
+    private EditText editText;
     private Button goodLyrics;
     private ArrayList<String> lyrics;
     public static final String TAG = "main";
@@ -39,15 +41,7 @@ public class MainMusicPlayer extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_music_player);
         wireWidgets();
-        /*try {
-            letsGO();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        /*
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -59,7 +53,8 @@ public class MainMusicPlayer extends AppCompatActivity
     }
 
     private void letsGO() throws IOException, ExecutionException, InterruptedException {
-        lyricPhrase = "Risin' up back on the street "; //normal set by speaking
+        lyricPhrase = editText.getText().toString();
+        //lyricPhrase = "Risin' up back on the street "; //normal set by speaking
         tokenize(); //takes phrase set by speaking and returns arraylist of the words
         create1stURL(); //creates the lyrics.com searching url
         String lyricsComHTMLBasic = new URLPinger().execute(lyricsComURL).get(); //gets the html from search results
@@ -147,8 +142,9 @@ public class MainMusicPlayer extends AppCompatActivity
     }
 
     private void wireWidgets() {
-       text  = (TextView)findViewById(R.id.show_text);
+       //text  = (TextView)findViewById(R.id.show_text);
        goodLyrics = (Button) findViewById(R.id.lyrics_good);
+       editText = (EditText) findViewById(R.id.editable_text);
        goodLyrics.setText("Go");
        goodLyrics.setVisibility(View.GONE);
     }
@@ -177,8 +173,8 @@ public class MainMusicPlayer extends AppCompatActivity
             case 10:
                 if (resultCode==RESULT_OK&& data!=null) {
                     ArrayList<String> result =data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-                    text.setText(result.get(0));
-                    lyricPhrase = (String) text.getText();
+                    editText.setText(result.get(0));
+                    lyricPhrase = editText.getText().toString();
                     Log.d(TAG, "onActivityResult: "+lyricPhrase);
                     goodLyrics.setVisibility(View.VISIBLE);
                 }
