@@ -1,7 +1,9 @@
 package com.example.caroline.musiclyricsplayer;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -58,15 +60,18 @@ public class MainLyricsActivity extends Activity implements SpotifyPlayer.Notifi
             builder.setScopes(new String[]{"user-read-private", "streaming"});
             AuthenticationRequest request = builder.build();
             AuthenticationClient.openLoginActivity(this, REQUEST_CODE, request);
-            Intent i = getIntent();
-            uri = i.getStringExtra("URI");
-            url = i.getStringExtra("URL");
-            title = i.getStringExtra("Title");
-            artist = i.getStringExtra("Artist");
-            albumArt=i.getStringExtra("Image");
+            //gets info from shared prefrences
+            Context context = MainLyricsActivity.this;
+            SharedPreferences sharedPref = context.getSharedPreferences(
+                    getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+            //todo set default values to be rickrolling not ""
+            uri = sharedPref.getString("URI", "");
+            url = sharedPref.getString("URL","");
+            title = sharedPref.getString("Title","");
+            artist = sharedPref.getString("Artist","");
+            albumArt=sharedPref.getString("Image","");
+            lyrics = sharedPref.getString("Lyrics","");
             wireWidgets();
-            lyrics = i.getStringExtra("Lyrics");
-
             setUpWidgets();
         }
 

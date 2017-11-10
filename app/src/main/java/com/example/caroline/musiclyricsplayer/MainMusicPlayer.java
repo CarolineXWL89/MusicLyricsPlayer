@@ -1,10 +1,13 @@
 package com.example.caroline.musiclyricsplayer;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.speech.RecognizerIntent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -78,14 +81,27 @@ public class MainMusicPlayer extends AppCompatActivity
         Log.d(TAG, "letsGO: "+ uri);
 
         //sends data over to spotify activity
+        //writes to shared prefrences
+
+        Context context = MainMusicPlayer.this;
+        SharedPreferences sharedPref = context.getSharedPreferences(
+                getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString("Title",title);
+        editor.putString("Artist", artist);
+        editor.putString("URI", uri);
+        editor.putString("URL", lyricsUrl);
+        editor.putString("Lyrics", lyricsText);
+        editor.putString("Image", imageURL);
+        editor.commit();
+        //TODO load fragment instad of startign intent
+
         Intent i = new Intent(this, MainLyricsActivity.class);
-        i.putExtra("Title",title);
-        i.putExtra("Artist", artist);
-        i.putExtra("URI", uri);
-        i.putExtra("URL", lyricsUrl);
-        i.putExtra("Lyrics", lyricsText);
-        i.putExtra("Image", imageURL);
         startActivity(i);
+        /*
+        Fragment fragment = null;
+        fragment = MainLyricsActivity();
+                */
     }
 
     private String getImageURL() throws ExecutionException, InterruptedException {
