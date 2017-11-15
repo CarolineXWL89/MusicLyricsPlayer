@@ -34,7 +34,7 @@ import com.spotify.sdk.android.player.Spotify;
 import com.spotify.sdk.android.player.SpotifyPlayer;
 import com.squareup.picasso.Picasso;
 
-public class MainLyricsActivity extends Fragment implements SpotifyPlayer.NotificationCallback, ConnectionStateCallback
+public class MainLyricsActivity extends AppCompatActivity implements View.OnClickListener, SpotifyPlayer.NotificationCallback, ConnectionStateCallback
 
     {
         private ImageButton pauseButton;
@@ -46,8 +46,7 @@ public class MainLyricsActivity extends Fragment implements SpotifyPlayer.Notifi
         private static final String CLIENT_ID = "af779a6467964225b9b369ec9bc7f330";
         private static final String REDIRECT_URI = "http://spotifyplayer1.com/callback";
         private static final int REQUEST_CODE = 497;
-        private final Context context = getActivity();
-        private View rootView;
+        private final Context context = this;
 
         private Player mPlayer;
         private boolean paused = false;
@@ -55,14 +54,11 @@ public class MainLyricsActivity extends Fragment implements SpotifyPlayer.Notifi
         public static final String TAG = "lyrics";
         private int duration;
 
-        @Nullable
         @Override
-        public View onCreateView(LayoutInflater inflater,
-                             @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-            super.onCreateView(inflater, container, savedInstanceState);
+        protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            rootView = inflater.inflate(R.layout.activity_main_lyrics, container, false);
+            setContentView(R.layout.activity_main_lyrics);
+
             AuthenticationRequest.Builder builder = new AuthenticationRequest.Builder(CLIENT_ID,
                     AuthenticationResponse.Type.TOKEN,
                     REDIRECT_URI);
@@ -70,7 +66,7 @@ public class MainLyricsActivity extends Fragment implements SpotifyPlayer.Notifi
             AuthenticationRequest request = builder.build();
             AuthenticationClient.openLoginActivity((Activity) context, REQUEST_CODE, request);
             //gets info from shared prefrences
-            Context context = getActivity();
+            Context context =this;
             SharedPreferences sharedPref = context.getSharedPreferences(
                     getString(R.string.preference_file_key), Context.MODE_PRIVATE);
             //todo set default values to be rickrolling not ""
@@ -82,7 +78,6 @@ public class MainLyricsActivity extends Fragment implements SpotifyPlayer.Notifi
             lyrics = sharedPref.getString("Lyrics","");
             wireWidgets();
             setUpWidgets();
-            return rootView;
         }
 
         private void setUpWidgets() {
@@ -95,13 +90,13 @@ public class MainLyricsActivity extends Fragment implements SpotifyPlayer.Notifi
         }
 
         private void wireWidgets() {
-            pauseButton = (ImageButton) rootView.findViewById(R.id.button_pause);
+            pauseButton = (ImageButton) findViewById(R.id.button_pause);
             pauseButton.setBackgroundResource(R.drawable.grey_button);
             //songNameView = (TextView) findViewById(R.id.song_title);
-            songLyrics = (TextView) rootView.findViewById(R.id.lyrics);
+            songLyrics = (TextView) findViewById(R.id.lyrics);
             //songArtist = (TextView) findViewById(R.id.artist);
-            toolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
-            img = rootView.findViewById(R.id.album_art);
+            toolbar = (Toolbar) findViewById(R.id.toolbar);
+            img = findViewById(R.id.album_art);
         }
 
         public void onActivityResult(int requestCode, int resultCode, Intent intent) {
@@ -193,4 +188,8 @@ public class MainLyricsActivity extends Fragment implements SpotifyPlayer.Notifi
     }
 
 
-}
+        @Override
+        public void onClick(View v) {
+
+        }
+    }

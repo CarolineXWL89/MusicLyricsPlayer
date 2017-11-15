@@ -34,8 +34,7 @@ import java.util.concurrent.ExecutionException;
 
 import static android.app.Activity.RESULT_OK;
 
-public class MainMusicPlayer extends Fragment
-        {
+public class MainMusicPlayer extends AppCompatActivity implements View.OnClickListener {
     private String lyricPhrase, googleSearchURL, title, artist;
     private String lyricsComURL; //lyricsComURL is for teh search results on lyrics.com
     private String lyricsUrl; //lyricsUrl is the url we will need to parse for the actual lyrics to the song
@@ -48,19 +47,14 @@ public class MainMusicPlayer extends Fragment
     public MainMusicPlayer(){
 
     }
-    @Nullable
+
     @Override
-    public View onCreateView(LayoutInflater inflater,
-                             @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-        super.onCreateView(inflater, container, savedInstanceState);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         lyricPhrase = "";
         lyrics = new ArrayList<>();
-        super.onCreate(savedInstanceState);
-        rootView = inflater.inflate(R.layout.activity_main_music_player, container, false);
-
+        setContentView(R.layout.activity_main_music_player);
         wireWidgets();
-        return rootView;
     }
 
     private void letsGO() throws IOException, ExecutionException, InterruptedException {
@@ -91,7 +85,7 @@ public class MainMusicPlayer extends Fragment
         //sends data over to spotify activity
         //writes to shared prefrences
 
-        Context context = getContext();
+        Context context = this;
         SharedPreferences sharedPref = context.getSharedPreferences(
                 getString(R.string.preference_file_key), Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
@@ -101,22 +95,9 @@ public class MainMusicPlayer extends Fragment
         editor.putString("URL", lyricsUrl);
         editor.putString("Lyrics", lyricsText);
         editor.putString("Image", imageURL);
-        editor.commit();
-        //TODO load fragment instad of startign intent
-
-        /*Intent i = new Intent(this, MainLyricsActivity.class);
-        startActivity(i);*/
-
-        Fragment fragment = null;
-        fragment = new MainLyricsActivity();
-
-        FragmentManager fm = getSupportFragmentManager();
-        if(fragment != null)
-        {
-            fm.beginTransaction()
-                    .replace(R.id.fragment_container, fragment)
-                    .commit();
-        }
+        editor.apply();
+        Intent i =new Intent(this.getApplicationContext(), MainLyricsActivity.class);
+        startActivity(i);
     }
 
     private String getImageURL() throws ExecutionException, InterruptedException {
@@ -170,30 +151,13 @@ public class MainMusicPlayer extends Fragment
     }
 
     private void wireWidgets() {
-       text  = (TextView)rootView.findViewById(R.id.show_text);
-       goodLyrics = (Button) rootView.findViewById(R.id.lyrics_good);
+       text  = (TextView) findViewById(R.id.show_text);
+       goodLyrics = (Button) findViewById(R.id.lyrics_good);
        goodLyrics.setText("Go");
        goodLyrics.setVisibility(View.GONE);
     }
 
-    public void onClick(View v)
-    {
-        switch (v.getId()){
-            case R.id.speech_img:
-                //todo fix me
-                Intent i=new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-                getIntent().putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-                i.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
-                if (i.resolveActivity(getPackageManager())!=null) {
-                    startActivityForResult(i, 10);
-                }
-                else{
-                    Toast.makeText(getActivity(), "Your device doesn't speech input.", Toast.LENGTH_SHORT).show();
 
-                }
-        }
-
-    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -213,6 +177,22 @@ public class MainMusicPlayer extends Fragment
 
     public void letsGO(View view) throws IOException, ExecutionException, InterruptedException {
         letsGO();
+    }
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.speech_img:
+                //todo fix me
+                Intent i=new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+                i.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+                i.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+                if (i.resolveActivity(getPackageManager())!=null) {
+                    startActivityForResult(i, 10);
+                }
+                else{
+                    Toast.makeText(this, "Your device doesn't speech input.", Toast.LENGTH_SHORT).show();
+
+                }
+        }
     }
 
 
