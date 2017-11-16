@@ -1,5 +1,6 @@
 package com.example.caroline.musiclyricsplayer;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -40,13 +41,8 @@ public class MainMusicPlayer extends AppCompatActivity implements View.OnClickLi
     private String lyricsUrl; //lyricsUrl is the url we will need to parse for the actual lyrics to the song
     private TextView text;
     private Button goodLyrics;
-    private View rootView;
     private ArrayList<String> lyrics;
     public static final String TAG = "main";
-
-    public MainMusicPlayer(){
-
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +61,7 @@ public class MainMusicPlayer extends AppCompatActivity implements View.OnClickLi
         HTMLReader htmlReader = new HTMLReader(lyricsComHTMLBasic); //creates html parser
 
         //if nothing, rickrolls them
-        if (htmlReader != null) {
+        if (lyricsComHTMLBasic != null) {
             artist = htmlReader.findComposer();
             title = htmlReader.findTitle();
             lyricsUrl = htmlReader.findLyricsURL();
@@ -95,8 +91,9 @@ public class MainMusicPlayer extends AppCompatActivity implements View.OnClickLi
         editor.putString("URL", lyricsUrl);
         editor.putString("Lyrics", lyricsText);
         editor.putString("Image", imageURL);
-        editor.apply();
-        Intent i =new Intent(this.getApplicationContext(), MainLyricsActivity.class);
+        editor.commit();
+
+        Intent i = new Intent(MainMusicPlayer.this, MainLyricsActivity.class);
         startActivity(i);
     }
 
@@ -140,10 +137,11 @@ public class MainMusicPlayer extends AppCompatActivity implements View.OnClickLi
                     Log.d(TAG, "letsGO: " + lyricPhrase.substring(last, i)); //goes from beginng to end
                     lyrics.add(lyricPhrase.substring(last, i)); //add word to array list
                     last = i+1;
-                } //TODO work with '
-                    /* else if(lyricPhrase.substring(i, i + 1).equals("\'")){
+                } else if(lyricPhrase.substring(i, i + 1).equals("\'")){
                         lyricPhrase = lyricPhrase.substring(0, i) + lyricPhrase.substring(i+1, len);
-                    }*/
+                        i++;
+                        len = lyricPhrase.length();
+                    }
             } else {
                 lyrics.add(lyricPhrase.substring(last, len));
             }
@@ -153,8 +151,9 @@ public class MainMusicPlayer extends AppCompatActivity implements View.OnClickLi
     private void wireWidgets() {
        text  = (TextView) findViewById(R.id.show_text);
        goodLyrics = (Button) findViewById(R.id.lyrics_good);
-       goodLyrics.setText("Go");
-       goodLyrics.setVisibility(View.GONE);
+       goodLyrics.setText("Search Lyrics");
+       //todo change back at end
+       //goodLyrics.setVisibility(View.GONE);
     }
 
 
@@ -181,7 +180,6 @@ public class MainMusicPlayer extends AppCompatActivity implements View.OnClickLi
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.speech_img:
-                //todo fix me
                 Intent i=new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
                 i.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
                 i.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());

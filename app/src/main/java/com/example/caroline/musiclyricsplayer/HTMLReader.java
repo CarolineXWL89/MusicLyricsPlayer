@@ -101,7 +101,6 @@ public class HTMLReader {
 
     public String getLyrics() {
         //TODO write this method properly
-
         return "NEED to write a html reader method to get lyrics";
     }
 }

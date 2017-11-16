@@ -34,9 +34,8 @@ import com.spotify.sdk.android.player.Spotify;
 import com.spotify.sdk.android.player.SpotifyPlayer;
 import com.squareup.picasso.Picasso;
 
-public class MainLyricsActivity extends AppCompatActivity implements View.OnClickListener, SpotifyPlayer.NotificationCallback, ConnectionStateCallback
-
-    {
+public class MainLyricsActivity extends Activity implements SpotifyPlayer.NotificationCallback, ConnectionStateCallback
+ {
         private ImageButton pauseButton;
         private TextView songNameView, songLyrics, songArtist;
         private Toolbar toolbar;
@@ -186,10 +185,4 @@ public class MainLyricsActivity extends AppCompatActivity implements View.OnClic
     public void onConnectionMessage(String message) {
         Log.d("MainLyricsActivity", "Received connection message: " + message);
     }
-
-
-        @Override
-        public void onClick(View v) {
-
-        }
-    }
+ }
