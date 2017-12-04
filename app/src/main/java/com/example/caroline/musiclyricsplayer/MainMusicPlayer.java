@@ -27,13 +27,15 @@ import java.util.concurrent.ExecutionException;
 public class MainMusicPlayer extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private String lyricPhrase, googleSearchURL, title, artist;
-    private String lyricsComURL; //lyricsComURL is for teh search results on lyrics.com
+    private String lyricsComURL; //lyricsComURL is for the search results on lyrics.com
     private String lyricsUrl; //lyricsUrl is the url we will need to parse for the actual lyrics to the song
     //private TextView text;
     private EditText editText;
     private Button goodLyrics;
     private ArrayList<String> lyrics;
+    private String fullLyrics = "";
     public static final String TAG = "main";
+    private SongObject songObject = new SongObject("", "", "");
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         lyricPhrase = "";
@@ -73,7 +75,7 @@ public class MainMusicPlayer extends AppCompatActivity
 
         //Gets URI from google, gets lyrics and album art from second website
         String uri = getURI();
-        String lyricsText = getSongLyrics();
+        //String lyricsText = getSongLyrics();
         Log.d(TAG, "letsGO: Image Url:"+getImageURL());
         String imageURL = getImageURL();
         Log.d(TAG, "letsGO: "+ uri);
@@ -96,9 +98,31 @@ public class MainMusicPlayer extends AppCompatActivity
     }
 
     private String getSongLyrics() throws ExecutionException, InterruptedException {
-        String htmlForLyrics = new URLPinger().execute(lyricsUrl).get(); //gets the html from search results
+        /*String htmlForLyrics = new URLPinger().execute(lyricsUrl).get(); //gets the html from search results
         HTMLReader htmlReader = new HTMLReader(htmlForLyrics); //creates html parser
-        return htmlReader.getLyrics();
+        return htmlReader.getLyrics();*/
+        songObject.setTitle(title);
+        songObject.setArtist(artist);
+        ArrayList<String> titleWords = new ArrayList<>();
+        ArrayList<String> artistWords = new ArrayList<>();
+        titleWords = songObject.separateWords(title);
+        artistWords = songObject.separateWords(artist);
+        String htmlCode = "";
+        lyricsUrl =  songObject.createLyricsPageURL(titleWords, artistWords);
+        URLReader urlReaderLyrics = new URLReader(lyricsUrl);
+        try {
+            htmlCode = urlReaderLyrics.readerReturn();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        LyricsPageHTMLReader lyricsPageHTMLReader = new LyricsPageHTMLReader(htmlCode);
+        lyrics = lyricsPageHTMLReader.findLyrics(htmlCode);
+        int l = lyrics.size();
+        for(int i = 0; i < l; i++){
+            fullLyrics += lyrics.get(i);
+        }
+        return fullLyrics;
     }
 
     private String getURI() throws ExecutionException, InterruptedException {

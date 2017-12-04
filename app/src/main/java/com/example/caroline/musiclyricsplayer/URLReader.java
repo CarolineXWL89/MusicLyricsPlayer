@@ -59,7 +59,8 @@ public class URLReader {
             Log.d("urlreader", "readerReturn: "+ e);
             e.printStackTrace();
         }
-        return content.toString();
+        HTMLCode = content.toString();
+        return HTMLCode;
     }
 
 }
