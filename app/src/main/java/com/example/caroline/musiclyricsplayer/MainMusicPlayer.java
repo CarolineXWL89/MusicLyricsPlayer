@@ -20,9 +20,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.concurrent.ExecutionException;
+
+import de.l3s.boilerpipe.extractors.ArticleExtractor;
 
 public class MainMusicPlayer extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -107,15 +111,21 @@ public class MainMusicPlayer extends AppCompatActivity
         ArrayList<String> artistWords = new ArrayList<>();
         titleWords = songObject.separateWords(title);
         artistWords = songObject.separateWords(artist);
-        String htmlCode = "";
         lyricsUrl =  songObject.createLyricsPageURL(titleWords, artistWords);
-        URLReader urlReaderLyrics = new URLReader(lyricsUrl);
+
+        try {
+            URL lyricsURLObject = new URL(lyricsUrl);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        String htmlCode = ArticleExtractor.INSTANCE.getText(lyricsURLObject);
+        //DON'T USE OTHERS
+        /*URLReader urlReaderLyrics = new URLReader(lyricsUrl);
         try {
             htmlCode = urlReaderLyrics.readerReturn();
         } catch (IOException e) {
             e.printStackTrace();
-        }
-
+        }*/
         LyricsPageHTMLReader lyricsPageHTMLReader = new LyricsPageHTMLReader(htmlCode);
         lyrics = lyricsPageHTMLReader.findLyrics(htmlCode);
         int l = lyrics.size();

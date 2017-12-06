@@ -25,6 +25,9 @@ repositories {
     }
 }
 dependencies {
+    // https://mvnrepository.com/artifact/com.syncthemall/boilerpipe
+    //compile group: 'com.syncthemall', name: 'boilerpipe', version: '1.2.1'
+    implementation 'com.syncthemall:boilerpipe:1.2.1'
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support:appcompat-v7:26.1.0'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
