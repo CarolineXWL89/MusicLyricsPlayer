@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
+import de.l3s.boilerpipe.BoilerpipeProcessingException;
 import de.l3s.boilerpipe.extractors.ArticleExtractor;
 
 public class MainMusicPlayer extends AppCompatActivity
@@ -58,7 +59,7 @@ public class MainMusicPlayer extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);*/
     }
 
-    private void letsGO() throws IOException, ExecutionException, InterruptedException {
+    private void letsGO() throws IOException, ExecutionException, InterruptedException, BoilerpipeProcessingException {
         lyricPhrase = editText.getText().toString();
         //lyricPhrase = "Risin' up back on the street "; //normal set by speaking
         tokenize(); //takes phrase set by speaking and returns arraylist of the words
@@ -101,7 +102,7 @@ public class MainMusicPlayer extends AppCompatActivity
         return htmlReader.findAlbumArt();
     }
 
-    private String getSongLyrics() throws ExecutionException, InterruptedException {
+    private String getSongLyrics() throws ExecutionException, InterruptedException, MalformedURLException, BoilerpipeProcessingException {
         /*String htmlForLyrics = new URLPinger().execute(lyricsUrl).get(); //gets the html from search results
         HTMLReader htmlReader = new HTMLReader(htmlForLyrics); //creates html parser
         return htmlReader.getLyrics();*/
@@ -113,11 +114,12 @@ public class MainMusicPlayer extends AppCompatActivity
         artistWords = songObject.separateWords(artist);
         lyricsUrl =  songObject.createLyricsPageURL(titleWords, artistWords);
 
-        try {
+        /*try {
             URL lyricsURLObject = new URL(lyricsUrl);
         } catch (MalformedURLException e) {
             e.printStackTrace();
-        }
+        }*/
+        URL lyricsURLObject = new URL(lyricsUrl);
         String htmlCode = ArticleExtractor.INSTANCE.getText(lyricsURLObject);
         //DON'T USE OTHERS
         /*URLReader urlReaderLyrics = new URLReader(lyricsUrl);
@@ -216,7 +218,7 @@ public class MainMusicPlayer extends AppCompatActivity
         }
     }
 
-    public void letsGO(View view) throws IOException, ExecutionException, InterruptedException {
+    public void letsGO(View view) throws IOException, ExecutionException, InterruptedException, BoilerpipeProcessingException {
         letsGO();
     }
 
