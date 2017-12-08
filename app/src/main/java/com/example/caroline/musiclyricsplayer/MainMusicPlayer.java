@@ -79,7 +79,7 @@ public class MainMusicPlayer extends AppCompatActivity
 
         //Gets URI from google, gets lyrics and album art from second website
         String uri = getURI();
-        //String lyricsText = getSongLyrics();
+        String lyricsText = getSongLyrics();
         Log.d(TAG, "letsGO: Image Url:"+getImageURL());
         String imageURL = getImageURL();
         Log.d(TAG, "letsGO: "+ uri);
