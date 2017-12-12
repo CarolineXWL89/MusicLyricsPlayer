@@ -2,8 +2,10 @@ package com.example.caroline.musiclyricsplayer;
 
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.speech.RecognizerIntent;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -59,6 +61,7 @@ public class MainMusicPlayer extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);*/
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
     private void letsGO() throws IOException, ExecutionException, InterruptedException, BoilerpipeProcessingException {
         lyricPhrase = editText.getText().toString();
         //lyricPhrase = "Risin' up back on the street "; //normal set by speaking
@@ -96,6 +99,7 @@ public class MainMusicPlayer extends AppCompatActivity
         startActivity(i);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
     private String getImageURL() throws ExecutionException, InterruptedException {
         String htmlForLyrics = new URLPinger().execute(lyricsUrl).get(); //gets the html from search results
         HTMLReader htmlReader = new HTMLReader(htmlForLyrics); //creates html parser
@@ -218,6 +222,7 @@ public class MainMusicPlayer extends AppCompatActivity
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
     public void letsGO(View view) throws IOException, ExecutionException, InterruptedException, BoilerpipeProcessingException {
         letsGO();
     }
@@ -232,6 +237,7 @@ public class MainMusicPlayer extends AppCompatActivity
         return true;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
     private class URLPinger extends AsyncTask<String,Void, String> {
 
         @Override
