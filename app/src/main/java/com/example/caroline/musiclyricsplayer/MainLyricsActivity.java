@@ -86,7 +86,7 @@ public class MainLyricsActivity extends Activity implements SpotifyPlayer.Notifi
             songLyrics = (TextView) findViewById(R.id.lyrics);
             //songArtist = (TextView) findViewById(R.id.artist);
             toolbar = (Toolbar) findViewById(R.id.toolbar);
-            img=findViewById(R.id.album_art);
+            img= (ImageView) findViewById(R.id.album_art);
         }
 
         protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
