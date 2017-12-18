@@ -48,6 +48,7 @@ public class LyricsPageHTMLReader {
 
             }
             else{
+                //TODO: be able to separate into stanzas with <!-- First Section -->
                 String currentWord = phrase.substring(startPosition1, startPosition1 + numLetters);
                 //System.out.print("There was a space: check --> ");
                 //System.out.print("startPosition1: " + startPosition1 + " ");
