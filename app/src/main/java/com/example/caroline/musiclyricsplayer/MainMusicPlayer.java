@@ -28,8 +28,8 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
-import de.l3s.boilerpipe.BoilerpipeProcessingException;
-import de.l3s.boilerpipe.extractors.ArticleExtractor;
+//import de.l3s.boilerpipe.BoilerpipeProcessingException;
+//import de.l3s.boilerpipe.extractors.ArticleExtractor;
 
 public class MainMusicPlayer extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -62,7 +62,7 @@ public class MainMusicPlayer extends AppCompatActivity
     }
 
     @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
-    private void letsGO() throws IOException, ExecutionException, InterruptedException, BoilerpipeProcessingException {
+    private void letsGO() throws IOException, ExecutionException, InterruptedException/*, BoilerpipeProcessingException*/ {
         lyricPhrase = editText.getText().toString();
         //lyricPhrase = "Risin' up back on the street "; //normal set by speaking
         tokenize(); //takes phrase set by speaking and returns arraylist of the words
@@ -106,7 +106,7 @@ public class MainMusicPlayer extends AppCompatActivity
         return htmlReader.findAlbumArt();
     }
 
-    private String getSongLyrics() throws ExecutionException, InterruptedException, MalformedURLException, BoilerpipeProcessingException {
+    private String getSongLyrics() throws ExecutionException, InterruptedException, IOException/*, BoilerpipeProcessingException*/ {
         /*String htmlForLyrics = new URLPinger().execute(lyricsUrl).get(); //gets the html from search results
         HTMLReader htmlReader = new HTMLReader(htmlForLyrics); //creates html parser
         return htmlReader.getLyrics();*/
@@ -117,14 +117,16 @@ public class MainMusicPlayer extends AppCompatActivity
         titleWords = songObject.separateWords(title);
         artistWords = songObject.separateWords(artist);
         lyricsUrl =  songObject.createLyricsPageURL(titleWords, artistWords);
-
+        URLReader urlReaderLyrics = new URLReader(lyricsUrl);
+        String htmlCode = urlReaderLyrics.readerReturn();
+        //ArrayList<String> lyricWords = new ArrayList<>();
         /*try {
             URL lyricsURLObject = new URL(lyricsUrl);
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }*/
-        URL lyricsURLObject = new URL(lyricsUrl);
-        String htmlCode = ArticleExtractor.INSTANCE.getText(lyricsURLObject);
+        //URL lyricsURLObject = new URL(lyricsUrl);
+        //String htmlCode = ArticleExtractor.INSTANCE.getText(lyricsURLObject);
         //DON'T USE OTHERS
         /*URLReader urlReaderLyrics = new URLReader(lyricsUrl);
         try {
@@ -141,6 +143,7 @@ public class MainMusicPlayer extends AppCompatActivity
         return fullLyrics;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
     private String getURI() throws ExecutionException, InterruptedException {
         TitleToSpotifyURI titleToSpotifyURI = new TitleToSpotifyURI(title, artist); //creates an object to get the uri
         googleSearchURL = titleToSpotifyURI.constructSearchURL(); //gets the google search url
@@ -223,7 +226,7 @@ public class MainMusicPlayer extends AppCompatActivity
     }
 
     @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
-    public void letsGO(View view) throws IOException, ExecutionException, InterruptedException, BoilerpipeProcessingException {
+    public void letsGO(View view) throws IOException, ExecutionException, InterruptedException/*, BoilerpipeProcessingException*/ {
         letsGO();
     }
 

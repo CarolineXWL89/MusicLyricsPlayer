@@ -79,6 +79,7 @@ public class SongObject {
                 //System.out.print("There was a space: check --> ");
                 //System.out.print("startPosition1: " + startPosition1 + " ");
                 //System.out.println("numLetters: " + numLetters);
+
                 String currentWord = phrase.substring(startPosition1, startPosition1 + numLetters);
                 //phrase = phrase.substring(numLetters);
                 //System.out.println(phrase);

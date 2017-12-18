@@ -10,10 +10,11 @@ public class LyricsPageHTMLReader {
     private int lyEndRefL;
     //private static final String LYRIC_REF = "<pre id=\"lyric-body-text\" class=\"lyric-body\" dir=\"ltr\" data-lang=\"en\">";
     //private static final String LYRIC_END = "</div></div><div class=\"xpdxpnd kno-fb-ctx _Rtn _ECr\" data-mh=\"-1\" data-ved=\"";
-    private static final String LYRIC_REF = "</b></div><p id=\"lyrics_text\" class=\"ui-annotatable\">";
-    private static final String LYRIC_END = "</p><p id=\"lyrics_text_selected\"></p><p id=\"lyrics_signature\"><br/><br/>";
+    private static final String LYRIC_REF = "<div id=\"lyrics-body-text\" class=\"js-lyric-text\">";
+    private static final String LYRIC_END = "<!--BOTTOM MPU-->";
     private static final int SIZE_REF_BR = "<br />".length();
     private static final String BREAK_REF = "<br />";
+    private static final String LINE_BREAK_INDICATOR = " / ";
     private String HTMLCode, lyrics, lyricsPageURL;
     private ArrayList<String> wordsFinal = new ArrayList<>();
     //private ArrayList<String> brokenUpText = new ArrayList<>();
@@ -47,16 +48,26 @@ public class LyricsPageHTMLReader {
 
             }
             else{
+                String currentWord = phrase.substring(startPosition1, startPosition1 + numLetters);
                 //System.out.print("There was a space: check --> ");
                 //System.out.print("startPosition1: " + startPosition1 + " ");
                 //System.out.println("numLetters: " + numLetters);
-                String currentWord = phrase.substring(startPosition1, startPosition1 + numLetters);
+                String lineEndCheck = phrase.substring(startPosition1 + numLetters, startPosition1 + numLetters + 1);
+                if(lineEndCheck.equals("<")){
+                    String stuffToCheck = phrase.substring(startPosition1 + numLetters);
+                    int endOfCheckPosit = stuffToCheck.indexOf(">");
+                    wordsFinal.add(currentWord);
+                    wordsFinal.add(LINE_BREAK_INDICATOR);
+                }
+                else{
+                    wordsFinal.add(currentWord);
+                }
+                //String currentWord = phrase.substring(startPosition1, startPosition1 + numLetters);
                 //phrase = phrase.substring(numLetters);
                 //System.out.println(phrase);
                 //System.out.println("" + startPosition1 + " " + numLetters);
                 //System.out.println("Current Word: " + currentWord);
                 startPosition1 += numLetters + SIZE_REF_BR;
-                wordsFinal.add(currentWord);
                 numLetters = 0;
                 //numLetters++;
             }

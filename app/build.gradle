@@ -25,6 +25,7 @@ repositories {
         dirs 'libs'
     }
 }
+//compile files('libs/boilerpipe1.2.1.jar')
 dependencies {
     // https://mvnrepository.com/artifact/com.syncthemall/boilerpipe
     //compile group: 'com.syncthemall', name: 'boilerpipe', version: '1.2.1'
@@ -40,6 +41,6 @@ dependencies {
     compile 'com.spotify.sdk:spotify-player-24-noconnect-2.20b@aar'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.android.support:multidex:1.0.2'
-    compile 'xerces:xercesImpl:2.11.0'
-    implementation files('libs/boilerpipe1.2.1.jar')
+    //implementation files('libs/boilerpipe1.2.1.jar')
+    //implementation files('libs/boilerpipe1.2.1.jar')
 }
