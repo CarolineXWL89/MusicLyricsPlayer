@@ -6,6 +6,7 @@ import java.util.ArrayList;
  * Created by princ on 07/11/2017.
  */
 public class LyricsPageHTMLReader {
+    //TODO figure out what these random variables are and what isn't needed in LyricsPageHTMLReader
     private int lyRefL;
     private int lyEndRefL;
     private int numberOfSections;
@@ -92,7 +93,7 @@ public class LyricsPageHTMLReader {
                     //String stuffToCheck = phrase.substring(startPosition1 + numLetters);
                     //int endOfCheckPosit = stuffToCheck.indexOf(">");
                     wordsFinal.add(currentWord);
-                    wordsFinal.add(LINE_BREAK_INDICATOR);
+                    wordsFinal.add(BREAK_REF);
                     startPosition1 += numLetters + SIZE_REF_BR;
                 }
                 else if(lineEndCheck.equals("</")){
@@ -138,6 +139,7 @@ public class LyricsPageHTMLReader {
         }
         return stanzas;
     }
+
     //USELESS METHOD
 
     /**
@@ -146,7 +148,7 @@ public class LyricsPageHTMLReader {
      * @param lyricsPageHTML HTML Lyrics section
      * @return ArrayList of Strings with lyric lines
      */
-    public ArrayList<String> findLyrics(String lyricsPageHTML){
+    /*public ArrayList<String> findLyrics(String lyricsPageHTML){
         int firstBeforeLyrics = lyricsPageHTML.indexOf(LYRIC_REF);
         ArrayList<String> lyricLines = new ArrayList<>();
         lyRefL = LYRIC_REF.length();
@@ -168,5 +170,5 @@ public class LyricsPageHTMLReader {
 
 
         return lyricLines;
-    }
+    }*/
 }
