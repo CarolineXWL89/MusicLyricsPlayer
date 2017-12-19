@@ -44,15 +44,16 @@ public class SongObject {
     //gets the lyrics page link from MetroLyrics
     public String createLyricsPageURL(ArrayList<String> titleWords, ArrayList<String> artistWords){
         for(int i = 0; i < titleWords.size(); i++){
-            String word = artistWords.get(i);
+            String word = titleWords.get(i);
             lyricsPageURL = "http://www.metrolyrics.com/" + word + "-";
         }
         lyricsPageURL += "lyrics";
-        for(int i = 0; i < artistWords.size(); i++){
-            String word = titleWords.get(i);
-            lyricsPageURL += word;
+        int i = 0;
+        for(i = 0; i < artistWords.size() - 1; i++){
+            String word = artistWords.get(i);
+            lyricsPageURL += word + "-";
         }
-        lyricsPageURL += ".html";
+        lyricsPageURL += artistWords.get(i + 1) + ".html";
         return lyricsPageURL;
     }
 

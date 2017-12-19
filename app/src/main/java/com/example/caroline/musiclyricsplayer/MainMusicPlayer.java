@@ -3,6 +3,7 @@ package com.example.caroline.musiclyricsplayer;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.os.StrictMode;
 import android.speech.RecognizerIntent;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
@@ -21,9 +22,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.concurrent.ExecutionException;
@@ -33,6 +37,15 @@ import java.util.concurrent.ExecutionException;
 
 public class MainMusicPlayer extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    /*if(true) {
+        StrictMode.ThreadPolicy policy =
+                new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+    }*/
+
+
+
+
     private String lyricPhrase, googleSearchURL, title, artist;
     private String lyricsComURL; //lyricsComURL is for the search results on lyrics.com
     private String lyricsUrl; //lyricsUrl is the url we will need to parse for the actual lyrics to the song
@@ -281,4 +294,53 @@ public class MainMusicPlayer extends AppCompatActivity
             super.onPostExecute(s);
         }
     }
+
+    /*private class URLReader extends AsyncTask<String, Void, String>{
+        private String HTMLCode = "";
+        private String urlString = "";
+        private static final String TAG = "urlreader";
+
+        public URLReader(String url){
+            this.urlString = url;
+        }
+
+        /**
+         * Takes the URL input and returns an HTML code.
+         * //@param URL
+         * @return HTML code for webpage
+         */
+        /*public String readerReturn() throws IOException {
+
+            StringBuilder content = new StringBuilder();
+
+            try
+            {
+                // create a url object
+                URL url = new URL(urlString);
+
+                // create a urlconnection object
+                URLConnection urlConnection = url.openConnection();
+
+                // wrap the urlconnection in a bufferedreader
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+
+                String line;
+
+                // read from the urlconnection via the bufferedreader
+                while ((line = bufferedReader.readLine()) != null)
+                {
+                    content.append(line + "\n");
+                }
+                bufferedReader.close();
+            }
+            catch(Exception e)
+            {
+                Log.d("urlreader", "readerReturn: "+ e);
+                e.printStackTrace();
+            }
+            HTMLCode = content.toString();
+            return HTMLCode;
+        }
+
+    }*/
 }

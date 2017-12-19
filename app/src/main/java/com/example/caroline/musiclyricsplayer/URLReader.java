@@ -1,6 +1,7 @@
 package com.example.caroline.musiclyricsplayer;
 
 
+import android.os.AsyncTask;
 import android.util.Log;
 
 import java.io.BufferedReader;
@@ -16,7 +17,7 @@ import javax.net.ssl.HttpsURLConnection;
  * Created by princ on 19/10/2017.
  */
 
-public class URLReader {
+public class URLReader{
     private String HTMLCode = "";
     private String urlString = "";
     private static final String TAG = "urlreader";
