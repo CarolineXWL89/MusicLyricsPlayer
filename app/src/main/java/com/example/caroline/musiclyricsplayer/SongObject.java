@@ -58,12 +58,12 @@ public class SongObject {
         }
         lyricsPageURL += "lyrics";
         int i = 0;
-        for(i = 0; i < artistWords.size() - 1; i++){
+        for(i = 0; i < artistWords.size(); i++){
             String word = artistWords.get(i);
-            lyricsPageURL += word + "-";
+            lyricsPageURL += "-" + word;
         }
         //TODO: figure out why there's no i+1
-        lyricsPageURL += artistWords.get(i) + ".html";
+        lyricsPageURL += ".html";
         return lyricsPageURL;
     }
 

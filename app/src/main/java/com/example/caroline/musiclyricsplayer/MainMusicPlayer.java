@@ -79,8 +79,12 @@ public class MainMusicPlayer extends AppCompatActivity
         //if nothing, rickrolls them
         if (htmlReader != null) {
             artist = htmlReader.findComposer();
+            Log.d(TAG, "letsGO: artist: "+artist);
             title = htmlReader.findTitle();
+            Log.d(TAG, "letsGO: title: "+title);
             lyricsUrl = htmlReader.findLyricsURL();
+            Log.d(TAG, "letsGO: lyricsURL: "+lyricsUrl);
+
         } else {
             artist = "Rick Astley";
             title = "Never Gonna Give You Up";
