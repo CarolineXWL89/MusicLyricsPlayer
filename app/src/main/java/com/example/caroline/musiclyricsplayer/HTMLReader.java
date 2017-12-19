@@ -6,10 +6,11 @@ import java.util.ArrayList;
 
 /**
  * Created by princ on 24/10/2017.
- * Runs through the HTML code and finds the div classes to access title, composer, and URL for lyrics page
+ * Runs through the HTML code of lyrics.com and finds the div classes to access title, composer, and URL for lyrics page
  */
 
 public class HTMLReader {
+    //TODO get rid of useless instance variables and changed plans in HTMLReader
     private String title, artist, HTMLCode, lyricsURL;
     private ArrayList<Integer> positions = new ArrayList<>();
     private int tRefL;
@@ -17,15 +18,19 @@ public class HTMLReader {
     private int lRefL;
     private int iRefL;
     private int ibRefl;
-    private static final String TITLE_REF = "<a href=\"/lyric";
-    private static final String ARTIST_REF = "artists\"><a href=\"artist/";
-    private static final String LYRIC_LINK_REF = "lyric-body\" onclick=\"location.href='https://www.lyrics.com/";
-    private static final String IMAGE_LINK_REF="album-thumb\"><a href=\"/album";
-    private static final String IMAGE_LINK_REF_BACKUP="<div class=\"artist-thumb\"";
+    private static final String TITLE_REF = "<a href=\"/lyric"; //tag to find title position
+    private static final String ARTIST_REF = "artists\"><a href=\"artist/"; //tag to find artist position
+    private static final String LYRIC_LINK_REF = "lyric-body\" onclick=\"location.href='https://www.lyrics.com/"; //tag to find link to lyrics --> not used
+    private static final String IMAGE_LINK_REF="album-thumb\"><a href=\"/album"; //tag to find 1st choice image position
+    private static final String IMAGE_LINK_REF_BACKUP="<div class=\"artist-thumb\""; //tag to find 2nd choice image position
 
     //private static final String MY_TAG = "testActivity";
     //private int firstSearched;
 
+    /**
+     * Constructs HTMLReader
+     * @param HTMLCode Takes in HTML code from lyrics.com
+     */
     public HTMLReader(String HTMLCode){
         this.HTMLCode = HTMLCode;
         int firstSearchedBeforeTitle = HTMLCode.indexOf(TITLE_REF);
@@ -46,6 +51,10 @@ public class HTMLReader {
 
     }
 
+    /**
+     * Gets the title of the piece
+     * @return title
+     */
     public String findTitle(){
         int firstTitle = positions.get(0);
         String shortenedSearch = HTMLCode.substring(firstTitle + tRefL);
@@ -55,6 +64,10 @@ public class HTMLReader {
         return title;
     }
 
+    /**
+     * Gets the artist of the piece
+     * @return artist
+     */
     public String findComposer(){
         int firstComposer = positions.get(1);
         String shortenedSearch = HTMLCode.substring(firstComposer + aRefL);
@@ -64,6 +77,10 @@ public class HTMLReader {
         return artist;
     }
 
+    /**
+     * Gets the URL to the lyrics page
+     * @return lyrics URL
+     */
     public String findLyricsURL(){
         int firstLyricLink = positions.get(2);
         String shortenedSearch = HTMLCode.substring(firstLyricLink + lRefL);
@@ -73,6 +90,10 @@ public class HTMLReader {
         return lyricsURL;
     }
 
+    /**
+     * Gets the album art for the piece
+     * @return link to album art
+     */
     public String findAlbumArt(){
         if(positions.get(3)>0) { //this section finds the album art if it exists
             String albumArtLink = "";
@@ -99,9 +120,9 @@ public class HTMLReader {
 
     }
 
-    public String getLyrics() {
+    /*public String getLyrics() {
         //TODO write this method properly
 
         return "NEED to write a html reader method to get lyrics";
-    }
+    }*/
 }
