@@ -85,7 +85,9 @@ public class HTMLReader {
         int firstLyricLink = positions.get(2);
         String shortenedSearch = HTMLCode.substring(firstLyricLink + lRefL);
         int sideCarrotTitleStart = shortenedSearch.indexOf("/");
+        Log.d("SideCarrotTitleStart", ""+sideCarrotTitleStart);
         int sideCarrotTitleEnd = shortenedSearch.indexOf("'");
+        Log.d("SideCarrotTitleEnd", ""+sideCarrotTitleEnd);
         lyricsURL = "https://www.lyrics.com/" + shortenedSearch.substring(sideCarrotTitleStart + 1, sideCarrotTitleEnd);
         return lyricsURL;
     }

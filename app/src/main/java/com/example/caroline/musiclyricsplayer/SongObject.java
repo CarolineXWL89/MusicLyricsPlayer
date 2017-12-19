@@ -57,7 +57,7 @@ public class SongObject {
         }
         lyricsPageURL += "lyrics";
         int i = 0;
-        for(i = 0; i < artistWords.size(); i++){
+        for(i = 0; i < artistWords.size()-1; i++){
             String word = artistWords.get(i);
             lyricsPageURL += word + "-";
         }
