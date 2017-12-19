@@ -36,15 +36,19 @@ public class HTMLReader {
         int firstSearchedBeforeTitle = HTMLCode.indexOf(TITLE_REF);
         positions.add(firstSearchedBeforeTitle);
         tRefL = TITLE_REF.length();
+
         int firstBeforeArtist = HTMLCode.indexOf(ARTIST_REF);
         positions.add(firstBeforeArtist);
         aRefL = ARTIST_REF.length();
+
         int firstBeforeLyricLink = HTMLCode.indexOf(LYRIC_LINK_REF);
         positions.add(firstBeforeLyricLink);
         lRefL = LYRIC_LINK_REF.length();
+
         int firstBeforeAlbumArtLink = HTMLCode.indexOf(IMAGE_LINK_REF);
         positions.add(firstBeforeAlbumArtLink);
         iRefL = IMAGE_LINK_REF.length();
+
         int firstBeforeAlbumArtLinkBackup=HTMLCode.indexOf(IMAGE_LINK_REF_BACKUP);
         positions.add(firstBeforeAlbumArtLinkBackup);
         ibRefl = IMAGE_LINK_REF_BACKUP.length();
