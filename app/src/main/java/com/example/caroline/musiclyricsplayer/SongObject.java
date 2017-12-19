@@ -16,6 +16,7 @@ public class SongObject {
         this.title = title;
         this.artist = artist;
         this.link = link;
+        lyricsPageURL = "http://www.metrolyrics.com/";
     }
 
     public String getTitle() {
@@ -53,11 +54,11 @@ public class SongObject {
     public String createLyricsPageURL(ArrayList<String> titleWords, ArrayList<String> artistWords){
         for(int i = 0; i < titleWords.size(); i++){
             String word = titleWords.get(i);
-            lyricsPageURL = "http://www.metrolyrics.com/" + word + "-";
+            lyricsPageURL += word + "-";
         }
         lyricsPageURL += "lyrics";
         int i = 0;
-        for(i = 0; i < artistWords.size()-1; i++){
+        for(i = 0; i < artistWords.size() - 1; i++){
             String word = artistWords.get(i);
             lyricsPageURL += word + "-";
         }

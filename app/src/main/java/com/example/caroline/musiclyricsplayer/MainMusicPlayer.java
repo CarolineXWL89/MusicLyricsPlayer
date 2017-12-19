@@ -33,6 +33,8 @@ import java.util.concurrent.ExecutionException;
 //import de.l3s.boilerpipe.extractors.ArticleExtractor;
 
 public class MainMusicPlayer extends AppCompatActivity
+
+
         implements NavigationView.OnNavigationItemSelectedListener {
     private String lyricPhrase, googleSearchURL, title, artist;
     private String lyricsComURL; //lyricsComURL is for the search results on lyrics.com
