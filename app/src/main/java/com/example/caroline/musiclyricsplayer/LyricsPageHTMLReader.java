@@ -17,8 +17,14 @@ public class LyricsPageHTMLReader {
     private static final String BREAK_REF = "<br>";
     private static final String LINE_BREAK_INDICATOR = " / ";
     private static final String VERSE_BREAK = "<p class='verse'>";
-    private static final String FALSE_BREAK = "</p><p class='ver";
+    private static final String FALSE_BREAK_REDUCED = "</p><p class='ver";
+    private static final String FALSE_BREAK_FULL = "</p><p class='verse'>";
     private static final String SECTION_END_INDICATOR = "<!--WIDGET ";
+
+    public String getHTMLCode() {
+        return HTMLCode;
+    }
+
     private String HTMLCode, lyrics, lyricsPageURL;
     private ArrayList<String> wordsFinal = new ArrayList<>();
     //private ArrayList<String> brokenUpText = new ArrayList<>();
@@ -44,7 +50,7 @@ public class LyricsPageHTMLReader {
         for(int i = 0; i < l; i++){
             String checkPoint = fullSong.substring(i, i + VERSE_BREAK.length());
             //String falseBreak = fullSong.substring(i, i + FALSE_BREAK.length());
-            if(checkPoint.equals(VERSE_BREAK) && !(checkPoint).equals(FALSE_BREAK)){
+            if(checkPoint.equals(VERSE_BREAK) && !(checkPoint).equals(FALSE_BREAK_REDUCED)){
                 numberOfSections++;
             }
         }
@@ -58,7 +64,7 @@ public class LyricsPageHTMLReader {
      */
     public ArrayList<String> separateLyricsWords(String phrase){
         int startPosition1 = 0;
-        int startPosition2 = 0;
+        //int startPosition2 = 0;
         int numLetters = 0;
         int phraseLength = phrase.length();
         //System.out.println(phraseLength);
@@ -77,17 +83,22 @@ public class LyricsPageHTMLReader {
 
             }
             else{
-                //TODO: be able to separate into stanzas with <!-- First Section -->
                 String currentWord = phrase.substring(startPosition1, startPosition1 + numLetters);
                 //System.out.print("There was a space: check --> ");
                 //System.out.print("startPosition1: " + startPosition1 + " ");
                 //System.out.println("numLetters: " + numLetters);
-                String lineEndCheck = phrase.substring(startPosition1 + numLetters, startPosition1 + numLetters + 1);
-                if(lineEndCheck.equals("<")){
-                    String stuffToCheck = phrase.substring(startPosition1 + numLetters);
-                    int endOfCheckPosit = stuffToCheck.indexOf(">");
+                String lineEndCheck = phrase.substring(startPosition1 + numLetters, startPosition1 + numLetters + 2);
+                if(lineEndCheck.equals("<b")){
+                    //String stuffToCheck = phrase.substring(startPosition1 + numLetters);
+                    //int endOfCheckPosit = stuffToCheck.indexOf(">");
                     wordsFinal.add(currentWord);
                     wordsFinal.add(LINE_BREAK_INDICATOR);
+                    startPosition1 += numLetters + SIZE_REF_BR;
+                }
+                else if(lineEndCheck.equals("</")){
+                    wordsFinal.add(currentWord);
+                    wordsFinal.add(FALSE_BREAK_FULL);
+                    startPosition1 += numLetters + FALSE_BREAK_FULL.length();
                 }
                 else{
                     wordsFinal.add(currentWord);
@@ -97,7 +108,7 @@ public class LyricsPageHTMLReader {
                 //System.out.println(phrase);
                 //System.out.println("" + startPosition1 + " " + numLetters);
                 //System.out.println("Current Word: " + currentWord);
-                startPosition1 += numLetters + SIZE_REF_BR;
+
                 numLetters = 0;
                 //numLetters++;
             }
@@ -108,15 +119,24 @@ public class LyricsPageHTMLReader {
     }
 
     /**
-     * Creates array of ints in the section for lyrics where the ends of each section are
+     * Creates array of Strings in the section for lyrics
      * @param song Full HTML of the song lyric section
      * @param stanzaNumber Number of stanzas gotten from numberSections method
-     * @return
+     * @return Array of stanza strings full HTML
      */
-    public int[] stanzaLocators(String song, int stanzaNumber){
-        int[] stanzaPositions = new int[stanzaNumber];
-
-        return stanzaPositions;
+    public String[] stanzaLocators(String song, int stanzaNumber){
+        String[] stanzas = new String[stanzaNumber];
+        int posit = 0;
+        String stanzaHTML = "";
+        while(stanzaNumber > 0){
+            int startSection = song.indexOf(VERSE_BREAK);
+            int endSection = song.indexOf(SECTION_END_INDICATOR);
+            stanzaHTML = song.substring(startSection, endSection);
+            stanzaNumber--;
+            stanzas[posit] = stanzaHTML;
+            posit++;
+        }
+        return stanzas;
     }
     //USELESS METHOD
 

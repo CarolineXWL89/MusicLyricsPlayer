@@ -118,7 +118,7 @@ public class MainMusicPlayer extends AppCompatActivity
         artistWords = songObject.separateWords(artist);
         lyricsUrl =  songObject.createLyricsPageURL(titleWords, artistWords);
         URLReader urlReaderLyrics = new URLReader(lyricsUrl);
-        String htmlCode = urlReaderLyrics.readerReturn();
+        String htmlCodeFull = urlReaderLyrics.readerReturn();
         //ArrayList<String> lyricWords = new ArrayList<>();
         /*try {
             URL lyricsURLObject = new URL(lyricsUrl);
@@ -134,11 +134,31 @@ public class MainMusicPlayer extends AppCompatActivity
         } catch (IOException e) {
             e.printStackTrace();
         }*/
-        LyricsPageHTMLReader lyricsPageHTMLReader = new LyricsPageHTMLReader(htmlCode);
-        lyrics = lyricsPageHTMLReader.findLyrics(htmlCode);
+        LyricsPageHTMLReader lyricsPageHTMLReader = new LyricsPageHTMLReader(htmlCodeFull);
+        String reducedHTMLCode = lyricsPageHTMLReader.getHTMLCode();
+        int numberOfSections = lyricsPageHTMLReader.numberSections(reducedHTMLCode);
+        String[] stanzaSections = lyricsPageHTMLReader.stanzaLocators(reducedHTMLCode, numberOfSections);
+        ArrayList<ArrayList<String>> arrayOfLyricArraysFromStanzas = new ArrayList<>();
+        int numSections = numberOfSections;
+        while(numSections > 0){
+            ArrayList<String> lyrics = lyricsPageHTMLReader.separateLyricsWords(stanzaSections[numberOfSections - numberOfSections]);
+            arrayOfLyricArraysFromStanzas.add(lyrics);
+        }
+        /*lyrics = lyricsPageHTMLReader.findLyrics(htmlCode);
         int l = lyrics.size();
         for(int i = 0; i < l; i++){
             fullLyrics += lyrics.get(i);
+        }
+        return fullLyrics;*/
+        for(ArrayList<String> lyricSets : arrayOfLyricArraysFromStanzas){
+            for(String lyric : lyricSets){
+                if(lyric.equals("<br>") || lyric.equals("</p><p class='verse'>")){
+                    fullLyrics += "\n";
+                }
+                else{
+                    fullLyrics += lyric;
+                }
+            }
         }
         return fullLyrics;
     }
