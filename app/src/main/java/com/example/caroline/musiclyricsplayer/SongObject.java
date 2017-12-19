@@ -72,9 +72,9 @@ public class SongObject {
      * @param phrase either the title or artist
      * @return Array list of strings of the individual words in the title or artist
      */
+    int startPosition1 = 0;
+    int startPosition2 = 0;
     public ArrayList<String> separateWords(String phrase){
-        int startPosition1 = 0;
-        int startPosition2 = 0;
         int numLetters = 0;
         int phraseLength = phrase.length();
         //System.out.println(phraseLength);
@@ -92,10 +92,9 @@ public class SongObject {
 
             }
             else{
-                //System.out.print("There was a space: check --> ");
-                //System.out.print("startPosition1: " + startPosition1 + " ");
-                //System.out.println("numLetters: " + numLetters);
-
+                /*System.out.print("There was a space: check --> ");
+                System.out.print("startPosition1: " + startPosition1 + " ");
+                System.out.println("numLetters: " + numLetters);*/
                 String currentWord = phrase.substring(startPosition1, startPosition1 + numLetters);
                 //phrase = phrase.substring(numLetters);
                 //System.out.println(phrase);
@@ -108,7 +107,8 @@ public class SongObject {
             }
         }
         String lastWord = phrase.substring(startPosition1, startPosition1 + numLetters + 1);
-//        System.out.println(lastWord);
+        wordsFinal.add(lastWord);
+        //System.out.println(lastWord);
         return wordsFinal;
     }
 }
