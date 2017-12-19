@@ -1,5 +1,7 @@
 package com.example.caroline.musiclyricsplayer;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 
 /**
@@ -32,7 +34,9 @@ public class LyricsPageHTMLReader {
 
     public LyricsPageHTMLReader(String HTMLCodeLyrics){
         int startParsePoint = HTMLCodeLyrics.indexOf(LYRIC_REF);
+        Log.d("StartParsePoint", "" + startParsePoint);
         int endParsePoint = HTMLCodeLyrics.indexOf(LYRIC_END);
+        Log.d("EndParsePoint", "" + endParsePoint);
         this.HTMLCode = HTMLCodeLyrics.substring(startParsePoint, endParsePoint);
         /*int firstBeforeLyrics = HTMLCode.indexOf(LYRIC_REF);
         lyRefL = LYRIC_REF.length();
@@ -115,7 +119,7 @@ public class LyricsPageHTMLReader {
             }
         }
         String lastWord = phrase.substring(startPosition1, startPosition1 + numLetters + 1);
-        System.out.println(lastWord);
+        //System.out.println(lastWord);
         return wordsFinal;
     }
 

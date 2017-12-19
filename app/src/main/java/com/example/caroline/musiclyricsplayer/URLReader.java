@@ -50,7 +50,9 @@ public class URLReader {
             while ((line = bufferedReader.readLine()) != null)
             {
                 content.append(line + "\n");
+                Log.d("appending stuff", "line added");
             }
+            Log.d("Content: ", content.toString());
             bufferedReader.close();
         }
         catch(Exception e)
