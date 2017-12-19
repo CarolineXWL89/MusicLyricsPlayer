@@ -26,8 +26,7 @@ public class URLReader {
     }
 
     /**
-     * Takes the URL input and returns an HTML code.
-     * //@param URL
+     * Takes the URL input and returns an HTML code
      * @return HTML code for webpage
      */
     public String readerReturn() throws IOException {

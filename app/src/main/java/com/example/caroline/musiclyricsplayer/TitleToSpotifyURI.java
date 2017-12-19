@@ -18,10 +18,20 @@ public class TitleToSpotifyURI {
     https://www.google.com/search?safe=strict&source=hp&q=think+of+me+spotify --> directly into the URL bar;
     ^^top two are obtained when gotten from search bar directly
      */
+
+    /**
+     * Sets google search title to the title of the song + by + artist
+     * @param title title of song
+     * @param artist artist of song
+     */
     public TitleToSpotifyURI(String title, String artist){
         this.title = title + " by " + artist;
     }
 
+    /**
+     * Makes the google search URL
+     * @return Google search URL
+     */
     public String constructSearchURL() {
         //only works if there aren't any funny symbols --> all alphanumeric
         ArrayList<String> words = new ArrayList<>();
@@ -65,6 +75,11 @@ public class TitleToSpotifyURI {
         return searchURL;
     }
 
+    /**
+     * Makes the URI for Spotify song by getting it from the HTML google page code
+     * @param HTMLCode For Google search page
+     * @return URI
+     */
     public String getURIFromHTML(String HTMLCode){
         int searchStringLength = "open.spotify.com/track/".length();
         int spotifyURIFirstInstance = HTMLCode.indexOf("open.spotify.com/track/");
