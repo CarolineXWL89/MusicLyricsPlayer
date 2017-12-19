@@ -8,6 +8,7 @@ import java.util.ArrayList;
  */
 
 public class SongObject {
+    //TODO some redundant code and commented out stuff
     private String title, artist, link, lyricsPageURL;
     private ArrayList<String> wordsFinal = new ArrayList<>();
 
@@ -42,6 +43,13 @@ public class SongObject {
     }
 
     //gets the lyrics page link from MetroLyrics
+
+    /**
+     * Creates an URL for Metro Lyrics to get the HTML of the lyrics page
+     * @param titleWords Array list of strings of words words in the title of song
+     * @param artistWords Array list of strings of words words in the artist of song
+     * @return working URL
+     */
     public String createLyricsPageURL(ArrayList<String> titleWords, ArrayList<String> artistWords){
         for(int i = 0; i < titleWords.size(); i++){
             String word = artistWords.get(i);
@@ -56,6 +64,11 @@ public class SongObject {
         return lyricsPageURL;
     }
 
+    /**
+     * separates through words in title, artist
+     * @param phrase either the title or artist
+     * @return Array list of strings of the individual words in the title or artist
+     */
     public ArrayList<String> separateWords(String phrase){
         int startPosition1 = 0;
         int startPosition2 = 0;
