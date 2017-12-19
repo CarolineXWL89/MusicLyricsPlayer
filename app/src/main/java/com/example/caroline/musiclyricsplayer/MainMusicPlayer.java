@@ -3,6 +3,7 @@ package com.example.caroline.musiclyricsplayer;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.os.StrictMode;
 import android.speech.RecognizerIntent;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
@@ -43,7 +44,10 @@ public class MainMusicPlayer extends AppCompatActivity
     private String fullLyrics = "";
     public static final String TAG = "main";
     private SongObject songObject = new SongObject("", "", "");
-    @Override
+    {
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+    }
     protected void onCreate(Bundle savedInstanceState) {
         lyricPhrase = "";
         lyrics = new ArrayList<>();

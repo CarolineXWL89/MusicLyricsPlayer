@@ -52,15 +52,16 @@ public class SongObject {
      */
     public String createLyricsPageURL(ArrayList<String> titleWords, ArrayList<String> artistWords){
         for(int i = 0; i < titleWords.size(); i++){
-            String word = artistWords.get(i);
+            String word = titleWords.get(i);
             lyricsPageURL = "http://www.metrolyrics.com/" + word + "-";
         }
         lyricsPageURL += "lyrics";
-        for(int i = 0; i < artistWords.size(); i++){
-            String word = titleWords.get(i);
-            lyricsPageURL += word;
+        int i = 0;
+        for(i = 0; i < artistWords.size(); i++){
+            String word = artistWords.get(i);
+            lyricsPageURL += word + "-";
         }
-        lyricsPageURL += ".html";
+        lyricsPageURL += artistWords.get(i + 1) + ".html";
         return lyricsPageURL;
     }
 
@@ -105,7 +106,7 @@ public class SongObject {
             }
         }
         String lastWord = phrase.substring(startPosition1, startPosition1 + numLetters + 1);
-        System.out.println(lastWord);
+//        System.out.println(lastWord);
         return wordsFinal;
     }
 }
