@@ -1,5 +1,7 @@
 package com.example.caroline.musiclyricsplayer;
 
+import android.util.Log;
+
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -72,9 +74,10 @@ public class SongObject {
      * @param phrase either the title or artist
      * @return Array list of strings of the individual words in the title or artist
      */
-    int startPosition1 = 0;
     int startPosition2 = 0;
     public ArrayList<String> separateWords(String phrase){
+        int startPosition1 = 0;
+        ArrayList<String> wordsFinal = new ArrayList<>();
         int numLetters = 0;
         int phraseLength = phrase.length();
         //System.out.println(phraseLength);
@@ -95,12 +98,15 @@ public class SongObject {
                 /*System.out.print("There was a space: check --> ");
                 System.out.print("startPosition1: " + startPosition1 + " ");
                 System.out.println("numLetters: " + numLetters);*/
+                Log.d("separateWords", "startPosition1: " + startPosition1);
+                Log.d("separateWords", "numLetters: " + numLetters);
                 String currentWord = phrase.substring(startPosition1, startPosition1 + numLetters);
                 //phrase = phrase.substring(numLetters);
                 //System.out.println(phrase);
                 //System.out.println("" + startPosition1 + " " + numLetters);
                 //System.out.println("Current Word: " + currentWord);
-                startPosition1 += numLetters + 1;
+//                startPosition1 += numLetters + 1;
+                startPosition1 = i+1;
                 wordsFinal.add(currentWord);
                 numLetters = 0;
                 //numLetters++;

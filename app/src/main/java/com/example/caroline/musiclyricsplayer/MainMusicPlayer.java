@@ -152,7 +152,7 @@ public class MainMusicPlayer extends AppCompatActivity
         } catch (IOException e) {
             e.printStackTrace();
         }*/
-        LyricsPageHTMLReader lyricsPageHTMLReader = new LyricsPageHTMLReader(htmlCodeFull);
+        LyricsPageHTMLReader lyricsPageHTMLReader = new LyricsPageHTMLReader(htmlCodeFull, title, artist);
         String reducedHTMLCode = lyricsPageHTMLReader.getHTMLCode();
         int numberOfSections = lyricsPageHTMLReader.numberSections(reducedHTMLCode);
         String[] stanzaSections = lyricsPageHTMLReader.stanzaLocators(reducedHTMLCode, numberOfSections);
