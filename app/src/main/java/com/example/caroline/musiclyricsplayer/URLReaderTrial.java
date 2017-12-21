@@ -28,6 +28,7 @@ public class URLReaderTrial {
             in.mark(inputLine.length());
             in.reset();
             htmlCode += inputLine;
+            inputLine = in.readLine();
         }
         in.close();
 
