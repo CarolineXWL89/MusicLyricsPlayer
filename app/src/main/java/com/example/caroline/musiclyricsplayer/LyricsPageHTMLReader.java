@@ -14,8 +14,8 @@ public class LyricsPageHTMLReader {
     private int numberOfSections;
     //private static final String LYRIC_REF = "<pre id=\"lyric-body-text\" class=\"lyric-body\" dir=\"ltr\" data-lang=\"en\">";
     //private static final String LYRIC_END = "</div></div><div class=\"xpdxpnd kno-fb-ctx _Rtn _ECr\" data-mh=\"-1\" data-ved=\"";
-    private static String LYRIC_REF = "<div id=\"lyrics-body-text\" class=\"js-lyric-text\">";
-    private static String LYRIC_END = "<!--BOTTOM MPU-->";
+    private static final String LYRIC_REF = "<div id=\"lyrics-body-text\" class=\"js-lyric-text\">";
+    private static final String LYRIC_END = "<!--BOTTOM MPU-->";
     private static final int SIZE_REF_BR = "<br>".length();
     private static final String BREAK_REF = "<br>";
     private static final String LINE_BREAK_INDICATOR = " / ";
@@ -42,9 +42,9 @@ public class LyricsPageHTMLReader {
                 artistCaps += " ";
             }
         }
-        LYRIC_REF = "content=\"Lyrics to '"+title+"' by "+artistCaps+". ";
+        //LYRIC_REF = "content=\"Lyrics to '"+title+"' by "+artistCaps+". ";
 //        LYRIC_REF = "content=\"Lyrics to '"+title+"' by Book Of Love. ";
-        LYRIC_END = "\"/>\n<meta property=\"";
+        //LYRIC_END = "\"/>\n<meta property=\"";
         int startParsePoint = HTMLCodeLyrics.indexOf(LYRIC_REF);
         Log.d("StartParsePoint", "" + startParsePoint);
         int endParsePoint = HTMLCodeLyrics.indexOf(LYRIC_END);
