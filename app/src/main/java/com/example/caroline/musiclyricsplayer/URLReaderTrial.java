@@ -25,6 +25,8 @@ public class URLReaderTrial {
         inputLine = in.readLine();
         while(inputLine != null) {
             //System.out.println(inputLine);
+            in.mark(inputLine.length());
+            in.reset();
             htmlCode += inputLine;
         }
         in.close();
