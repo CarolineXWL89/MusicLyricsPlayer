@@ -32,9 +32,18 @@ public class LyricsPageHTMLReader {
     private ArrayList<String> wordsFinal = new ArrayList<>();
     //private ArrayList<String> brokenUpText = new ArrayList<>();
 
-    public LyricsPageHTMLReader(String HTMLCodeLyrics, String title, String artist){
-//        LYRIC_REF = "content=\"Lyrics to '"+title+"' by "+artist+". ";
-        LYRIC_REF = "content=\"Lyrics to '"+title+"' by Book Of Love. ";
+    public LyricsPageHTMLReader(String HTMLCodeLyrics, String title, ArrayList<String> artistWords){
+        String artistCaps = "";
+        for(int i = 0; i < artistWords.size(); i++){
+            String wordsInTitle = artistWords.get(i);
+            String wordsInTitleCaps = wordsInTitle.substring(0, 1).toUpperCase() + wordsInTitle.substring(1);
+            artistCaps += wordsInTitleCaps;
+            if(i < artistWords.size() -1){
+                artistCaps += " ";
+            }
+        }
+        LYRIC_REF = "content=\"Lyrics to '"+title+"' by "+artistCaps+". ";
+//        LYRIC_REF = "content=\"Lyrics to '"+title+"' by Book Of Love. ";
         LYRIC_END = "\"/>\n<meta property=\"";
         int startParsePoint = HTMLCodeLyrics.indexOf(LYRIC_REF);
         Log.d("StartParsePoint", "" + startParsePoint);
