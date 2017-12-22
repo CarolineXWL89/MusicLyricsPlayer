@@ -1,5 +1,6 @@
 package com.example.caroline.musiclyricsplayer;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -80,19 +81,18 @@ public class MainMusicPlayer extends AppCompatActivity
         Log.d("lyricsComURL", lyricsComURL);
         HTMLReader htmlReader = new HTMLReader(lyricsComHTMLBasic); //creates html parser
 
-        //if nothing, rickrolls them
-        if (htmlReader != null) {
+        Log.d(TAG, "letsGO: "+lyricsComHTMLBasic);
+        if (lyricsComHTMLBasic != null) {
             artist = htmlReader.findComposer();
             Log.d(TAG, "letsGO: artist: "+artist);
             title = htmlReader.findTitle();
             Log.d(TAG, "letsGO: title: "+title);
             lyricsUrl = htmlReader.findLyricsURL();
             Log.d(TAG, "letsGO: lyricsURL: "+lyricsUrl);
-
         } else {
-            artist = "Rick Astley";
-            title = "Never Gonna Give You Up";
-            lyricsUrl = "https://www.lyrics.com/lyric/1906428/Rick+Astley/Never+Gonna+Give+You+Up";
+            artist = getArtist();
+            title = getSongTitle();
+            lyricsUrl = getLyricsURL();
         }
 
         //Gets URI from google, gets lyrics and album art from second website
@@ -121,9 +121,11 @@ public class MainMusicPlayer extends AppCompatActivity
     }
 
     private String getSongLyrics() throws ExecutionException, InterruptedException, IOException/*, BoilerpipeProcessingException*/ {
-        /*String htmlForLyrics = new URLPinger().execute(lyricsUrl).get(); //gets the html from search results
-        HTMLReader htmlReader = new HTMLReader(htmlForLyrics); //creates html parser
-        return htmlReader.getLyrics();*/
+        String htmlForLyrics = new URLPinger().execute(lyricsUrl).get(); //gets the html from search results
+        //HTMLReader htmlReader = new HTMLReader(htmlForLyrics); //creates html parser
+        return getLyrics();
+
+        /*
         songObject.setTitle(title);
         songObject.setArtist(artist);
         ArrayList<String> titleWords = new ArrayList<>();
@@ -160,7 +162,8 @@ public class MainMusicPlayer extends AppCompatActivity
         } catch (IOException e) {
             e.printStackTrace();
         }*/
-        LyricsPageHTMLReader lyricsPageHTMLReader = new LyricsPageHTMLReader(htmlCodeFull, title, artistWords);
+        //todo below was noraml
+        /*LyricsPageHTMLReader lyricsPageHTMLReader = new LyricsPageHTMLReader(htmlCodeFull, title, artistWords);
         String reducedHTMLCode = lyricsPageHTMLReader.getHTMLCode();
         int numberOfSections = lyricsPageHTMLReader.numberSections(reducedHTMLCode);
         String[] stanzaSections = lyricsPageHTMLReader.stanzaLocators(reducedHTMLCode, numberOfSections);
@@ -169,14 +172,16 @@ public class MainMusicPlayer extends AppCompatActivity
         while(numSections > 0){
             ArrayList<String> lyrics = lyricsPageHTMLReader.separateLyricsWords(stanzaSections[numberOfSections - numberOfSections]);
             arrayOfLyricArraysFromStanzas.add(lyrics);
-        }
+        }*/
+        //todo below was commented out
         /*lyrics = lyricsPageHTMLReader.findLyrics(htmlCode);
         int l = lyrics.size();
         for(int i = 0; i < l; i++){
             fullLyrics += lyrics.get(i);
         }
         return fullLyrics;*/
-        for(ArrayList<String> lyricSets : arrayOfLyricArraysFromStanzas){
+        //todo below was normal
+        /*for(ArrayList<String> lyricSets : arrayOfLyricArraysFromStanzas){
             for(String lyric : lyricSets){
                 if(lyric.equals("<br>") || lyric.equals("</p><p class='verse'>")){
                     fullLyrics += "\n";
@@ -186,7 +191,7 @@ public class MainMusicPlayer extends AppCompatActivity
                 }
             }
         }
-        return fullLyrics;
+        return fullLyrics;*/
     }
 
     @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
@@ -286,6 +291,79 @@ public class MainMusicPlayer extends AppCompatActivity
         return true;
     }
 
+    public String getLyrics() {
+        String lyrics = "We're no strangers to love\nYou know the rules and so do I\n" +
+                "A full commitment's what I'm thinking of\n" +
+                "You wouldn't get this from any other guy\n" +
+                "I just wanna tell you how I'm feeling\nGotta make you understand\nNever gonna give you up\n" +
+                "Never gonna let you down\n" +
+                "Never gonna run around and desert you\n" +
+                "Never gonna make you cry\n" +
+                "Never gonna say goodbye\nNever gonna tell a lie and hurt you\n" +
+                "We've known each other for so long\n" +
+                "Your heart's been aching but\n" +
+                "You're too shy to say it\n" +
+                "Inside we both know what's been going on\nWe know the game and we're gonna play it\n" +
+                "And if you ask me how I'm feeling\n" +
+                "Don't tell me you're too blind to see\n" +
+                "Never gonna give you up\n" +
+                "Never gonna let you down\n" +
+                "Never gonna run around and desert you\nNever gonna make you cry\n" +
+                "Never gonna say goodbye\n" +
+                "Never gonna tell a lie and hurt you\n" +
+                "Never gonna give you up\n" +
+                "Never gonna let you down\n" +
+                "Never gonna run around and desert you\nNever gonna make you cry\n" +
+                "Never gonna say goodbye\n" +
+                "Never gonna tell a lie and hurt you\n" +
+                "(Ooh, give you up)\n" +
+                "(Ooh, give you up)\n" +
+                "(Ooh)\n" +
+                "Never gonna give, never gonna give\n" +
+                "(Give you up)\n(Ooh)\n" +
+                "Never gonna give, never gonna give\n(Give you up)\n" +
+                "We've know each other for so long\n" +
+                "Your heart's been aching but\n" +
+                "You're too shy to say it\n" +
+                "Inside we both know what's been going on\nWe know the game and we're gonna play it\n" +
+                "I just wanna tell you how I'm feeling\n" +
+                "Gotta make you understand\n" +
+                "Never gonna give you up\nNever gonna let you down\n" +
+                "Never gonna run around and desert you\n" +
+                "Never gonna make you cry\n" +
+                "Never gonna say goodbye\n" +
+                "Never gonna tell a lie and hurt you\n" +
+                "Never gonna give you up\n" +
+                "Never gonna let you down\n" +
+                "Never gonna run around and desert you\n" +
+                "Never gonna make you cry\n" +
+                "Never gonna say goodbye\n" +
+                "Never gonna tell a lie and hurt you\n" +
+                "Never gonna give you up\n" +
+                "Never gonna let you down\n" +
+                "Never gonna run around and desert you\n" +
+                "Never gonna make you cry\n" +
+                "Never gonna say goodbye\n" +
+                "Never gonna tell a lie and hurt you\n";
+        return lyrics;
+    }
+
+    public String getArtist() {
+        //random cmmet
+        return "Rick Astley";
+    }
+
+    public String getSongTitle() {
+        //random line
+        return "Never Gonna Give You Up";
+    }
+
+    public String getLyricsURL() {
+        //random cmment
+        return  "https://www.lyrics.com/lyric/1906428/Rick+Astley/Never+Gonna+Give+You+Up";
+    }
+
+    @SuppressLint("StaticFieldLeak")
     @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
     private class URLPinger extends AsyncTask<String,Void, String> {
 
