@@ -177,7 +177,8 @@ public class URLReader {
      */
     public String readerReturn() throws IOException {
 
-        StringBuilder content = new StringBuilder();
+//        StringBuilder content = new StringBuilder(2000);
+        String content = "";
 
         try
         {
@@ -188,14 +189,14 @@ public class URLReader {
             URLConnection urlConnection = url.openConnection();
 
             // wrap the urlconnection in a bufferedreader
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(url.openStream()));
             
             String line;
 
             // read from the urlconnection via the bufferedreader
             while ((line = bufferedReader.readLine()) != null)
             {
-                content.append(line + "\n");
+                content += line + "\n";
                 Log.d("Appended Line:", line);
             }
             Log.d("Content: ", content.toString());
@@ -203,7 +204,7 @@ public class URLReader {
         }
         catch(Exception e)
         {
-            content.append(RICK_ROLL);
+            content += RICK_ROLL;
             Log.d("urlreader", "readerReturn: "+ e);
             e.printStackTrace();
         }

@@ -15,6 +15,7 @@ public class LyricsPageHTMLReader {
     //private static final String LYRIC_REF = "<pre id=\"lyric-body-text\" class=\"lyric-body\" dir=\"ltr\" data-lang=\"en\">";
     //private static final String LYRIC_END = "</div></div><div class=\"xpdxpnd kno-fb-ctx _Rtn _ECr\" data-mh=\"-1\" data-ved=\"";
     private static final String LYRIC_REF = "<div id=\"lyrics-body-text\" class=\"js-lyric-text\">";
+    //<div id="lyrics-body-text" class="js-lyric-text">
     private static final String LYRIC_END = "<!--BOTTOM MPU-->";
     private static final int SIZE_REF_BR = "<br>".length();
     private static final String BREAK_REF = "<br>";

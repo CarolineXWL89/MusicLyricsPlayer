@@ -74,6 +74,7 @@ public class MainMusicPlayer extends AppCompatActivity
         tokenize(); //takes phrase set by speaking and returns arraylist of the words
         create1stURL(); //creates the lyrics.com searching url
         String lyricsComHTMLBasic = new URLPinger().execute(lyricsComURL).get(); //gets the html from search results
+        Log.d("lyricsComURL", lyricsComURL);
         HTMLReader htmlReader = new HTMLReader(lyricsComHTMLBasic); //creates html parser
 
         //if nothing, rickrolls them
@@ -230,7 +231,7 @@ public class MainMusicPlayer extends AppCompatActivity
        goodLyrics = (Button) findViewById(R.id.lyrics_good);
        editText = (EditText) findViewById(R.id.editable_text);
        goodLyrics.setText("Go");
-       goodLyrics.setVisibility(View.GONE);
+//       goodLyrics.setVisibility(View.GONE);
     }
 
     public void onClick(View v)
