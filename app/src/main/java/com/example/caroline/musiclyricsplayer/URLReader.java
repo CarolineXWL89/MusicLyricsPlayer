@@ -189,8 +189,8 @@ public class URLReader {
             URLConnection urlConnection = url.openConnection();
 
             // wrap the urlconnection in a bufferedreader
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(url.openStream()));
-            
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+
             String line;
 
             // read from the urlconnection via the bufferedreader
@@ -200,6 +200,7 @@ public class URLReader {
                 Log.d("Appended Line:", line);
             }
             Log.d("Content: ", content.toString());
+            bufferedReader.reset();
             bufferedReader.close();
         }
         catch(Exception e)

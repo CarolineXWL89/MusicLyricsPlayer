@@ -22,9 +22,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.concurrent.ExecutionException;
@@ -137,9 +140,10 @@ public class MainMusicPlayer extends AppCompatActivity
         lyricsUrl =  songObject.createLyricsPageURL(titleWords, artistWords);
         //URL lyricsRealURLObject = new URL(lyricsUrl); //TODO need this later
         //URLReaderTrial urlReaderTrial = new URLReaderTrial(lyricsRealURLObject); //TODO need this later
-        URLReader urlReaderLyrics = new URLReader(lyricsUrl); //TODO need this later
+//        URLReader urlReaderLyrics = new URLReader(lyricsUrl); //TODO need this later
         //Log.d("URL for lyrics: ", lyricsUrl);
-        String htmlCodeFull = urlReaderLyrics.readerReturn(); //TODO need this later
+//        String htmlCodeFull = urlReaderLyrics.readerReturn(); //TODO need this later
+        String htmlCodeFull = new URLPinger().execute(lyricsUrl).get();
         //String htmlCodeFull = urlReaderTrial.getHTMLLyrics(); TODO need this later
         //ArrayList<String> lyricWords = new ArrayList<>();
         /*try {
@@ -287,16 +291,18 @@ public class MainMusicPlayer extends AppCompatActivity
 
         @Override
         protected String doInBackground(String... strings) {
+
+//            create a url object
             URLReader urlReader = new URLReader(strings[0]);
             try {
-                return urlReader.readerReturn();
-            } catch (IOException e) {
-                e.printStackTrace();
-                Log.d(TAG, "doInBackground: "+e);
-                return null;
-            }
+                    return urlReader.readerReturn();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Log.d(TAG, "doInBackground: "+e);
+                    return null;
+                }
 
-        }
+            }
 
         @Override
         protected void onPostExecute(String s) {
