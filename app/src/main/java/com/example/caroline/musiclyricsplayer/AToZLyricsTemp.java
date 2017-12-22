@@ -7,8 +7,8 @@ import java.util.ArrayList;
  */
 
 public class AToZLyricsTemp {
-    private static String START_REF = "<!-- Usage of azlyrics.com content by any third-party lyrics provider is prohibited by our licensing agreement. Sorry about that. -->\n";
-    private static String END_REF = "<!-- MxM banner -->\n";
+    private static String START_REF = "<!-- Usage of azlyrics.com content by any third-party lyrics provider is prohibited by our licensing agreement. Sorry about that. -->";
+    private static String END_REF = "<!-- MxM banner -->";
     private String lyrics = "";
     private static String BREAK_REF = "<br>";
     private static String DIV_REF = "</div>\n";

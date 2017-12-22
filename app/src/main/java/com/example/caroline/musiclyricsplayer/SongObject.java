@@ -56,8 +56,12 @@ public class SongObject {
     public String createLyricsPageURL(ArrayList<String> titleWords, ArrayList<String> artistWords){
         for(int i = 0; i < artistWords.size(); i++){ //title first for Metrolyrics
             String word = artistWords.get(i);
+            if(!(i == 0 && word.equals("The"))){
+                lyricsPageURL += word.toLowerCase();
+            }
+
 //            lyricsPageURL += word + "-";
-            lyricsPageURL += word;
+
         }
 //        lyricsPageURL += "lyrics";
         lyricsPageURL += "/";
@@ -65,7 +69,7 @@ public class SongObject {
         for(i = 0; i < titleWords.size(); i++){ //artist second for Metrolyrics
             String word = titleWords.get(i);
 //            lyricsPageURL += "-" + word;
-            lyricsPageURL += word;
+            lyricsPageURL += word.toLowerCase();
         }
         //TODO: figure out why there's no i+1
         lyricsPageURL += ".html";

@@ -138,11 +138,14 @@ public class MainMusicPlayer extends AppCompatActivity
         }
 
         lyricsUrl =  songObject.createLyricsPageURL(titleWords, artistWords);
+        Log.d("lyricsURL", lyricsUrl);
 //        URL lyricsRealURLObject = new URL(lyricsUrl); //TODO need this later
         //URLReaderTrial urlReaderTrial = new URLReaderTrial(lyricsRealURLObject); //TODO need this later
-        URLReader urlReaderLyrics = new URLReader(lyricsUrl); //TODO need this later
+//        URLReader urlReaderLyrics = new URLReader(lyricsUrl); //TODO need this later
         //Log.d("URL for lyrics: ", lyricsUrl);
-        String htmlCodeFull = urlReaderLyrics.readerReturn(); //TODO need this later
+        String htmlCodeFull = new URLPinger().execute(lyricsUrl).get();
+
+//        String htmlCodeFull = urlReaderLyrics.readerReturn(); //TODO need this later
         AToZLyricsTemp aToZLyricsTemp = new AToZLyricsTemp(htmlCodeFull);
         ArrayList<String> htmlLyrics = aToZLyricsTemp.getHtmlLyrics();
         fullLyrics = aToZLyricsTemp.cutHTML(htmlLyrics);

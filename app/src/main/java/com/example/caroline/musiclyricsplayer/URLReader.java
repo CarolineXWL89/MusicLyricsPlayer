@@ -192,13 +192,16 @@ public class URLReader {
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
 
             String line;
-
+            int linesAppended = 0;
             // read from the urlconnection via the bufferedreader
             while ((line = bufferedReader.readLine()) != null)
             {
                 content += line + "\n";
                 Log.d("Appended Line:", line);
+                linesAppended += 1;
             }
+            Log.d("LinesAppended", ""+linesAppended);
+
             Log.d("Content: ", content.toString());
             bufferedReader.reset();
             bufferedReader.close();
