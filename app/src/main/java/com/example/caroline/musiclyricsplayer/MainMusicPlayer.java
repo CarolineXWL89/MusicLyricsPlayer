@@ -138,12 +138,15 @@ public class MainMusicPlayer extends AppCompatActivity
         }
 
         lyricsUrl =  songObject.createLyricsPageURL(titleWords, artistWords);
-        //URL lyricsRealURLObject = new URL(lyricsUrl); //TODO need this later
+//        URL lyricsRealURLObject = new URL(lyricsUrl); //TODO need this later
         //URLReaderTrial urlReaderTrial = new URLReaderTrial(lyricsRealURLObject); //TODO need this later
-//        URLReader urlReaderLyrics = new URLReader(lyricsUrl); //TODO need this later
+        URLReader urlReaderLyrics = new URLReader(lyricsUrl); //TODO need this later
         //Log.d("URL for lyrics: ", lyricsUrl);
-//        String htmlCodeFull = urlReaderLyrics.readerReturn(); //TODO need this later
-        String htmlCodeFull = new URLPinger().execute(lyricsUrl).get();
+        String htmlCodeFull = urlReaderLyrics.readerReturn(); //TODO need this later
+        AToZLyricsTemp aToZLyricsTemp = new AToZLyricsTemp(htmlCodeFull);
+        ArrayList<String> htmlLyrics = aToZLyricsTemp.getHtmlLyrics();
+        fullLyrics = aToZLyricsTemp.cutHTML(htmlLyrics);
+//        String htmlCodeFull = new URLPinger().execute(lyricsUrl).get();
         //String htmlCodeFull = urlReaderTrial.getHTMLLyrics(); TODO need this later
         //ArrayList<String> lyricWords = new ArrayList<>();
         /*try {
@@ -160,32 +163,32 @@ public class MainMusicPlayer extends AppCompatActivity
         } catch (IOException e) {
             e.printStackTrace();
         }*/
-        LyricsPageHTMLReader lyricsPageHTMLReader = new LyricsPageHTMLReader(htmlCodeFull, title, artistWords);
-        String reducedHTMLCode = lyricsPageHTMLReader.getHTMLCode();
-        int numberOfSections = lyricsPageHTMLReader.numberSections(reducedHTMLCode);
-        String[] stanzaSections = lyricsPageHTMLReader.stanzaLocators(reducedHTMLCode, numberOfSections);
-        ArrayList<ArrayList<String>> arrayOfLyricArraysFromStanzas = new ArrayList<>();
-        int numSections = numberOfSections;
-        while(numSections > 0){
-            ArrayList<String> lyrics = lyricsPageHTMLReader.separateLyricsWords(stanzaSections[numberOfSections - numberOfSections]);
-            arrayOfLyricArraysFromStanzas.add(lyrics);
-        }
+//        LyricsPageHTMLReader lyricsPageHTMLReader = new LyricsPageHTMLReader(htmlCodeFull, title, artistWords);
+//        String reducedHTMLCode = lyricsPageHTMLReader.getHTMLCode();
+//        int numberOfSections = lyricsPageHTMLReader.numberSections(reducedHTMLCode);
+//        String[] stanzaSections = lyricsPageHTMLReader.stanzaLocators(reducedHTMLCode, numberOfSections);
+//        ArrayList<ArrayList<String>> arrayOfLyricArraysFromStanzas = new ArrayList<>();
+//        int numSections = numberOfSections;
+//        while(numSections > 0){
+//            ArrayList<String> lyrics = lyricsPageHTMLReader.separateLyricsWords(stanzaSections[numberOfSections - numberOfSections]);
+//            arrayOfLyricArraysFromStanzas.add(lyrics);
+//        }
         /*lyrics = lyricsPageHTMLReader.findLyrics(htmlCode);
         int l = lyrics.size();
         for(int i = 0; i < l; i++){
             fullLyrics += lyrics.get(i);
         }
         return fullLyrics;*/
-        for(ArrayList<String> lyricSets : arrayOfLyricArraysFromStanzas){
-            for(String lyric : lyricSets){
-                if(lyric.equals("<br>") || lyric.equals("</p><p class='verse'>")){
-                    fullLyrics += "\n";
-                }
-                else{
-                    fullLyrics += lyric;
-                }
-            }
-        }
+//        for(ArrayList<String> lyricSets : arrayOfLyricArraysFromStanzas){
+//            for(String lyric : lyricSets){
+//                if(lyric.equals("<br>") || lyric.equals("</p><p class='verse'>")){
+//                    fullLyrics += "\n";
+//                }
+//                else{
+//                    fullLyrics += lyric;
+//                }
+//            }
+//        }
         return fullLyrics;
     }
 

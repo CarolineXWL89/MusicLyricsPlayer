@@ -18,7 +18,7 @@ public class SongObject {
         this.title = title;
         this.artist = artist;
         this.link = link;
-        lyricsPageURL = "http://www.metrolyrics.com/";
+        lyricsPageURL = "https://www.azlyrics.com/lyrics/"; //"http://www.metrolyrics.com/";
     }
 
     public String getTitle() {
@@ -54,15 +54,18 @@ public class SongObject {
      * @return working URL
      */
     public String createLyricsPageURL(ArrayList<String> titleWords, ArrayList<String> artistWords){
-        for(int i = 0; i < titleWords.size(); i++){
-            String word = titleWords.get(i);
-            lyricsPageURL += word + "-";
-        }
-        lyricsPageURL += "lyrics";
-        int i = 0;
-        for(i = 0; i < artistWords.size(); i++){
+        for(int i = 0; i < artistWords.size(); i++){ //title first for Metrolyrics
             String word = artistWords.get(i);
-            lyricsPageURL += "-" + word;
+//            lyricsPageURL += word + "-";
+            lyricsPageURL += word;
+        }
+//        lyricsPageURL += "lyrics";
+        lyricsPageURL += "/";
+        int i = 0;
+        for(i = 0; i < titleWords.size(); i++){ //artist second for Metrolyrics
+            String word = titleWords.get(i);
+//            lyricsPageURL += "-" + word;
+            lyricsPageURL += word;
         }
         //TODO: figure out why there's no i+1
         lyricsPageURL += ".html";
