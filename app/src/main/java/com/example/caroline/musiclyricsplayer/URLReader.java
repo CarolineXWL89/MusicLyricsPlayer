@@ -5,6 +5,7 @@ import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.EOFException;
 import java.io.InputStreamReader;
 
 import java.net.*;
@@ -17,8 +18,9 @@ import javax.net.ssl.HttpsURLConnection;
  */
 
 public class URLReader {
-    private String HTMLCode = "";
-    private String urlString = "";
+    private String htmlCode = "";
+    private String inputLine = "";
+    private URL lyricsURL;
     private static final String TAG = "urlreader";
     private static final String RICK_ROLL = "\n" +
             "<div id=\"lyrics-body-text\" class=\"js-lyric-text\">\n" +
@@ -167,53 +169,76 @@ public class URLReader {
             "</div>\n" +
             "<!--END BOTTOM MPU-->\n";
 
-    public URLReader(String url){
-        this.urlString = url;
+    public URLReader(URL url){
+        this.lyricsURL = url;
     }
 
     /**
      * Takes the URL input and returns an HTML code
      * @return HTML code for webpage
      */
-    public String readerReturn() throws IOException {
-
-//        StringBuilder content = new StringBuilder(2000);
-        String content = "";
-
-        try
-        {
-            // create a url object
-            URL url = new URL(urlString);
-
-            // create a urlconnection object
-            URLConnection urlConnection = url.openConnection();
-
-            // wrap the urlconnection in a bufferedreader
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
-
-            String line;
-            int linesAppended = 0;
-            // read from the urlconnection via the bufferedreader
-            while ((line = bufferedReader.readLine()) != null)
-            {
-                content += line + "\n";
-                Log.d("Appended Line:", line);
-                linesAppended += 1;
-            }
-            Log.d("LinesAppended", ""+linesAppended);
-
-            Log.d("Content: ", content.toString());
-            bufferedReader.reset();
-            bufferedReader.close();
+//    public String readerReturn() throws IOException {
+//
+////        StringBuilder content = new StringBuilder(2000);
+//        String content = "";
+//
+//        try
+//        {
+//            // create a url object
+//            URL url = new URL(urlString);
+//
+//            // create a urlconnection object
+//            URLConnection urlConnection = url.openConnection();
+//
+//            // wrap the urlconnection in a bufferedreader
+//            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+//
+//            String line;
+//            int linesAppended = 0;
+//            // read from the urlconnection via the bufferedreader
+//            while ((line = bufferedReader.readLine()) != null)
+//            {
+//                content += line + "\n";
+//                Log.d("Appended Line:", line);
+//                linesAppended += 1;
+//            }
+//            Log.d("LinesAppended", ""+linesAppended);
+//
+//            Log.d("Content: ", content.toString());
+//            bufferedReader.reset();
+//            bufferedReader.close();
+//        }
+//        catch(Exception e)
+//        {
+//            content += RICK_ROLL;
+//            Log.d("urlreader", "readerReturn: "+ e);
+//            e.printStackTrace();
+//        }
+//        HTMLCode = content.toString();
+//        return HTMLCode;
+//    }
+    public String readerReturn() throws IOException, EOFException {
+        URLConnection urlConnection = lyricsURL.openConnection();
+        Log.d("lyricsURL", lyricsURL.toString());
+        InputStream inputStream = urlConnection.getInputStream();
+        InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+        BufferedReader in = new BufferedReader(inputStreamReader);
+        int linesAppended = 0;
+        inputLine = in.readLine();
+        while(inputLine != null) {
+            in.mark(inputLine.length());
+            in.reset();
+            htmlCode += inputLine;
+            Log.d("Appended Line", ""+inputLine);
+            linesAppended += 1;
+            inputLine = in.readLine();
         }
-        catch(Exception e)
-        {
-            content += RICK_ROLL;
-            Log.d("urlreader", "readerReturn: "+ e);
-            e.printStackTrace();
-        }
-        HTMLCode = content.toString();
-        return HTMLCode;
+        Log.d("LinesAppended", ""+linesAppended);
+        Log.d("htmlCode", ""+htmlCode);
+        in.close();
+        System.out.println("htmlCode: "+htmlCode);
+        return htmlCode;
     }
+
 
 }

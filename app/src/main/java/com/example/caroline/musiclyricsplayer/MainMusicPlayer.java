@@ -23,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
@@ -86,8 +87,8 @@ public class MainMusicPlayer extends AppCompatActivity
             Log.d(TAG, "letsGO: artist: "+artist);
             title = htmlReader.findTitle();
             Log.d(TAG, "letsGO: title: "+title);
-            lyricsUrl = htmlReader.findLyricsURL();
-            Log.d(TAG, "letsGO: lyricsURL: "+lyricsUrl);
+//            lyricsUrl = htmlReader.findLyricsURL();
+//            Log.d(TAG, "letsGO: lyricsURL: "+lyricsUrl);
 
         } else {
             artist = "Rick Astley";
@@ -114,13 +115,13 @@ public class MainMusicPlayer extends AppCompatActivity
     }
 
     @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
-    private String getImageURL() throws ExecutionException, InterruptedException {
+    private String getImageURL() throws ExecutionException, InterruptedException, IOException {
         String htmlForLyrics = new URLPinger().execute(lyricsUrl).get(); //gets the html from search results
         HTMLReader htmlReader = new HTMLReader(htmlForLyrics); //creates html parser
         return htmlReader.findAlbumArt();
     }
 
-    private String getSongLyrics() throws ExecutionException, InterruptedException, IOException/*, BoilerpipeProcessingException*/ {
+    private String getSongLyrics() throws ExecutionException, InterruptedException, IOException /*, BoilerpipeProcessingException*/ {
         /*String htmlForLyrics = new URLPinger().execute(lyricsUrl).get(); //gets the html from search results
         HTMLReader htmlReader = new HTMLReader(htmlForLyrics); //creates html parser
         return htmlReader.getLyrics();*/
@@ -143,8 +144,7 @@ public class MainMusicPlayer extends AppCompatActivity
         //URLReaderTrial urlReaderTrial = new URLReaderTrial(lyricsRealURLObject); //TODO need this later
 //        URLReader urlReaderLyrics = new URLReader(lyricsUrl); //TODO need this later
         //Log.d("URL for lyrics: ", lyricsUrl);
-        String htmlCodeFull = new URLPinger().execute(lyricsUrl).get();
-
+        String htmlCodeFull = new URLPinger().execute(lyricsUrl).get(); //TEMPORARY
 //        String htmlCodeFull = urlReaderLyrics.readerReturn(); //TODO need this later
         AToZLyricsTemp aToZLyricsTemp = new AToZLyricsTemp(htmlCodeFull);
         ArrayList<String> htmlLyrics = aToZLyricsTemp.getHtmlLyrics();
@@ -299,7 +299,13 @@ public class MainMusicPlayer extends AppCompatActivity
         protected String doInBackground(String... strings) {
 
 //            create a url object
-            URLReader urlReader = new URLReader(strings[0]);
+            Log.d("URLPinger", strings[0]);
+            URLReader urlReader = null;
+            try {
+                urlReader = new URLReader(new URL(strings[0]));
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
             try {
                     return urlReader.readerReturn();
                 } catch (IOException e) {
